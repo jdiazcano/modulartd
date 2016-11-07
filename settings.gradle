@@ -1,0 +1,7 @@
+rootProject.name = 'modulartd'
+include 'rest'
+include 'editor:core'
+include 'editor:lwjgl3'
+include 'editor:desktop'
+include 'plugin'
+

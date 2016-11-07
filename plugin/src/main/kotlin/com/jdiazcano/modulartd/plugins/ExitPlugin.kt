@@ -8,4 +8,8 @@ class ExitPlugin : AbstractPlugin() {
 
     override fun getMinimumCompatibleVersion(): Int = 1
 
+    override fun onLoad() {
+        super.onLoad()
+        print("This is the exit plugin!")
+    }
 }

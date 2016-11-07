@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.JsonReader
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.jdiazcano.modulartd.plugins.Plugin
+import com.jdiazcano.modulartd.plugins.PluginClassLoader
 import com.kotcrab.vis.ui.VisUI
 import com.kotcrab.vis.ui.util.dialog.Dialogs
 import com.kotcrab.vis.ui.widget.VisTable
@@ -20,13 +21,15 @@ import java.util.jar.Manifest
 
 class ModularTD : ApplicationAdapter() {
     private var stage: Stage? = null
-    private var plugins: List<Plugin> = listOf()
+    private var plugins: MutableList<Plugin> = mutableListOf()
 
     override fun create() {
         VisUI.load()
 
         JsonReader().parse(Gdx.files.internal("plugins").child("plugins.json").readString("UTF-8")).forEach {
-            loadPlugin(Gdx.files.internal("plugins").child(it["file"].asString()))
+            val plugin = loadPlugin(Gdx.files.internal("plugins").child(it["file"].asString()))
+            plugin.onLoad()
+            plugins.add(plugin)
         }
 
         stage = Stage(ScreenViewport())
@@ -52,10 +55,12 @@ class ModularTD : ApplicationAdapter() {
         stage!!.addActor(window.fadeIn())
     }
 
-    private fun  loadPlugin(file: FileHandle) {
+    private fun loadPlugin(file: FileHandle) : Plugin {
         var pluginJar = JarFile(file.file())
         var mainClass = Manifest(pluginJar.getInputStream(pluginJar.getJarEntry("META-INF/MANIFEST.MF"))).mainAttributes.getValue("Main-Class")
-        Class.forName()
+        val loader = PluginClassLoader(arrayOf(file.file().toURI().toURL()))
+        val pluginClass = loader.loadPlugin(mainClass)
+        return pluginClass.newInstance()
     }
 
     override fun resize(width: Int, height: Int) {

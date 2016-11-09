@@ -16,6 +16,8 @@ import com.kotcrab.vis.ui.util.dialog.Dialogs
 import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisWindow
+import modulartd.config.Configs
+import modulartd.config.EditorConfig
 import java.util.jar.JarFile
 import java.util.jar.Manifest
 
@@ -23,11 +25,14 @@ class ModularTD : ApplicationAdapter() {
     private var stage: Stage? = null
     private var plugins: MutableList<Plugin> = mutableListOf()
 
+    private val config : EditorConfig = Configs.editor()
+
     override fun create() {
         VisUI.load()
 
-        JsonReader().parse(Gdx.files.internal("plugins").child("plugins.json").readString("UTF-8")).forEach {
-            val plugin = loadPlugin(Gdx.files.internal("plugins").child(it["file"].asString()))
+        val pluginsFolder = Gdx.files.internal(config.pluginsFolder())
+        JsonReader().parse(pluginsFolder.child(config.pluginsConfigFile()).readString("UTF-8")).forEach {
+            val plugin = loadPlugin(pluginsFolder.child(it["file"].asString()))
             plugin.onLoad()
             plugins.add(plugin)
         }

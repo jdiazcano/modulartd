@@ -2,16 +2,15 @@
 eclipse.project.name = appName + '-core'
 
 dependencies {
-  compile project(":plugin")
-  compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-  compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-  compile "com.github.czyzby:ktx-style:$ktxStyleVersion"
-  compile "com.github.czyzby:ktx-vis-style:$ktxVisStyleVersion"
-  compile "com.github.czyzby:ktx-vis:$ktxVisVersion"
-  compile "com.github.czyzby:ktx-log:$ktxLogVersion"
-  compile "de.tomgrill.gdxdialogs:gdx-dialogs-core:$dialogsVersion"
-  compile "com.github.czyzby:ktx-inject:$ktxInjectVersion"
-  compile "com.github.czyzby:ktx-i18n:$ktxI18nVersion"
-  compile "com.kotcrab.vis:vis-ui:$visUiVersion"
+    compile project(":plugin")
+    compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    compile "com.github.czyzby:ktx-style:$ktxStyleVersion"
+    compile "com.github.czyzby:ktx-vis-style:$ktxVisStyleVersion"
+    compile "com.github.czyzby:ktx-vis:$ktxVisVersion"
+    compile "com.github.czyzby:ktx-log:$ktxLogVersion"
+    compile "com.github.czyzby:ktx-inject:$ktxInjectVersion"
+    compile "com.github.czyzby:ktx-i18n:$ktxI18nVersion"
+    compile "com.kotcrab.vis:vis-ui:$visUiVersion"
+    compile "org.cfg4j:cfg4j-core:$cfg4jVersion"
 }
-        

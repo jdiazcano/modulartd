@@ -10,25 +10,23 @@ class Modifiers(
         ) {
 
     override fun toString(): String {
-        val keyPrinter = KeyPrinters.printer
         return buildString {
             if (alt) {
-                append(keyPrinter.alt(), keyPrinter.glue())
+                append(KeyPrinters.alt(), KeyPrinters.glue())
             }
             if (shift) {
-                append(keyPrinter.shift(), keyPrinter.glue())
+                append(KeyPrinters.shift(), KeyPrinters.glue())
             }
             if (control) {
-                append(keyPrinter.control(), keyPrinter.glue())
+                append(KeyPrinters.control(), KeyPrinters.glue())
             }
             if (command) {
-                append(keyPrinter.command(), keyPrinter.glue())
+                append(KeyPrinters.command(), KeyPrinters.glue())
             }
         }
     }
 
     fun toStringWithKey(key: Int) : String {
-        val keyPrinter = KeyPrinters.printer
-        return "${toString()}${keyPrinter.glue()}${Input.Keys.toString(key)}"
+        return "${toString()}${KeyPrinters.glue()}${Input.Keys.toString(key)}"
     }
 }

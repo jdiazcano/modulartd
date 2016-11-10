@@ -77,6 +77,4 @@ class WindowsKeyPrinter : KeyPrinter {
     override fun glue() = "+"
 }
 
-object KeyPrinters {
-    val printer = if (OSUtils.mac()) MacKeyPringer() else WindowsKeyPrinter()
-}
+object KeyPrinters: KeyPrinter by if (OSUtils.mac()) MacKeyPringer() else WindowsKeyPrinter()

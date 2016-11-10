@@ -1,4 +1,4 @@
-package modulartd.config
+package com.jdiazcano.modulartd.config
 
 import org.cfg4j.provider.ConfigurationProvider
 import org.cfg4j.provider.ConfigurationProviderBuilder

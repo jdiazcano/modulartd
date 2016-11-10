@@ -9,4 +9,8 @@ abstract class AbstractPlugin : Plugin {
         println("Plugin unloaded: ${getName()}")
     }
 
+    fun registerMenu(item: String, action: Function<Nothing>): Unit {
+        
+    }
+
 }

@@ -13,4 +13,5 @@ dependencies {
     compile "com.github.czyzby:ktx-i18n:$ktxI18nVersion"
     compile "com.kotcrab.vis:vis-ui:$visUiVersion"
     compile "org.cfg4j:cfg4j-core:$cfg4jVersion"
+    compile 'com.github.salomonbrys.kodein:kodein:3.1.0'
 }

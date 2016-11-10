@@ -1,4 +1,4 @@
-package modulartd
+package com.jdiazcano.modulartd
 
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.JsonReader
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.jdiazcano.modulartd.config.Configs
+import com.jdiazcano.modulartd.config.EditorConfig
 import com.jdiazcano.modulartd.plugins.Plugin
 import com.jdiazcano.modulartd.plugins.PluginClassLoader
 import com.kotcrab.vis.ui.VisUI
@@ -16,13 +18,11 @@ import com.kotcrab.vis.ui.util.dialog.Dialogs
 import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisWindow
-import modulartd.config.Configs
-import modulartd.config.EditorConfig
 import java.util.jar.JarFile
 import java.util.jar.Manifest
 
 class ModularTD : ApplicationAdapter() {
-    private var stage: Stage? = null
+    private lateinit var stage: Stage
     private var plugins: MutableList<Plugin> = mutableListOf()
 
     private val config : EditorConfig = Configs.editor()
@@ -42,13 +42,13 @@ class ModularTD : ApplicationAdapter() {
 
         val root = VisTable()
         root.setFillParent(true)
-        stage!!.addActor(root)
+        stage.addActor(root)
 
         val textButton = VisTextButton("click me!")
         textButton.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
+            override fun changed(event: ChangeEvent, actor: Actor) {
                 textButton.setText("clicked")
-                Dialogs.showOKDialog(stage!!, "message", "good job!")
+                Dialogs.showOKDialog(stage, "message", "good job!")
             }
         })
 
@@ -69,18 +69,18 @@ class ModularTD : ApplicationAdapter() {
     }
 
     override fun resize(width: Int, height: Int) {
-        stage!!.viewport.update(width, height, true)
+        stage.viewport.update(width, height, true)
     }
 
     override fun render() {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-        stage!!.act(Math.min(Gdx.graphics.deltaTime, 1 / 30f))
-        stage!!.draw()
+        stage.act(Math.min(Gdx.graphics.deltaTime, 1 / 30f))
+        stage.draw()
     }
 
     override fun dispose() {
         VisUI.dispose()
-        stage!!.dispose()
+        stage.dispose()
     }
 }

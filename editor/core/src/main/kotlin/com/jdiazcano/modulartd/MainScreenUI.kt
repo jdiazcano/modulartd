@@ -1,4 +1,4 @@
-package modulartd
+package com.jdiazcano.modulartd
 
 import com.badlogic.gdx.Input
 import ktx.vis.menu

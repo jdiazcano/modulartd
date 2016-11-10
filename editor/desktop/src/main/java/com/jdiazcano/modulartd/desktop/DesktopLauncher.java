@@ -3,7 +3,7 @@ package com.jdiazcano.modulartd.desktop;
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import modulartd.ModularTD;
+import com.jdiazcano.modulartd.ModularTD;
 
 /** Launches the desktop (LWJGL) application. */
 public class DesktopLauncher {

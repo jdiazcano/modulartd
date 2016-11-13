@@ -3,6 +3,11 @@ package com.jdiazcano.modulartd.keys
 import com.badlogic.gdx.Input.Keys
 import com.jdiazcano.modulartd.utils.OSUtils
 
+/**
+ * Interface that defines a KeyPrinter, a KeyPrinter is meant to be like a toString for shortcuts, this will be the
+ * methods that the implementation of the shortcut will have to call in order to get the right toString on Windows and
+ * Mac
+ */
 interface KeyPrinter {
     fun alt(): String
     fun shift(): String

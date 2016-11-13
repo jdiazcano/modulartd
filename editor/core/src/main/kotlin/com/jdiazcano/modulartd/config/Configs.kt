@@ -20,6 +20,9 @@ object Configs {
             .withReloadStrategy(PeriodicalReloadStrategy(60, TimeUnit.SECONDS))
             .build()
 
+    /**
+     * Editor config, this config will be mostly GUI and tower defense specific stuff.
+     */
     fun editor() : EditorConfig = provider.bind("editor", EditorConfig::class.java)
 
     fun <T> classPath(resourceName: String, clazz: Class<T>, prefix: String = "") : T {

@@ -1,32 +1,26 @@
 package com.jdiazcano.modulartd.keys
 
-import com.badlogic.gdx.Input
-
 class Modifiers(
         val alt: Boolean = false,
         val shift: Boolean = false,
         val control: Boolean = false,
         val command: Boolean = false
-        ) {
+    ) {
 
-    override fun toString(): String {
+    fun toString(keyPrinter: KeyPrinter): String {
         return buildString {
-            if (alt) {
-                append(KeyPrinters.alt(), KeyPrinters.glue())
+            if (control) {
+                append(keyPrinter.control(), keyPrinter.glue())
             }
             if (shift) {
-                append(KeyPrinters.shift(), KeyPrinters.glue())
+                append(keyPrinter.shift(), keyPrinter.glue())
             }
-            if (control) {
-                append(KeyPrinters.control(), KeyPrinters.glue())
+            if (alt) {
+                append(keyPrinter.alt(), keyPrinter.glue())
             }
             if (command) {
-                append(KeyPrinters.command(), KeyPrinters.glue())
+                append(keyPrinter.command(), keyPrinter.glue())
             }
         }
-    }
-
-    fun toStringWithKey(key: Int) : String {
-        return "${toString()}${KeyPrinters.glue()}${Input.Keys.toString(key)}"
     }
 }

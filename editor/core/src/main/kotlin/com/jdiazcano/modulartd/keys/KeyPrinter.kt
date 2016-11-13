@@ -1,33 +1,60 @@
 package com.jdiazcano.modulartd.keys
 
+import com.badlogic.gdx.Input.Keys
 import com.jdiazcano.modulartd.utils.OSUtils
 
 interface KeyPrinter {
-    fun alt() : String
-    fun shift() : String
-    fun control() : String
-    fun command() : String
-    fun cReturn() : String
-    fun enter() : String
-    fun delete() : String
-    fun forwardDelete() : String
-    fun escape() : String
-    fun rightArrow() : String
-    fun leftArrow() : String
-    fun downArrow() : String
-    fun upArrow() : String
-    fun pageUp() : String
-    fun pageDown() : String
-    fun home() : String
-    fun end() : String
-    fun clear() : String
-    fun tab() : String
-    fun shiftTab() : String
+    fun alt(): String
+    fun shift(): String
+    fun control(): String
+    fun command(): String
+    fun cReturn(): String
+    fun enter(): String
+    fun delete(): String
+    fun forwardDelete(): String
+    fun escape(): String
+    fun rightArrow(): String
+    fun leftArrow(): String
+    fun downArrow(): String
+    fun upArrow(): String
+    fun pageUp(): String
+    fun pageDown(): String
+    fun home(): String
+    fun end(): String
+    fun clear(): String
+    fun tab(): String
+    fun shiftTab(): String
 
-    fun glue() : String
+    fun glue(): String
+
+    fun toString(key: Int): String {
+        return when(key) {
+            Keys.ALT_LEFT -> alt()
+            Keys.ALT_RIGHT -> alt()
+            Keys.SHIFT_LEFT -> shift()
+            Keys.SHIFT_RIGHT -> shift()
+            Keys.CONTROL_LEFT -> control()
+            Keys.CONTROL_RIGHT -> control()
+            Keys.BACKSPACE -> delete() // Same as Keys.DEL
+            Keys.FORWARD_DEL -> forwardDelete()
+            Keys.RIGHT -> rightArrow()
+            Keys.LEFT -> leftArrow()
+            Keys.UP -> upArrow()
+            Keys.DOWN -> downArrow()
+            Keys.CLEAR -> clear()
+            Keys.END -> end()
+            Keys.TAB -> tab()
+            Keys.HOME -> home()
+            Keys.PAGE_DOWN -> pageDown()
+            Keys.PAGE_UP -> pageUp()
+            Keys.ESCAPE -> escape()
+            else -> Keys.toString(key)
+        }
+    }
+
 }
 
-class MacKeyPringer : KeyPrinter {
+class MacKeyPrinter : KeyPrinter {
     override fun alt() = "⌥"
     override fun shift() = "⇧"
     override fun control() = "⌃"
@@ -77,4 +104,4 @@ class WindowsKeyPrinter : KeyPrinter {
     override fun glue() = "+"
 }
 
-object KeyPrinters: KeyPrinter by if (OSUtils.mac()) MacKeyPringer() else WindowsKeyPrinter()
+object KeyPrinters: KeyPrinter by if (OSUtils.mac()) MacKeyPrinter() else WindowsKeyPrinter()

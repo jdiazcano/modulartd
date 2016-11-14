@@ -13,6 +13,8 @@ import com.jdiazcano.modulartd.config.Configs
 import com.jdiazcano.modulartd.config.EditorConfig
 import com.jdiazcano.modulartd.plugins.Plugin
 import com.jdiazcano.modulartd.plugins.PluginClassLoader
+import com.jdiazcano.modulartd.utils.readUtf8
+import com.jdiazcano.modulartd.utils.toURL
 import com.kotcrab.vis.ui.VisUI
 import com.kotcrab.vis.ui.util.dialog.Dialogs
 import com.kotcrab.vis.ui.widget.VisTable
@@ -31,7 +33,7 @@ class ModularTD : ApplicationAdapter() {
         VisUI.load()
 
         val pluginsFolder = Gdx.files.internal(config.pluginsFolder())
-        JsonReader().parse(pluginsFolder.child(config.pluginsConfigFile()).readString("UTF-8")).forEach {
+        JsonReader().parse(pluginsFolder.child(config.pluginsConfigFile()).readUtf8()).forEach {
             val plugin = loadPlugin(pluginsFolder.child(it["file"].asString()))
             plugin.onLoad()
             plugins.add(plugin)
@@ -57,13 +59,13 @@ class ModularTD : ApplicationAdapter() {
         window.add(textButton).pad(10f)
         window.pack()
         window.centerWindow()
-        stage!!.addActor(window.fadeIn())
+        stage.addActor(window.fadeIn())
     }
 
     private fun loadPlugin(file: FileHandle) : Plugin {
-        var pluginJar = JarFile(file.file())
-        var mainClass = Manifest(pluginJar.getInputStream(pluginJar.getJarEntry("META-INF/MANIFEST.MF"))).mainAttributes.getValue("Main-Class")
-        val loader = PluginClassLoader(arrayOf(file.file().toURI().toURL()))
+        val pluginJar = JarFile(file.file())
+        val mainClass = Manifest(pluginJar.getInputStream(pluginJar.getJarEntry("META-INF/MANIFEST.MF"))).mainAttributes.getValue("Main-Class")
+        val loader = PluginClassLoader(arrayOf(file.toURL()))
         val pluginClass = loader.loadPlugin(mainClass)
         return pluginClass.newInstance()
     }

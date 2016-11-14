@@ -1,6 +1,13 @@
 {
   "editor": {
     "pluginsFolder": "plugins",
-    "pluginsConfigFile": "plugins.json"
+    "pluginsConfigFile": "plugins.json",
+    "defaultGridWidth": 20,
+    "defaultGridHeight": 20,
+    "defaultTileWidth": 10,
+    "defaultTileHeight": 10,
+    "timeBetweenLevels": 50,
+    "interestRatio": 50,
+    "turretSellProfit": 50
   }
 }

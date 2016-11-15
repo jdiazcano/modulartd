@@ -44,26 +44,3 @@ object Configs {
     }
 }
 
-interface EditorConfig {
-    /**
-     * Folder that will contain all the plugins
-     */
-    fun pluginsFolder() : String
-
-    /**
-     * Filename that will contain the plugin files that will be loaded
-     */
-    fun pluginsConfigFile() : String
-
-    fun defaultGridWidth(): Int
-    fun defaultGridHeight(): Int
-    fun defaultTileWidth(): Int
-    fun defaultTileHeight(): Int
-
-    fun timeBetweenLevels(): Float
-
-    fun interestRatio(): Float
-
-    fun turretSellProfit(): Float
-
-}

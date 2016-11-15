@@ -13,10 +13,10 @@ class Map(
         var author: String = "",
         var authorNotes: String = "",
 
-        var gridWidth: Int = Configs.editor().defaultGridWidth(),
-        var gridHeight: Int = Configs.editor().defaultGridHeight(),
-        var tileWidth: Int = Configs.editor().defaultTileWidth(),
-        var tileHeight: Int = Configs.editor().defaultTileHeight(),
+        var gridWidth: Int = Configs.editor().gridWidth(),
+        var gridHeight: Int = Configs.editor().gridHeight(),
+        var tileWidth: Int = Configs.editor().tileWidth(),
+        var tileHeight: Int = Configs.editor().tileHeight(),
 
         var timeBetweenLevels: Float = Configs.editor().timeBetweenLevels(),
         var interestRatio: Float = Configs.editor().interestRatio(),

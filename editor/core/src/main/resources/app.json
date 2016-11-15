@@ -8,6 +8,8 @@
     "defaultTileHeight": 10,
     "timeBetweenLevels": 50,
     "interestRatio": 50,
-    "turretSellProfit": 50
+    "turretSellProfit": 50,
+    "maxGridWidth": 40,
+    "maxGridHeight": 40
   }
 }

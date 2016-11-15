@@ -10,6 +10,8 @@
     "interestRatio": 50,
     "turretSellProfit": 50,
     "maxGridWidth": 40,
-    "maxGridHeight": 40
+    "maxGridHeight": 40,
+    "unitCount": 50,
+    "circularRegions": false
   }
 }

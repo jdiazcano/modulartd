@@ -60,4 +60,9 @@ interface EditorConfig {
      * An used turret means that it has shot at least once
      */
     fun turretSellProfit(): Float
+
+    /**
+     * Number of units needed for triggering the end condition
+     */
+    fun unitCount(): Int
 }

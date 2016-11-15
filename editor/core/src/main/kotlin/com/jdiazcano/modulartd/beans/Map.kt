@@ -24,6 +24,17 @@ class Map(
         // TODO Need a way to do this better in order to be able to script the end of the game, maybe the player will
         // TODO want to end the game if there are more than N units of one kind, not all of them or something like that!
         // var loseCondition: LoseCondition = Configs.editor().loseCondition()
+
+        // TODO same as above!
+        // var endAction: EndAction = Configs.editor().endAction()
+        var unitCount: Int = Configs.editor().unitCount(),
+
         override var script: String = ""): Scriptable {
+
+    var layers: Array<Layer> = arrayOf()
+    var turrets: Array<Turret> = arrayOf()
+    var units: Array<Unit> = arrayOf()
+    var waves: Array<Wave> = arrayOf()
+    var tiles: Array<Tile> = arrayOf()
 
 }

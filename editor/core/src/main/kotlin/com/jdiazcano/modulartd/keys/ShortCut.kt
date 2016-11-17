@@ -7,7 +7,3 @@ class ShortCut(val key: Int = -1,  val modifiers: Modifiers = Modifiers()) {
     }
 
 }
-
-fun main(args: Array<String>) {
-    ShortCut().key
-}

@@ -1,7 +1,7 @@
 package com.jdiazcano.modulartd.beans
 
 /**
- * Created by javierdiaz on 16/11/2016.
+ * This is what the map is composed of. A wave is each round of units that will gradually spawn.
  */
 class Wave {
 }

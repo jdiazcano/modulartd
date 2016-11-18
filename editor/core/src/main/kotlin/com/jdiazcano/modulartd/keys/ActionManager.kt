@@ -17,6 +17,13 @@ object ActionManager {
         actions.put(action.name, action)
         listeners.forEach { it.process(action, actions[action.parentName]) }
     }
+
+    /**
+     * Adds a listener that will be called once a new action is registered
+     */
+    fun addListener(listener: RegisteredActionListener) {
+        listeners.add(listener)
+    }
 }
 
 /**

@@ -1,5 +1,8 @@
 [
   {
     "file": "ExitPlugin1.0.jar"
+  },
+  {
+    "file": "PluginTest.jar"
   }
 ]

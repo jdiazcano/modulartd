@@ -4,4 +4,5 @@ include 'editor:core'
 include 'editor:lwjgl3'
 include 'editor:desktop'
 include 'plugin'
-
+include 'plugintest'
+include 'common'

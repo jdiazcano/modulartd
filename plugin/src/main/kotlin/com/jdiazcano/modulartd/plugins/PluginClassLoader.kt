@@ -37,9 +37,9 @@ class PluginClassLoader(urls: Array<out URL>?) : URLClassLoader(urls) {
         }
     }
 
-    private fun  assertParametersMatch(pluginClass: Class<Plugin>, methodImpl: Method, method: Method) {
-        var interfaceParameters = method.parameterTypes
-        var implParameters = methodImpl.parameterTypes
+    private fun assertParametersMatch(pluginClass: Class<Plugin>, methodImpl: Method, method: Method) {
+        val interfaceParameters = method.parameterTypes
+        val implParameters = methodImpl.parameterTypes
 
         if (interfaceParameters.size != implParameters.size) {
             throw InvalidPluginVersionException("Plugin error: ${pluginClass.name}. Not enough parameters, expected $interfaceParameters and found $implParameters on method ${method.name}")

@@ -1,6 +1,8 @@
-package com.jdiazcano.modulartd.keys
+package com.jdiazcano.modulartd
 
-object ActionManager {
+import com.jdiazcano.modulartd.plugins.actions.Action
+
+internal object ActionManager {
     private var actions: MutableMap<String, Action> = mutableMapOf()
     private var listeners: MutableList<RegisteredActionListener> = mutableListOf()
 
@@ -21,9 +23,9 @@ object ActionManager {
     /**
      * Adds a listener that will be called once a new action is registered
      */
-    fun addListener(listener: RegisteredActionListener) {
-        listeners.add(listener)
-    }
+    fun addListener(listener: RegisteredActionListener) = listeners.add(listener)
+
+    fun findParent(action: Action) : Action? = actions[action.parentName]
 }
 
 /**

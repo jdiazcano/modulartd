@@ -109,4 +109,27 @@ class WindowsKeyPrinter : KeyPrinter {
     override fun glue() = "+"
 }
 
-object KeyPrinters: KeyPrinter by if (OSUtils.mac()) MacKeyPrinter() else WindowsKeyPrinter()
+object KeyPrinters {
+    val keyPrinter = if (OSUtils.mac()) MacKeyPrinter() else WindowsKeyPrinter()
+
+    fun print(modifiers: Modifiers): String {
+        return buildString {
+            if (modifiers.control) {
+                append(keyPrinter.control(), keyPrinter.glue())
+            }
+            if (modifiers.shift) {
+                append(keyPrinter.shift(), keyPrinter.glue())
+            }
+            if (modifiers.alt) {
+                append(keyPrinter.alt(), keyPrinter.glue())
+            }
+            if (modifiers.command) {
+                append(keyPrinter.command(), keyPrinter.glue())
+            }
+        }
+    }
+
+    fun print(shortCut: ShortCut): String {
+        return "${print(shortCut.modifiers)}${keyPrinter.toString(shortCut.key)}"
+    }
+}

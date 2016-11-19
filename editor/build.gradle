@@ -23,14 +23,30 @@ configure(subprojects) {
 }
 
 subprojects {
-  version = '0.0.1-SNAPSHOT'
-  ext.appName = 'ModularTD'
-  repositories {
-    mavenLocal()
-    mavenCentral()
-    jcenter()
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
-  }
+    version = '0.0.1-SNAPSHOT'
+    ext.appName = 'ModularTD'
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    }
+
+    buildscript {
+        repositories {
+            mavenCentral()
+        }
+
+        dependencies {
+            classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.0'
+        }
+    }
+
+    apply plugin: 'cobertura'
+    apply plugin: 'com.github.kt3k.coveralls'
+
+    cobertura.coverageSourceDirs = sourceSets.main.java.srcDirs
+    cobertura.coverageFormats = ['html', 'xml']
 }
 
 // Clearing Eclipse project data in root folder:

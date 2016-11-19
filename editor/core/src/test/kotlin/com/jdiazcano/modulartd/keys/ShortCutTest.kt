@@ -22,7 +22,7 @@ class ShortCutTest : StringSpec() {
 
             )
             forAll(shortCuts) { shortcut, result ->
-                shortcut.toString(printer) shouldEqual result
+                printer.print(shortcut) shouldEqual result
             }
         }
 
@@ -39,7 +39,7 @@ class ShortCutTest : StringSpec() {
 
             )
             forAll(shortCuts) { shortcut, result ->
-                shortcut.toString(printer) shouldEqual result
+                printer.print(shortcut) shouldEqual result
             }
         }
     }

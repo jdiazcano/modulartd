@@ -1,6 +1,12 @@
-languaje: java
+languaje: kotlin
 jdk: oraclejdk8
 sudo: false
+
+notifications:
+  email:
+    on_success: never
+    on_failure: change
+
 script: ./gradlew install
 
 #Caches
@@ -13,4 +19,4 @@ cache:
     - $HOME/.gradle/wrapper/
 
 after_success:
-  - coveralls
+  - ./gradlew cobertura coveralls

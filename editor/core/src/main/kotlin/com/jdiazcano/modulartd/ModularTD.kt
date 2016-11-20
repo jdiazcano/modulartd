@@ -21,13 +21,11 @@ class ModularTD : ApplicationAdapter() {
     override fun create() {
         VisUI.load()
 
-        pluginLoader listen { plugin ->
-            println("This plugin has been loaded: ${plugin.getName()}!!")
-        }
-        pluginLoader.loadPlugins()
-
         stage = Stage(ScreenViewport())
         Gdx.input.inputProcessor = stage
+
+        pluginLoader.listen { plugin -> println("This plugin has been loaded: ${plugin.getName()}!!") }
+        pluginLoader.loadPlugins()
 
         val root = VisTable()
         root.setFillParent(true)

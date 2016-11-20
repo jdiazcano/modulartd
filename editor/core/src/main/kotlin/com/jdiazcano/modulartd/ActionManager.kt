@@ -1,10 +1,14 @@
 package com.jdiazcano.modulartd
 
 import com.jdiazcano.modulartd.plugins.actions.Action
+import mu.KLoggable
+import mu.KLogger
 
-internal object ActionManager {
-    private var actions: MutableMap<String, Action> = mutableMapOf()
-    private var listeners: MutableList<RegisteredActionListener> = mutableListOf()
+internal object ActionManager : KLoggable {
+    override val logger: KLogger = logger()
+
+    private val actions: MutableMap<String, Action> = mutableMapOf()
+    private val listeners: MutableList<RegisteredActionListener> = mutableListOf()
 
     /**
      * Registers an action and sends it to the listeners.
@@ -18,6 +22,7 @@ internal object ActionManager {
 
         actions.put(action.name, action)
         listeners.forEach { it.process(action, actions[action.parentName]) }
+        logger.debug { "Action '${action.name}' added and called ${listeners.size} listener(s)" }
     }
 
     /**

@@ -10,6 +10,7 @@ import com.jdiazcano.modulartd.plugins.actions.Action
 import com.jdiazcano.modulartd.plugins.actions.RegisterAction
 import com.jdiazcano.modulartd.utils.readUtf8
 import com.jdiazcano.modulartd.utils.toURL
+import mu.KLogging
 import java.util.jar.JarFile
 import java.util.jar.Manifest
 
@@ -17,15 +18,20 @@ import java.util.jar.Manifest
  * Created by javierdiaz on 19/11/2016.
  */
 class PluginLoader {
+    companion object: KLogging()
+
     private val plugins: MutableList<Plugin> = mutableListOf()
     private val listeners: MutableList<(Plugin) -> Unit> = mutableListOf()
 
     private val config : EditorConfig = Configs.editor()
 
     fun loadPlugins() {
+        logger.debug { "Using plugins folder: ${config.pluginsFolder()} and file: ${config.pluginsConfigFile()}" }
         val pluginsFolder = Gdx.files.internal(config.pluginsFolder())
         JsonReader().parse(pluginsFolder.child(config.pluginsConfigFile()).readUtf8()).forEach {
-            val plugin = loadPlugin(pluginsFolder.child(it["file"].asString()))
+            val pluginFileName = it["file"].asString()
+            logger.debug { "Loading plugin: $pluginFileName" }
+            val plugin = loadPlugin(pluginsFolder.child(pluginFileName))
             plugin.javaClass.declaredMethods.forEach { method ->
                 if (method.isAnnotationPresent(RegisterAction::class.java)) {
                     ActionManager.registerAction(method.invoke(plugin) as Action)
@@ -33,6 +39,7 @@ class PluginLoader {
             }
             plugin.onLoad()
             registerPlugin(plugin)
+            logger.debug { "Plugin loaded: $pluginFileName" }
         }
     }
 
@@ -41,7 +48,7 @@ class PluginLoader {
         listeners.forEach { it.invoke(plugin) }
     }
 
-    infix fun listen(listener: (Plugin) -> Unit) = listeners.add(listener)
+    fun listen(listener: (Plugin) -> Unit) = listeners.add(listener)
 
     fun loadPlugin(file: FileHandle) : Plugin {
         val pluginJar = JarFile(file.file())

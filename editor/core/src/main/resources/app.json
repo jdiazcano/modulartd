@@ -12,6 +12,7 @@
     "maxGridWidth": 40,
     "maxGridHeight": 40,
     "unitCount": 50,
-    "circularRegions": false
+    "circularRegions": false,
+    "preferencesKey": "com.jdiazcano.modulartd"
   }
 }

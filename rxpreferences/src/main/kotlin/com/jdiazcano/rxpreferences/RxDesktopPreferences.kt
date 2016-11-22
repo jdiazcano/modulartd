@@ -5,7 +5,7 @@ import rx.subscriptions.Subscriptions
 import java.util.prefs.PreferenceChangeListener
 import java.util.prefs.Preferences
 
-class RxGdxPreferences(
+class RxDesktopPreferences(
         val preferences: Preferences
 ) {
     companion object {
@@ -22,6 +22,7 @@ class RxGdxPreferences(
             val listener = PreferenceChangeListener { evt ->
                 if (evt != null) {
                     subscriber.onNext(evt.key)
+                    println(evt.key)
                 }
             }
 

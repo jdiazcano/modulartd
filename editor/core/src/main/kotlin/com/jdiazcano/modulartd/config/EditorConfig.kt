@@ -65,4 +65,6 @@ interface EditorConfig {
      * Number of units needed for triggering the end condition
      */
     fun unitCount(): Int
+
+    fun preferencesKey(): String
 }

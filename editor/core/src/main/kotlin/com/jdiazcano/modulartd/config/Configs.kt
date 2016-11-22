@@ -1,5 +1,6 @@
 package com.jdiazcano.modulartd.config
 
+import com.jdiazcano.rxpreferences.RxDesktopPreferences
 import org.cfg4j.provider.ConfigurationProvider
 import org.cfg4j.provider.ConfigurationProviderBuilder
 import org.cfg4j.source.classpath.ClasspathConfigurationSource
@@ -10,6 +11,7 @@ import org.cfg4j.source.files.FilesConfigurationSource
 import org.cfg4j.source.reload.strategy.PeriodicalReloadStrategy
 import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
+import java.util.prefs.Preferences
 
 object Configs {
     private val classPathSource = ClasspathConfigurationSource(ConfigFilesProvider { arrayListOf(Paths.get("app.json")) })
@@ -20,10 +22,13 @@ object Configs {
             .withReloadStrategy(PeriodicalReloadStrategy(60, TimeUnit.SECONDS))
             .build()
 
+    private val preferences = RxDesktopPreferences(Preferences.userRoot().node(editor().preferencesKey()))
+
     /**
      * Editor config, this config will be mostly GUI and tower defense specific stuff.
      */
-    fun editor() : EditorConfig = provider.bind("editor", EditorConfig::class.java)
+    fun editor(): EditorConfig = provider.bind("editor", EditorConfig::class.java)
+    fun preferences() = preferences
 
     fun <T> classPath(resourceName: String, clazz: Class<T>, prefix: String = "") : T {
         val source = ClasspathConfigurationSource(ConfigFilesProvider { arrayListOf(Paths.get(resourceName)) })
@@ -34,7 +39,7 @@ object Configs {
         return provider.bind(prefix, clazz)
     }
 
-    fun <T> file(fileName: String, clazz: Class<T>, prefix: String = "") : T {
+    fun <T> file(fileName: String, clazz: Class<T>, prefix: String = ""): T {
         val source = FilesConfigurationSource(ConfigFilesProvider { arrayListOf(Paths.get(fileName)) })
         val provider: ConfigurationProvider = ConfigurationProviderBuilder()
                 .withConfigurationSource(source)

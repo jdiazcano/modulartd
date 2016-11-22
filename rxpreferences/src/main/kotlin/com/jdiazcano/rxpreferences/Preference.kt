@@ -9,7 +9,7 @@ class Preference<T>(
         val defaultValue: T,
         val adapter: Adapter<T>,
         keyChanges: Observable<String>
-        ) {
+) {
 
     interface Adapter<T> {
         fun get(key: String, preferences: Preferences): T
@@ -28,7 +28,7 @@ class Preference<T>(
     }
 
     fun get(): T {
-        if (preferences.get(key, null) != null) {
+        if (preferences.get(key, null) == null) {
             return defaultValue
         } else {
             return adapter.get(key, preferences)
@@ -47,5 +47,7 @@ class Preference<T>(
     fun delete() = set(null)
 
     fun isSet() = preferences.get(key, null) != null
+
+    fun asObservable() = values
 
 }

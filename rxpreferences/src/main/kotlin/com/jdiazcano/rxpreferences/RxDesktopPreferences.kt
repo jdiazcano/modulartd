@@ -5,9 +5,7 @@ import rx.subscriptions.Subscriptions
 import java.util.prefs.PreferenceChangeListener
 import java.util.prefs.Preferences
 
-class RxDesktopPreferences(
-        val preferences: Preferences
-) {
+class RxDesktopPreferences(val preferences: Preferences) {
     companion object {
         val DEFAULT_FLOAT = 0f
         val DEFAULT_INTEGER = 0
@@ -22,7 +20,6 @@ class RxDesktopPreferences(
             val listener = PreferenceChangeListener { evt ->
                 if (evt != null) {
                     subscriber.onNext(evt.key)
-                    println(evt.key)
                 }
             }
 
@@ -32,6 +29,10 @@ class RxDesktopPreferences(
                 preferences.removePreferenceChangeListener(listener)
             })
         }).share()
+    }
+
+    fun <T> get(key: String, default: T, adapter: Preference.Adapter<T>): Preference<T> {
+        return Preference(preferences, key, default, adapter, keyChanges)
     }
 
     fun getBoolean(key: String, default: Boolean = DEFAULT_BOOLEAN): Preference<Boolean> {
@@ -52,6 +53,10 @@ class RxDesktopPreferences(
 
     fun getString(key: String, default: String = ""): Preference<String> {
         return Preference(preferences, key, default, StringAdapter, keyChanges)
+    }
+
+    fun <T : Enum<T>> getEnum(key: String, clazz: Class<T>, default: T): Preference<T> {
+        return Preference(preferences, key, default, EnumAdapter(clazz), keyChanges)
     }
 
 }

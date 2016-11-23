@@ -1,6 +1,7 @@
 package com.jdiazcano.rxpreferences
 
 import java.util.prefs.Preferences
+import kotlin.reflect.KClass
 
 object BooleanAdapter : Preference.Adapter<Boolean> {
     override fun get(key: String, preferences: Preferences): Boolean {
@@ -50,4 +51,17 @@ object StringAdapter : Preference.Adapter<String> {
     override fun set(key: String, value: String, preferences: Preferences) {
         preferences.put(key, value)
     }
+}
+
+class EnumAdapter<T : Enum<T>>(val enumClass: Class<T>) : Preference.Adapter<T> {
+
+    override fun get(key: String, preferences: Preferences): T {
+        val value = preferences.get(key, null)
+        return java.lang.Enum.valueOf(enumClass, value)
+    }
+
+    override fun set(key: String, value: T, preferences: Preferences) {
+        preferences.put(key, value.name)
+    }
+
 }

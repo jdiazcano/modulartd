@@ -9,6 +9,8 @@ import com.jdiazcano.modulartd.keys.ShortCut
  * An action can have a parent action that is linked by a name (that name must be unique) so the menus will be able to
  * have submenus and sub-submenus and the whole hierarchy.
  */
-abstract class Action(val name: String, val description: String, val shortCut: ShortCut, val parentName: String = "") {
-    abstract fun perform(): Unit
+abstract class Action(val name: String, val description: String, val shortCut: ShortCut, val parentName: String = ""): Actioned
+
+interface Actioned {
+    fun perform(): Unit
 }

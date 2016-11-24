@@ -30,7 +30,7 @@ internal object ActionManager : KLoggable {
      */
     fun addListener(listener: RegisteredActionListener) = listeners.add(listener)
 
-    fun findParent(action: Action) : Action? = actions[action.parentName]
+    fun findAction(actionName: String) : Action? = actions[actionName]
 }
 
 /**

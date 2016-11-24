@@ -17,7 +17,11 @@ class MainMenu() : MenuBar() {
     )
     init {
         menus.forEach { addMenu(it) }
-        ActionManager.addListener(ListenerAsqueroso(this))
+        ActionManager.addListener(object : RegisteredActionListener {
+            override fun process(action: Action, parentAction: Action?) {
+                createMenu(action)
+            }
+        })
     }
 
     fun createMenu(action: Action) {
@@ -41,12 +45,4 @@ class MainMenu() : MenuBar() {
     }
 
     fun findMenuForAction(action: Action) = menuItems[action]
-}
-
-class ListenerAsqueroso(val menu: MainMenu) : RegisteredActionListener {
-
-    override fun process(action: Action, parentAction: Action?) {
-        menu.createMenu(action)
-    }
-
 }

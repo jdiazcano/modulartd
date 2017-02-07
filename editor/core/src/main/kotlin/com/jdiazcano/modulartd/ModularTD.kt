@@ -9,13 +9,20 @@ import com.jdiazcano.modulartd.plugins.PluginLoader
 import com.jdiazcano.modulartd.ui.MainMenu
 import com.kotcrab.vis.ui.VisUI
 import com.kotcrab.vis.ui.widget.VisTable
+import mu.KLogging
+import org.apache.log4j.PropertyConfigurator
+import org.apache.log4j.xml.DOMConfigurator
+import java.io.File
 
 class ModularTD : ApplicationAdapter() {
+    companion object: KLogging()
+
     private lateinit var stage: Stage
     private val pluginLoader = PluginLoader()
     private lateinit var menu: MainMenu
 
     override fun create() {
+        PropertyConfigurator.configure(Gdx.files.internal("log4j.properties").file().toURI().toURL())
         VisUI.load()
 
         menu = MainMenu()
@@ -23,7 +30,7 @@ class ModularTD : ApplicationAdapter() {
         stage = Stage(ScreenViewport())
         Gdx.input.inputProcessor = stage
 
-        pluginLoader.listen { plugin -> println("This plugin has been loaded: ${plugin.getName()}!!") }
+        pluginLoader.listen { plugin -> logger.debug { "This plugin has been loaded: ${plugin.getName()}!!" } }
         pluginLoader.loadPlugins()
 
         val root = VisTable()

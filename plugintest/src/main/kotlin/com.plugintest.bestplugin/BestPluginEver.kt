@@ -2,6 +2,7 @@ package com.plugintest.bestplugin
 
 import com.jdiazcano.modulartd.plugins.AbstractPlugin
 import com.jdiazcano.modulartd.plugins.actions.Action
+import com.jdiazcano.modulartd.plugins.actions.Menus
 import com.jdiazcano.modulartd.plugins.actions.RegisterAction
 
 class BestPluginEver : AbstractPlugin() {
@@ -19,8 +20,10 @@ class BestPluginEver : AbstractPlugin() {
         println("LUL KEK")
     }
 
-    @RegisterAction
-    fun test(): Action {
-        return BestAction()
-    }
+    @RegisterAction(Menus.FILE)
+    fun test() = BestAction()
+
+    @RegisterAction("best")
+    fun secondTest() = AnotherBestAction()
+
 }

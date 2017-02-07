@@ -34,7 +34,8 @@ class PluginLoader {
             val plugin = loadPlugin(pluginsFolder.child(pluginFileName))
             plugin.javaClass.declaredMethods.forEach { method ->
                 if (method.isAnnotationPresent(RegisterAction::class.java)) {
-                    ActionManager.registerAction(method.invoke(plugin) as Action)
+                    val parentId = method.getAnnotation(RegisterAction::class.java).id
+                    ActionManager.registerAction(method.invoke(plugin) as Action, parentId)
                 }
             }
             plugin.onLoad()

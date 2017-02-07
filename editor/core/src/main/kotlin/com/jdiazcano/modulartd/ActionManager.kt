@@ -15,13 +15,13 @@ internal object ActionManager : KLoggable {
      *
      * @throws IllegalArgumentException If the action name is already registered
      */
-    fun registerAction(action: Action) {
+    fun registerAction(action: Action, parentId: String) {
         if (actions[action.name] != null) {
-            throw IllegalArgumentException("Action ${action.name} already registered")
+            throw IllegalArgumentException("Action '${action.name}' already registered")
         }
 
         actions.put(action.name, action)
-        listeners.forEach { it.process(action, actions[action.parentName]) }
+        listeners.forEach { it.process(action, parentId) }
         logger.debug { "Action '${action.name}' added and called ${listeners.size} listener(s)" }
     }
 
@@ -42,5 +42,5 @@ interface RegisteredActionListener {
      * @param parentAction The parent action of the action being registered and this might be null. Remember that you
      *                     always have to register the parent actions before registering their children.
      */
-    fun process(action: Action, parentAction: Action?)
+    fun process(action: Action, parentId: String)
 }

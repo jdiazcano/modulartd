@@ -4,6 +4,7 @@ version '0.1-SNAPSHOT'
 buildscript {
     repositories {
         mavenCentral()
+        maven { url "http://dl.bintray.com/kotlin/kotlin-eap-1.1" }
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
@@ -14,6 +15,7 @@ apply plugin: 'kotlin'
 
 repositories {
     mavenCentral()
+    maven { url "http://dl.bintray.com/kotlin/kotlin-eap-1.1" }
 }
 
 dependencies {

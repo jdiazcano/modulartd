@@ -13,7 +13,8 @@ dependencies {
     compile "com.github.czyzby:ktx-inject:$ktxInjectVersion"
     compile "com.github.czyzby:ktx-i18n:$ktxI18nVersion"
     compile "com.kotcrab.vis:vis-ui:$visUiVersion"
-    compile "org.cfg4j:cfg4j-core:$cfg4jVersion"
+    compile "com.github.jdiazcano.cfg4k:cfg4k-core:$cfg4kVersion"
+    compile "com.github.jdiazcano.cfg4k:cfg4k-hocon:$cfg4kVersion"
     compile "io.github.microutils:kotlin-logging:1.4"
     compile "org.slf4j:slf4j-log4j12:1.7.21"
     compile 'io.reactivex:rxkotlin:0.60.0'

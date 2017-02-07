@@ -4,37 +4,40 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.jdiazcano.modulartd.ActionManager
 import com.jdiazcano.modulartd.RegisteredActionListener
 import com.jdiazcano.modulartd.plugins.actions.Action
+import com.jdiazcano.modulartd.plugins.actions.Menus
 import com.kotcrab.vis.ui.widget.Menu
 import com.kotcrab.vis.ui.widget.MenuBar
 import com.kotcrab.vis.ui.widget.PopupMenu
 
-class MainMenu() : MenuBar() {
+class MainMenu : MenuBar() {
     private val menuItems: MutableMap<Action, ActionedMenuItem> = mutableMapOf()
-    private val menus = arrayOf(
-            Menu("File"),
-            Menu("Edit"),
-            Menu("Help")
+    private val menus = mapOf(
+            Menus.FILE to Menu("File"),
+            Menus.EDIT to Menu("Edit"),
+            Menus.GAME to Menu("Game"),
+            Menus.HELP to Menu("Help")
     )
     init {
-        menus.forEach { addMenu(it) }
+        menus.forEach { addMenu(it.value) }
         ActionManager.addListener(object : RegisteredActionListener {
-            override fun process(action: Action, parentAction: Action?) {
-                createMenu(action)
+            override fun process(action: Action, parentId: String) {
+                createMenu(action, parentId)
             }
         })
     }
 
-    fun createMenu(action: Action) {
-        if (action.parentName.startsWith("MM")) {
-            val menu = menus[action.parentName.substring(2).toInt()]
+    fun createMenu(action: Action, parentId: String) {
+        if (parentId in menus) {
+            val menu = menus[parentId]!!
             val item = ActionedMenuItem(Image(), action)
             menu.addItem(item)
+            menuItems[action] = item
         } else {
-            val parentAction = ActionManager.findAction(action.parentName)
+            val parentAction = ActionManager.findAction(parentId)
             if (parentAction != null) {
                 val parentMenu = findMenuForAction(parentAction)!!
                 if (parentMenu.subMenu == null) {
-                    parentMenu.subMenu = PopupMenu(parentAction.description)
+                    parentMenu.subMenu = PopupMenu()
                 }
 
                 val item = ActionedMenuItem(Image(), action)

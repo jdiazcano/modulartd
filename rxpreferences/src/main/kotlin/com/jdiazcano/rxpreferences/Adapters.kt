@@ -1,7 +1,6 @@
 package com.jdiazcano.rxpreferences
 
 import java.util.prefs.Preferences
-import kotlin.reflect.KClass
 
 object BooleanAdapter : Preference.Adapter<Boolean> {
     override fun get(key: String, preferences: Preferences): Boolean {

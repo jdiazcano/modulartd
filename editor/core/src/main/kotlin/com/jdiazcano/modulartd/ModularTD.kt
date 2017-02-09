@@ -5,6 +5,9 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.jdiazcano.modulartd.bus.Bus
+import com.jdiazcano.modulartd.bus.BusTopic
+import com.jdiazcano.modulartd.plugins.Plugin
 import com.jdiazcano.modulartd.plugins.PluginLoader
 import com.jdiazcano.modulartd.ui.MainMenu
 import com.kotcrab.vis.ui.VisUI
@@ -30,7 +33,6 @@ class ModularTD : ApplicationAdapter() {
         stage = Stage(ScreenViewport())
         Gdx.input.inputProcessor = stage
 
-        pluginLoader.listen { plugin -> logger.debug { "This plugin has been loaded: ${plugin.getName()}!!" } }
         pluginLoader.loadPlugins()
 
         val root = VisTable()

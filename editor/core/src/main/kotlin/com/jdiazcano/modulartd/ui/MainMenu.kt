@@ -2,7 +2,9 @@ package com.jdiazcano.modulartd.ui
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.jdiazcano.modulartd.ActionManager
-import com.jdiazcano.modulartd.RegisteredActionListener
+import com.jdiazcano.modulartd.ParentedAction
+import com.jdiazcano.modulartd.bus.Bus
+import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.plugins.actions.Action
 import com.jdiazcano.modulartd.plugins.actions.Menus
 import com.kotcrab.vis.ui.widget.Menu
@@ -13,20 +15,18 @@ class MainMenu : MenuBar() {
     private val menuItems: MutableMap<Action, ActionedMenuItem> = mutableMapOf()
     private val menus = mapOf(
             Menus.FILE to Menu("File"),
+            Menus.VIEW to Menu("View"),
             Menus.EDIT to Menu("Edit"),
             Menus.GAME to Menu("Game"),
             Menus.HELP to Menu("Help")
     )
     init {
         menus.forEach { addMenu(it.value) }
-        ActionManager.addListener(object : RegisteredActionListener {
-            override fun process(action: Action, parentId: String) {
-                createMenu(action, parentId)
-            }
-        })
+        Bus.register(ParentedAction::class.java, BusTopic.CREATED) { createMenu(it) }
     }
 
-    fun createMenu(action: Action, parentId: String) {
+    fun createMenu(parentedAction: ParentedAction) {
+        val (action, parentId) = parentedAction
         if (parentId in menus) {
             val menu = menus[parentId]!!
             val item = ActionedMenuItem(Image(), action)

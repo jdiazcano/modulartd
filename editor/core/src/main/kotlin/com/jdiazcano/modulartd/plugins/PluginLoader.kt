@@ -4,9 +4,13 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.JsonReader
 import com.jdiazcano.modulartd.ActionManager
+import com.jdiazcano.modulartd.ModularTD
+import com.jdiazcano.modulartd.bus.Bus
+import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.config.Configs
 import com.jdiazcano.modulartd.config.EditorConfig
 import com.jdiazcano.modulartd.plugins.actions.Action
+import com.jdiazcano.modulartd.plugins.actions.Preferences
 import com.jdiazcano.modulartd.plugins.actions.RegisterAction
 import com.jdiazcano.modulartd.utils.readUtf8
 import com.jdiazcano.modulartd.utils.toURL
@@ -15,7 +19,7 @@ import java.util.jar.JarFile
 import java.util.jar.Manifest
 
 /**
- * Created by javierdiaz on 19/11/2016.
+ *
  */
 class PluginLoader {
     companion object: KLogging()
@@ -24,6 +28,12 @@ class PluginLoader {
     private val listeners: MutableList<(Plugin) -> Unit> = mutableListOf()
 
     private val config : EditorConfig = Configs.editor()
+
+    init {
+        Bus.register(Plugin::class.java, BusTopic.PLUGIN_REGISTERED) {
+            plugin -> ModularTD.logger.debug { "This plugin has been loaded: ${plugin.getName()}!!" }
+        }
+    }
 
     fun loadPlugins() {
         logger.debug { "Using plugins folder: ${config.pluginsFolder()} and file: ${config.pluginsConfigFile()}" }
@@ -36,6 +46,8 @@ class PluginLoader {
                 if (method.isAnnotationPresent(RegisterAction::class.java)) {
                     val parentId = method.getAnnotation(RegisterAction::class.java).id
                     ActionManager.registerAction(method.invoke(plugin) as Action, parentId)
+                } else if (method.isAnnotationPresent(Preferences::class.java)) {
+
                 }
             }
             plugin.onLoad()
@@ -46,7 +58,7 @@ class PluginLoader {
 
     private fun registerPlugin(plugin: Plugin) {
         plugins.add(plugin)
-        listeners.forEach { it.invoke(plugin) }
+        Bus.post(plugin, BusTopic.PLUGIN_REGISTERED)
     }
 
     fun listen(listener: (Plugin) -> Unit) = listeners.add(listener)

@@ -19,12 +19,12 @@ repositories {
 }
 
 dependencies {
-    compile project(":common")
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-    compile "com.kotcrab.vis:vis-ui:$visUiVersion"
-    compile "com.github.czyzby:ktx-style:$ktxStyleVersion"
-    compile "com.github.czyzby:ktx-vis-style:$ktxVisStyleVersion"
-    compile "com.github.czyzby:ktx-vis:$ktxVisVersion"
+    compileOnly project(":common")
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    compileOnly "com.kotcrab.vis:vis-ui:$visUiVersion"
+    compileOnly "com.github.czyzby:ktx-style:$ktxStyleVersion"
+    compileOnly "com.github.czyzby:ktx-vis-style:$ktxVisStyleVersion"
+    compileOnly "com.github.czyzby:ktx-vis:$ktxVisVersion"
 }
 
 task fatJar(type: Jar) {

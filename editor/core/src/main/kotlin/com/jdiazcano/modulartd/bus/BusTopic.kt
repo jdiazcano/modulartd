@@ -31,5 +31,8 @@ enum class BusTopic {
      * When a plugin is registered this topic will be updated with a ParentedAction
      */
     PLUGIN_REGISTERED,
-
+    /**
+     *
+     */
+    PREFERENCES_REGISTERED,
 }

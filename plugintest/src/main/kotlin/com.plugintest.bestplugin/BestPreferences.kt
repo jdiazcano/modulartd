@@ -11,6 +11,7 @@ class BestPreferences : PreferencesTable() {
     init {
         add(
             table {
+                setFillParent(true)
                 button {
                     name = "Best button"
                     addListener {

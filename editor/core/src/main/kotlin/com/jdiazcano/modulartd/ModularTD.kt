@@ -33,7 +33,8 @@ class ModularTD : ApplicationAdapter() {
         stage = Stage(ScreenViewport())
         Gdx.input.inputProcessor = stage
 
-        pluginLoader.loadPlugins()
+        pluginLoader.loadBundledPlugins()
+        pluginLoader.loadExternalPlugins()
 
         val root = VisTable()
         root.setFillParent(true)

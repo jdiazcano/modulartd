@@ -12,11 +12,13 @@ import com.jdiazcano.modulartd.config.EditorConfig
 import com.jdiazcano.modulartd.plugins.actions.Action
 import com.jdiazcano.modulartd.plugins.actions.Preferences
 import com.jdiazcano.modulartd.plugins.actions.RegisterAction
+import com.jdiazcano.modulartd.plugins.bundled.ExitPlugin
 import com.jdiazcano.modulartd.utils.readUtf8
 import com.jdiazcano.modulartd.utils.toURL
 import mu.KLogging
 import java.util.jar.JarFile
 import java.util.jar.Manifest
+import kotlin.system.measureTimeMillis
 
 /**
  *
@@ -25,43 +27,41 @@ class PluginLoader {
     companion object: KLogging()
 
     private val plugins: MutableList<Plugin> = mutableListOf()
-    private val listeners: MutableList<(Plugin) -> Unit> = mutableListOf()
 
     private val config : EditorConfig = Configs.editor()
 
     init {
-        Bus.register(Plugin::class.java, BusTopic.PLUGIN_REGISTERED) {
-            plugin -> ModularTD.logger.debug { "This plugin has been loaded: ${plugin.getName()}!!" }
+        Bus.register(Plugin::class.java, BusTopic.PLUGIN_REGISTERED) { plugin ->
+            logger.debug { "Plugin loaded: ${plugin.getName()}." }
         }
     }
 
-    fun loadPlugins() {
-        logger.debug { "Using plugins folder: ${config.pluginsFolder()} and file: ${config.pluginsConfigFile()}" }
+    fun loadExternalPlugins() {
+        logger.debug { "Using plugins folder: '${config.pluginsFolder()}' and file: '${config.pluginsConfigFile()}'" }
         val pluginsFolder = Gdx.files.internal(config.pluginsFolder())
         JsonReader().parse(pluginsFolder.child(config.pluginsConfigFile()).readUtf8()).forEach {
             val pluginFileName = it["file"].asString()
-            logger.debug { "Loading plugin: $pluginFileName" }
+            logger.debug { "Loading external plugin: '$pluginFileName'" }
             val plugin = loadPlugin(pluginsFolder.child(pluginFileName))
-            plugin.javaClass.declaredMethods.forEach { method ->
-                if (method.isAnnotationPresent(RegisterAction::class.java)) {
-                    val parentId = method.getAnnotation(RegisterAction::class.java).id
-                    ActionManager.registerAction(method.invoke(plugin) as Action, parentId)
-                } else if (method.isAnnotationPresent(Preferences::class.java)) {
-
-                }
-            }
-            plugin.onLoad()
-            registerPlugin(plugin)
-            logger.debug { "Plugin loaded: $pluginFileName" }
+            val millis = measureTimeMillis { registerPlugin(plugin) }
+            logger.debug { "External plugin loaded: '$pluginFileName', took $millis milliseconds" }
         }
     }
 
     private fun registerPlugin(plugin: Plugin) {
+        plugin.javaClass.declaredMethods.forEach { method ->
+            if (method.isAnnotationPresent(RegisterAction::class.java)) {
+                val parentId = method.getAnnotation(RegisterAction::class.java).id
+                ActionManager.registerAction(method.invoke(plugin) as Action, parentId)
+            } else if (method.isAnnotationPresent(Preferences::class.java)) {
+                val table = method.invoke(plugin)
+                Bus.post(table, BusTopic.PREFERENCES_REGISTERED)
+            }
+        }
+        plugin.onLoad()
         plugins.add(plugin)
         Bus.post(plugin, BusTopic.PLUGIN_REGISTERED)
     }
-
-    fun listen(listener: (Plugin) -> Unit) = listeners.add(listener)
 
     fun loadPlugin(file: FileHandle) : Plugin {
         val pluginJar = JarFile(file.file())
@@ -69,5 +69,12 @@ class PluginLoader {
         val loader = PluginClassLoader(arrayOf(file.toURL()))
         val pluginClass = loader.loadPlugin(mainClass)
         return pluginClass.newInstance()
+    }
+
+    fun loadBundledPlugins() {
+        // File
+        registerPlugin(ExitPlugin())
+
+        // Help
     }
 }

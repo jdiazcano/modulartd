@@ -32,7 +32,22 @@ enum class BusTopic {
      */
     PLUGIN_REGISTERED,
     /**
-     *
+     * This will be fired when a method in a plugin is annotated with @Preferences and will return a PreferencesTable
      */
     PREFERENCES_REGISTERED,
+    /**
+     * Fired when a processor is registered. The input processors will take care of the inputs, for example there will
+     * be the stage input processor and the shortcut input processor for example. There might even different processors
+     * for different windows focus
+     */
+    PROCESSOR_REGISTERED,
+    /**
+     * Fired when a processor is unregistered.
+     */
+    PROCESSOR_UNREGISTERED,
+    /**
+     * Fired when an action is registered. This is a method annotated with @RegisterAction in a plugin.
+     */
+    ACTION_REGISTERED,
+
 }

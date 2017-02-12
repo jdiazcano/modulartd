@@ -12,9 +12,7 @@ abstract class MapObject(
         var name: String = "Empty",
         var resource: Resource = Resource(),
         var rotationAngle: Float = 0F
-) {
-
-}
+)
 
 /**
  * Base class for all animated objects

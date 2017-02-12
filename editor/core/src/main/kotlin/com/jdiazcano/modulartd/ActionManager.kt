@@ -16,14 +16,13 @@ internal object ActionManager : KLoggable {
      *
      * @throws IllegalArgumentException If the action name is already registered
      */
-    fun registerAction(action: Action, parentId: String) {
+    fun registerAction(action: Action) {
         if (actions[action.name] != null) {
             throw IllegalArgumentException("Action '${action.name}' already registered")
         }
 
         actions.put(action.name, action)
-        Bus.post(ParentedAction(action, parentId), BusTopic.CREATED)
-        logger.debug { "Action '${action.name}' added and sent it to the Bus" }
+        logger.debug { "Action '${action.name}' added" }
     }
 
     fun findAction(actionName: String) : Action? = actions[actionName]

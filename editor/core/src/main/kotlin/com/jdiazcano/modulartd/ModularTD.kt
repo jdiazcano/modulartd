@@ -2,14 +2,19 @@ package com.jdiazcano.modulartd
 
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.InputAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
+import com.jdiazcano.modulartd.keys.Priorities
+import com.jdiazcano.modulartd.keys.PriorityInputMultiplexer
+import com.jdiazcano.modulartd.keys.PriorityProcessor
 import com.jdiazcano.modulartd.plugins.Plugin
 import com.jdiazcano.modulartd.plugins.PluginLoader
 import com.jdiazcano.modulartd.ui.MainMenu
+import com.jdiazcano.modulartd.utils.toURL
 import com.kotcrab.vis.ui.VisUI
 import com.kotcrab.vis.ui.widget.VisTable
 import mu.KLogging
@@ -25,13 +30,14 @@ class ModularTD : ApplicationAdapter() {
     private lateinit var menu: MainMenu
 
     override fun create() {
-        PropertyConfigurator.configure(Gdx.files.internal("log4j.properties").file().toURI().toURL())
+        PropertyConfigurator.configure(Gdx.files.internal("log4j.properties").toURL())
         VisUI.load()
 
         menu = MainMenu()
 
+        Gdx.input.inputProcessor = PriorityInputMultiplexer()
         stage = Stage(ScreenViewport())
-        Gdx.input.inputProcessor = stage
+        Bus.post(PriorityProcessor(stage, Priorities.STAGE), BusTopic.PROCESSOR_REGISTERED)
 
         pluginLoader.loadBundledPlugins()
         pluginLoader.loadExternalPlugins()
@@ -40,7 +46,7 @@ class ModularTD : ApplicationAdapter() {
         root.setFillParent(true)
         stage.addActor(root)
 
-        root.add(menu.table).fillX().expandX().row()
+        root.add(menu.table)
     }
 
     override fun resize(width: Int, height: Int) {

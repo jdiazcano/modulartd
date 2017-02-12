@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.JsonReader
 import com.jdiazcano.modulartd.ActionManager
-import com.jdiazcano.modulartd.ModularTD
+import com.jdiazcano.modulartd.ParentedAction
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.config.Configs
@@ -21,7 +21,7 @@ import java.util.jar.Manifest
 import kotlin.system.measureTimeMillis
 
 /**
- *
+ * Loads the plugins and sends them to the bus to be picked by the listeners
  */
 class PluginLoader {
     companion object: KLogging()
@@ -50,12 +50,17 @@ class PluginLoader {
 
     private fun registerPlugin(plugin: Plugin) {
         plugin.javaClass.declaredMethods.forEach { method ->
-            if (method.isAnnotationPresent(RegisterAction::class.java)) {
-                val parentId = method.getAnnotation(RegisterAction::class.java).id
-                ActionManager.registerAction(method.invoke(plugin) as Action, parentId)
-            } else if (method.isAnnotationPresent(Preferences::class.java)) {
-                val table = method.invoke(plugin)
-                Bus.post(table, BusTopic.PREFERENCES_REGISTERED)
+            method.annotations.forEach { annotation ->
+                when (annotation) {
+                    is RegisterAction -> {
+                        val action = method.invoke(plugin) as Action
+                        ActionManager.registerAction(action)
+                        Bus.post(ParentedAction(action, annotation.id), BusTopic.ACTION_REGISTERED)
+                    }
+                    is Preferences -> {
+                        Bus.post(method.invoke(plugin), BusTopic.PREFERENCES_REGISTERED)
+                    }
+                }
             }
         }
         plugin.onLoad()

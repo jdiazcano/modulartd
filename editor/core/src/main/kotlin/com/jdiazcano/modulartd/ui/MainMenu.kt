@@ -22,7 +22,9 @@ class MainMenu : MenuBar() {
     )
     init {
         menus.forEach { addMenu(it.value) }
-        Bus.register(ParentedAction::class.java, BusTopic.CREATED) { createMenu(it) }
+        Bus.register(ParentedAction::class.java, BusTopic.ACTION_REGISTERED) {
+            createMenu(it)
+        }
     }
 
     fun createMenu(parentedAction: ParentedAction) {

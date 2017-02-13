@@ -49,5 +49,11 @@ enum class BusTopic {
      * Fired when an action is registered. This is a method annotated with @RegisterAction in a plugin.
      */
     ACTION_REGISTERED,
+    /**
+     * Fired when an action is removed
+     */
+    ACTION_UNREGISTERED,
+
+    SHORTCUT_UPDATED,
 
 }

@@ -5,7 +5,7 @@ import com.badlogic.gdx.InputAdapter
 import com.jdiazcano.modulartd.ParentedAction
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
-import com.jdiazcano.modulartd.plugins.actions.Action
+import com.jdiazcano.modulartd.plugins.actions.Actioned
 import mu.KLogging
 
 /**
@@ -14,7 +14,7 @@ import mu.KLogging
 class ShortCutInputProcessor : InputAdapter() {
     companion object : KLogging()
 
-    private val actionMap = mutableMapOf<ShortCut, Action>()
+    private val actionMap = mutableMapOf<ShortCut, Actioned>()
     private var isControl = false
     private var isShift = false
     private var isCommand = false
@@ -23,8 +23,19 @@ class ShortCutInputProcessor : InputAdapter() {
     init {
         Bus.register(ParentedAction::class.java, BusTopic.ACTION_REGISTERED) {
             actionMap[it.action.shortCut] = it.action
-            logger.debug { "Added action $it" }
+            logger.debug { "Added action ${it.action.name}" }
         }
+
+        Bus.register(ShortCutAction::class.java, BusTopic.SHORTCUT_UPDATED) {
+            actionMap[it.shortCut] = it.action
+            logger.debug { "Shortcut updated : ${KeyPrinters.print(it.shortCut)}" }
+        }
+
+        Bus.register(ParentedAction::class.java, BusTopic.ACTION_UNREGISTERED) {
+            actionMap.remove(it.action.shortCut)
+            logger.debug { "Removed action ${it.action.name}" }
+        }
+
         Bus.post(PriorityProcessor(this, Priorities.GLOBAL_SHORTCUTS), BusTopic.PROCESSOR_REGISTERED)
     }
 
@@ -58,8 +69,10 @@ class ShortCutInputProcessor : InputAdapter() {
                 command = isCommand,
                 shift = isShift
         ))
-        if (shortCut in actionMap) {
-            actionMap[shortCut]!!.perform()
+        val action = actionMap[shortCut]
+        if (action != null) {
+            action.perform()
+            return true
         }
 
         return super.keyDown(keycode)

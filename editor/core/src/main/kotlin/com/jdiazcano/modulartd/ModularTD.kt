@@ -46,7 +46,7 @@ class ModularTD : ApplicationAdapter() {
         root.setFillParent(true)
         stage.addActor(root)
 
-        root.add(menu.table)
+        root.add(menu.table).expandX().fillX().row()
     }
 
     override fun resize(width: Int, height: Int) {

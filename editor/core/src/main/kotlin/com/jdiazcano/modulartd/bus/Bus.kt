@@ -17,8 +17,7 @@ object Bus {
     fun <T> register(type: Class<T>, topic: BusTopic, action: (T) -> Any) {
         buses.getOrPut(topic) { SerializedSubject(PublishSubject<Any>()) }
                 .filter { type.isAssignableFrom(it.javaClass) }
-                .map { it as T }
-                .subscribe { action(it) }
+                .subscribe { action(it as T) }
     }
 
     /**

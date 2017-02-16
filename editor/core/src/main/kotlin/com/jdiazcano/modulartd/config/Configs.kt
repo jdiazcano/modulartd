@@ -19,12 +19,11 @@ object Configs {
     )
     private val provider = OverrideConfigProvider(classPathSource, overrideSource)
 
-    private val preferences = RxDesktopPreferences(Preferences.userRoot().node(editor().preferencesKey()))
+    private val preferences = RxDesktopPreferences(Preferences.userRoot().node(editor().preferencesKey())); get
 
     /**
      * Editor config, this config will be mostly GUI and tower defense specific stuff.
      */
-    fun editor(): EditorConfig = provider.bind<EditorConfig>("editor")
-    fun preferences() = preferences
+    fun editor() = provider.bind<EditorConfig>("editor")
 }
 

@@ -9,6 +9,7 @@ class BestPreferences : PreferencesTable() {
     private val properties = mutableMapOf<String, String>()
 
     init {
+        name = "Bestest!"
         add(
             table {
                 setFillParent(true)

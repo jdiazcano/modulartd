@@ -1,6 +1,7 @@
 package com.jdiazcano.modulartd.plugins.actions
 
 import com.jdiazcano.modulartd.keys.ShortCut
+import com.jdiazcano.modulartd.plugins.ui.StageWrapper
 
 /**
  * Class that performs an action, this will be used to create the menus in the GUI. One action will be one menu which
@@ -21,5 +22,5 @@ abstract class Action(val name: String, val description: String, val shortCut: S
 }
 
 interface Actioned {
-    fun perform(): Unit
+    fun perform(stage: StageWrapper): Unit
 }

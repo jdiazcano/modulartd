@@ -21,6 +21,11 @@ repositories {
 dependencies {
     compile project(":plugin")
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    compileOnly "com.kotcrab.vis:vis-ui:$visUiVersion"
+    compileOnly "com.github.czyzby:ktx-style:$ktxStyleVersion"
+    compileOnly "com.github.czyzby:ktx-vis-style:$ktxVisStyleVersion"
+    compileOnly "com.github.czyzby:ktx-vis:$ktxVisVersion"
 }
 
 task fatJar(type: Jar) {

@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly project(":common")
+    compile project(":common")
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     compileOnly "com.kotcrab.vis:vis-ui:$visUiVersion"
     compileOnly "com.github.czyzby:ktx-style:$ktxStyleVersion"

@@ -2,18 +2,22 @@ package com.jdiazcano.modulartd.keys
 
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputAdapter
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.jdiazcano.modulartd.ParentedAction
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.plugins.actions.Actioned
+import com.jdiazcano.modulartd.plugins.ui.StageWrapper
+import com.jdiazcano.modulartd.ui.StageWrapperImpl
 import mu.KLogging
 
 /**
  * The shortcut input processor will take care of all the global shortcuts
  */
-class ShortCutInputProcessor : InputAdapter() {
+class ShortCutInputProcessor(stage: Stage) : InputAdapter() {
     companion object : KLogging()
 
+    private val wrappedStage = StageWrapperImpl(stage)
     private val actionMap = mutableMapOf<ShortCut, Actioned>()
     private var isControl = false
     private var isShift = false
@@ -21,6 +25,7 @@ class ShortCutInputProcessor : InputAdapter() {
     private var isAlt = false
 
     init {
+
         Bus.register(ParentedAction::class.java, BusTopic.ACTION_REGISTERED) {
             actionMap[it.action.shortCut] = it.action
             logger.debug { "Added action ${it.action.name}" }
@@ -71,7 +76,7 @@ class ShortCutInputProcessor : InputAdapter() {
         ))
         val action = actionMap[shortCut]
         if (action != null) {
-            action.perform()
+            action.perform(wrappedStage)
             return true
         }
 

@@ -7,6 +7,7 @@ import com.jdiazcano.modulartd.plugins.Plugin
 import com.jdiazcano.modulartd.plugins.actions.Action
 import com.jdiazcano.modulartd.plugins.actions.Menus
 import com.jdiazcano.modulartd.plugins.actions.RegisterAction
+import com.jdiazcano.modulartd.plugins.ui.StageWrapper
 
 /**
  * This plugin will exit the JVM (Program)
@@ -29,7 +30,7 @@ class ExitPlugin : Plugin {
 }
 
 class ExitAction : Action("file.exit", "Exit", ShortCut(Input.Keys.Q, Modifiers(control = true))) {
-    override fun perform() {
+    override fun perform(stage: StageWrapper) {
         System.exit(0)
     }
 }

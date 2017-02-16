@@ -1,13 +1,14 @@
 package com.jdiazcano.modulartd.keys
 
 import com.badlogic.gdx.InputProcessor
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
 
 /**
  *
  */
-class PriorityInputMultiplexer : InputProcessor {
+class PriorityInputMultiplexer(stage: Stage) : InputProcessor {
     private val processors = sortedSetOf<PriorityProcessor>(compareBy { -it.priority })
 
     init {
@@ -20,7 +21,7 @@ class PriorityInputMultiplexer : InputProcessor {
             removeProcessor(it)
         }
 
-        Bus.post(ShortCutInputProcessor())
+        Bus.post(ShortCutInputProcessor(stage))
     }
 
     fun addProcessor(processor: PriorityProcessor) {

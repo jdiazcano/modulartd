@@ -6,7 +6,11 @@ import com.kotcrab.vis.ui.widget.VisTable
  * A preferences table defines the table that will be rendered when the user clicks on the preference's item of the
  * plugin.
  */
-abstract class PreferencesTable : VisTable(), Persistable {
+abstract class PreferencesTable(name: String) : VisTable(), Persistable {
+
+    init {
+        setName(name)
+    }
 
 }
 

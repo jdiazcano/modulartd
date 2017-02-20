@@ -1,25 +1,31 @@
 package com.jdiazcano.modulartd.ui
 
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.Tree
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.scenes.scene2d.utils.Selection
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.plugins.ui.PreferencesTable
 import com.kotcrab.vis.ui.widget.VisLabel
+import com.kotcrab.vis.ui.widget.VisSplitPane
+import com.kotcrab.vis.ui.widget.VisTable
 
+// Made to be instantiated only once :p
 class ExternalPreferencesNode(actor: Actor) : Tree.Node(actor) {
 
+    private val nodeTables = mutableMapOf<Tree.Node, VisTable>()
     init {
         Bus.register(PreferencesTable::class.java, BusTopic.PREFERENCES_REGISTERED) { table ->
-            add(Tree.Node(VisLabel(table.name)))
+            val label = VisLabel(table.name)
+            val node = Tree.Node(label)
+            nodeTables[node] = table
+            print("")
+            add(node)
         }
-
-        actor.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                println("test")
-            }
-        })
     }
+
+    fun selectionChanged(selection: Selection<Tree.Node>, panel: VisSplitPane) {
+        panel.setSecondWidget(nodeTables[selection.lastSelected])
+    }
+
 }

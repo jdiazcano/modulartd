@@ -1,7 +1,5 @@
 package com.jdiazcano.modulartd
 
-import com.jdiazcano.modulartd.bus.Bus
-import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.plugins.actions.Action
 import mu.KLoggable
 import mu.KLogger

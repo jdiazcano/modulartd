@@ -31,3 +31,12 @@ fun Actor.changeListener(action: (ChangeListener.ChangeEvent, Actor) -> Unit) {
         }
     })
 }
+
+fun <T, V> MutableMap<T, V>.getOrThrow(key: T, throwable: Throwable = IllegalArgumentException("Unknown value for key $key")) : V {
+    val value = get(key)
+    if (value != null) {
+        return value
+    } else {
+        throw throwable
+    }
+}

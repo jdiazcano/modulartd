@@ -19,7 +19,6 @@ class ExternalPreferencesNode(actor: Actor) : Tree.Node(actor) {
             val label = VisLabel(table.name)
             val node = Tree.Node(label)
             nodeTables[node] = table
-            print("")
             add(node)
         }
     }

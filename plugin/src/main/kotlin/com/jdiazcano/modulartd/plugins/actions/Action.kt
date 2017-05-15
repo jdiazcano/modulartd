@@ -10,15 +10,20 @@ import com.jdiazcano.modulartd.plugins.ui.StageWrapper
  * An action can have a parent action that is linked by a name (that name must be unique) so the menus will be able to
  * have submenus and sub-submenus and the whole hierarchy.
  */
-abstract class Action(val name: String, val description: String, val shortCut: ShortCut): Actioned {
+abstract class Action(val name: String, val description: String, val shortCut: ShortCut, val separator: SeparatorPlace = SeparatorPlace.NONE): Actioned {
 
     override fun toString(): String {
         return """{
     "name": "$name",
     "description": "$description",
-    "shorCut": "$shortCut"
+    "shorCut": "$shortCut",
+    "separator": "$separator"
 }"""
     }
+}
+
+enum class SeparatorPlace {
+    NONE, ABOVE, BELOW, BOTH
 }
 
 interface Actioned {

@@ -12,7 +12,9 @@ import com.jdiazcano.modulartd.config.EditorConfig
 import com.jdiazcano.modulartd.plugins.actions.Action
 import com.jdiazcano.modulartd.plugins.actions.Preferences
 import com.jdiazcano.modulartd.plugins.actions.RegisterAction
+import com.jdiazcano.modulartd.plugins.bundled.AboutPlugin
 import com.jdiazcano.modulartd.plugins.bundled.ExitPlugin
+import com.jdiazcano.modulartd.plugins.bundled.NewPlugin
 import com.jdiazcano.modulartd.plugins.bundled.PreferencesPlugin
 import com.jdiazcano.modulartd.utils.readUtf8
 import com.jdiazcano.modulartd.utils.toURL
@@ -77,13 +79,29 @@ class PluginLoader {
         return pluginClass.newInstance()
     }
 
+    /**
+     * These plugins will be loaded before the external plugins, we can have before and after so it is possible to have
+     * items at the end of the menu
+     */
     fun loadBundledPlugins() {
         // File
-        registerPlugin(ExitPlugin())
+        registerPlugin(NewPlugin())
+        // TODO Future plugins: registerPlugin(OpenPlugin())
+        // TODO Future plugins: registerPlugin(SavePlugin(false))
+        // TODO Future plugins: registerPlugin(SavePlugin(true))
 
         // Edit
         registerPlugin(PreferencesPlugin())
 
         // Help
+        registerPlugin(AboutPlugin())
+    }
+
+    /**
+     * These plugins will be loaded after the external plugins have been loaded
+     */
+    fun loadAfterBundledPlugins() {
+        registerPlugin(ExitPlugin())
+
     }
 }

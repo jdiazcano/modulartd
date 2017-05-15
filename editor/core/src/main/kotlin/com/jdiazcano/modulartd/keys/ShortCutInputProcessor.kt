@@ -7,7 +7,6 @@ import com.jdiazcano.modulartd.ParentedAction
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.plugins.actions.Actioned
-import com.jdiazcano.modulartd.plugins.ui.StageWrapper
 import com.jdiazcano.modulartd.ui.StageWrapperImpl
 import mu.KLogging
 

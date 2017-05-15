@@ -39,6 +39,7 @@ class ModularTD : ApplicationAdapter() {
 
         pluginLoader.loadBundledPlugins()
         pluginLoader.loadExternalPlugins()
+        pluginLoader.loadAfterBundledPlugins()
 
         val root = VisTable()
         root.setFillParent(true)

@@ -1,17 +1,12 @@
 package com.jdiazcano.modulartd.plugins.bundled
 
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.ui.Tree
-import com.jdiazcano.modulartd.bus.Bus
-import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.keys.Modifiers
 import com.jdiazcano.modulartd.keys.ShortCut
 import com.jdiazcano.modulartd.plugins.Plugin
 import com.jdiazcano.modulartd.plugins.actions.Action
 import com.jdiazcano.modulartd.plugins.actions.Menus
 import com.jdiazcano.modulartd.plugins.actions.RegisterAction
-import com.jdiazcano.modulartd.plugins.ui.PreferencesTable
 import com.jdiazcano.modulartd.plugins.ui.StageWrapper
 import com.jdiazcano.modulartd.ui.ExternalPreferencesNode
 import com.jdiazcano.modulartd.utils.changeListener
@@ -55,6 +50,10 @@ class PreferencesWindow : VisWindow("Preferences") {
     private val externalNode = ExternalPreferencesNode(VisLabel("Other"))
 
     init {
+        isResizable = true
+        closeOnEscape()
+        addCloseButton()
+
         val panel = VisSplitPane(tree, mainTable, false)
         debugAll()
         tree.add(externalNode)
@@ -64,10 +63,6 @@ class PreferencesWindow : VisWindow("Preferences") {
 
         panel.setDebug(true, true)
         add(panel).expand().fill()
-        mainTable.setFillParent(true)
-
-        isResizable = true
-        closeOnEscape()
-        addCloseButton()
+        //mainTable.setFillParent(true)
     }
 }

@@ -11,27 +11,27 @@ import com.jdiazcano.modulartd.plugins.actions.SeparatorPlace
 import com.jdiazcano.modulartd.plugins.ui.StageWrapper
 
 /**
- * This plugin will exit the JVM (Program)
+ * Creates a new project (TD)
  */
-class ExitPlugin : Plugin {
-    override fun getName() = "Exit plugin"
+class NewPlugin : Plugin {
+    override fun getName() = "New plugin"
 
     override fun getVersion() = 1
 
     override fun getMinimumCompatibleVersion() = 1
 
-    override fun getPrefix() = "exit"
+    override fun getPrefix() = "new"
 
     override fun onLoad() {}
 
     override fun onUnload() {}
 
     @RegisterAction(Menus.FILE)
-    fun exit() = ExitAction()
+    fun new() = NewAction()
 }
 
-class ExitAction : Action("file.exit", "Exit", ShortCut(Input.Keys.Q, Modifiers(control = true)), SeparatorPlace.ABOVE) {
+class NewAction : Action("file.new", "New", ShortCut(Input.Keys.N, Modifiers(control = true)), SeparatorPlace.BELOW) {
     override fun perform(stage: StageWrapper) {
-        System.exit(0)
+        // TODO now here we must create a new project and do cool things
     }
 }

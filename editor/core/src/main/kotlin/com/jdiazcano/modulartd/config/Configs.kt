@@ -20,17 +20,20 @@ object Configs {
     )
     private val provider = OverrideConfigProvider(classPathSource, overrideSource)
 
-    private val preferences = RxDesktopPreferences(Preferences.userRoot().node(editor().preferencesKey())); get
+    val preferences = RxDesktopPreferences(Preferences.userRoot().node(editor().preferencesKey()))
 
     /**
      * Editor config, this config will be mostly GUI and tower defense specific stuff.
      */
     fun editor() = provider.bind<EditorConfig>("editor")
+
 }
 
 object Translations {
     private val translationsProvider = DefaultConfigProvider(JsonConfigLoader(javaClass.getResource("/strings/strings.json")))
-    private val localedTranslationsProvider = DefaultConfigProvider(JsonConfigLoader(javaClass.getResource("/strings/strings_${Locale.getDefault()}.json")))
+    private val localedTranslationsProvider = DefaultConfigProvider(
+            JsonConfigLoader(javaClass.getResource("/strings/strings_${Configs.preferences.getString("editor.language", Locale.getDefault().toString()).get()}.json"))
+    )
 
     private val overriddenTranslationsProvider = OverrideConfigProvider(localedTranslationsProvider, translationsProvider)
 

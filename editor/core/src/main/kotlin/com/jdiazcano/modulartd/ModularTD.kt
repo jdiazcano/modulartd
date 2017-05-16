@@ -29,23 +29,23 @@ class ModularTD : ApplicationAdapter() {
     override fun create() {
         PropertyConfigurator.configure(Gdx.files.internal("log4j.properties").toURL())
         VisUI.load()
-
-        menu = MainMenu()
-        screen = MainScreenUI()
-
         stage = Stage(ScreenViewport())
         Gdx.input.inputProcessor = PriorityInputMultiplexer(stage)
         Bus.post(PriorityProcessor(stage, Priorities.STAGE), BusTopic.PROCESSOR_REGISTERED)
+
+        val root = VisTable()
+
+        menu = MainMenu()
+        screen = MainScreenUI(root)
 
         pluginLoader.loadBundledPlugins()
         pluginLoader.loadExternalPlugins()
         pluginLoader.loadAfterBundledPlugins()
 
-        val root = VisTable()
         root.setFillParent(true)
         stage.addActor(root)
 
-        root.add(menu.table).expandX().fillX().row()
+        root.add(menu.table).expandX().fillX().padBottom(5F).row()
         root.add(screen).expand().fill().row()
     }
 

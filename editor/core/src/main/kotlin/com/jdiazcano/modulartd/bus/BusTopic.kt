@@ -14,7 +14,7 @@ enum class BusTopic {
      */
     CREATED,
     /**
-     * Deleted objects, for example a turret is deletd
+     * Deleted objects, for example a turret (or a map!!) is deleted
      */
     DELETED,
     /**

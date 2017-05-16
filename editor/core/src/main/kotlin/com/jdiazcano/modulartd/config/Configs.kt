@@ -23,12 +23,14 @@ object Configs {
     val preferences = RxDesktopPreferences(Preferences.userRoot().node(editor().preferencesKey()))
 
     /**
-     * Editor config, this config will be mostly GUI and tower defense specific stuff.
+     * Editor config, this config will be mostly GUI and tower defense specific stuff. This is a static default value
+     * store, nothing else.
      */
     fun editor() = provider.bind<EditorConfig>("editor")
 
 }
 
+// TODO rethink if the override is needed, all strings should be there and if something fails is because it should fail
 object Translations {
     private val translationsProvider = DefaultConfigProvider(JsonConfigLoader(javaClass.getResource("/strings/strings.json")))
     private val localedTranslationsProvider = DefaultConfigProvider(

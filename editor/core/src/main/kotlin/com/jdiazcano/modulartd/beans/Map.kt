@@ -6,7 +6,7 @@ import com.jdiazcano.modulartd.config.Configs
  * Map class, this will define the object of a map, the whole structure that will contain all the properties, units,
  * turrets and everything regarding a map
  */
-class Map(
+data class Map(
         var name: String = "",
         var version: String = "v0.1",
         var description: String = "",
@@ -29,12 +29,13 @@ class Map(
         // var endAction: EndAction = Configs.editor().endAction()
         var unitCount: Int = Configs.editor().unitCount(),
 
-        override var script: String = ""): Scriptable {
+        override var script: String = ""
+): Scriptable {
 
-    var layers: Array<Layer> = arrayOf()
-    var turrets: Array<Turret> = arrayOf()
-    var units: Array<Unit> = arrayOf()
-    var waves: Array<Wave> = arrayOf()
-    var tiles: Array<Tile> = arrayOf()
+    var layers: List<Layer> = arrayListOf()
+    var turrets: List<Turret> = arrayListOf()
+    var units: List<Unit> = arrayListOf()
+    var waves: List<Wave> = arrayListOf()
+    var tiles: List<Tile> = arrayListOf()
 
 }

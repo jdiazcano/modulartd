@@ -13,21 +13,27 @@ class MainScreenUI(parentActor: Table) : VisTable() {
     private val game = VisTable()
 
     init {
+
         creatorsTabbedPane.addListener {
-            creatorsTable.clear()
-            creatorsTable.add(it.contentTable)
+            creatorsTable.clearChildren()
+            creatorsTable.add(it.contentTable).expand().fill()
         }
+
         creatorsTabbedPane.add(GameTab())
         creatorsTabbedPane.add(TileTab())
-        creatorsTabbedPane.add(MobTab())
         creatorsTabbedPane.add(TurretTab())
         creatorsTabbedPane.add(LevelTab())
-
+        creatorsTabbedPane.add(MobTab())
         val leftSide = VisTable()
-        leftSide.add(creatorsTabbedPane.table).expandX().top().center().row()
+        leftSide.add(creatorsTabbedPane.table).center().expandX().fillX().padBottom(5F).row()
         leftSide.add(creatorsTable).expand().fill()
 
         add(leftSide).expandY().fillY().width(Value.percentWidth(0.35F, parentActor))
         add(game).expand().fill()
+
+        //debugAll()
+        //leftSide.debugAll()
+        //creatorsTabbedPane.table.debugAll()
+        //creatorsTable.debugAll()
     }
 }

@@ -47,6 +47,7 @@ class ModularTD : ApplicationAdapter() {
 
         root.add(menu.table).expandX().fillX().padBottom(5F).row()
         root.add(screen).expand().fill().row()
+        // TODO root.add("Lower label for displaying information")
     }
 
     override fun resize(width: Int, height: Int) {

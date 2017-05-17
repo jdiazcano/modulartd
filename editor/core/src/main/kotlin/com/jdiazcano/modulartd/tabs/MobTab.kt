@@ -39,7 +39,7 @@ class MobTab: BaseTab(Translations.of("tabs.mobs", "Mobs")) {
         setUpValidableForm()
         placeComponents()
 
-        content.add(splitPane).fill()
+        content.add(splitPane).expand().fill()
     }
 
     private fun placeComponents() {

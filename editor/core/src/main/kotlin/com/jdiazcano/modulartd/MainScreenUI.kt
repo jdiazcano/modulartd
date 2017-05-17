@@ -15,7 +15,7 @@ class MainScreenUI(parentActor: Table) : VisTable() {
     init {
         creatorsTabbedPane.addListener {
             creatorsTable.clear()
-            creatorsTable.add(it.contentTable).expand().fill()
+            creatorsTable.add(it.contentTable)
         }
         creatorsTabbedPane.add(GameTab())
         creatorsTabbedPane.add(TileTab())
@@ -27,7 +27,7 @@ class MainScreenUI(parentActor: Table) : VisTable() {
         leftSide.add(creatorsTabbedPane.table).expandX().top().center().row()
         leftSide.add(creatorsTable).expand().fill()
 
-        add(leftSide).expandY().fillY().width(Value.percentWidth(0.25F, parentActor))
+        add(leftSide).expandY().fillY().width(Value.percentWidth(0.35F, parentActor))
         add(game).expand().fill()
     }
 }

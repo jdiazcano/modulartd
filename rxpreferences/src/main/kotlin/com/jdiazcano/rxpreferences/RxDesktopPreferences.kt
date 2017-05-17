@@ -31,6 +31,11 @@ class RxDesktopPreferences(val preferences: Preferences) {
         }).share()
     }
 
+    fun put(key: String, value: Any) {
+        preferences.put(key, value.toString())
+        preferences.flush()
+    }
+
     fun <T> get(key: String, default: T, adapter: Preference.Adapter<T>): Preference<T> {
         return Preference(preferences, key, default, adapter, keyChanges)
     }

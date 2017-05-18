@@ -14,10 +14,10 @@ object Bus {
     /**
      * Registers a function that will be called once we receive an item of that class in that theme
      */
-    fun <T> register(type: Class<T>, topic: BusTopic, action: (T) -> Any) {
+    fun <K> register(type: Class<*>, topic: BusTopic, action: (K) -> Any) {
         buses.getOrPut(topic) { SerializedSubject(PublishSubject<Any>()) }
                 .filter { type.isAssignableFrom(it.javaClass) }
-                .subscribe { action(it as T) }
+                .subscribe { action(it as K) }
     }
 
     /**

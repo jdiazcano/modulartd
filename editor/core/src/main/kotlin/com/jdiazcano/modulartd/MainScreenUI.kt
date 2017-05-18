@@ -30,10 +30,5 @@ class MainScreenUI(parentActor: Table) : VisTable() {
 
         add(leftSide).expandY().fillY().width(Value.percentWidth(0.35F, parentActor))
         add(game).expand().fill()
-
-        //debugAll()
-        //leftSide.debugAll()
-        //creatorsTabbedPane.table.debugAll()
-        //creatorsTable.debugAll()
     }
 }

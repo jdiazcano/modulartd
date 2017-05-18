@@ -34,7 +34,7 @@ class PluginLoader {
     private val config : EditorConfig = Configs.editor()
 
     init {
-        Bus.register(Plugin::class.java, BusTopic.PLUGIN_REGISTERED) { plugin ->
+        Bus.register<Plugin>(Plugin::class.java, BusTopic.PLUGIN_REGISTERED) { plugin ->
             logger.debug { "Plugin loaded: ${plugin.getName()}." }
         }
     }

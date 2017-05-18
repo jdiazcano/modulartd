@@ -12,12 +12,12 @@ class PriorityInputMultiplexer(stage: Stage) : InputProcessor {
     private val processors = sortedSetOf<PriorityProcessor>(compareBy { -it.priority })
 
     init {
-        Bus.register(PriorityProcessor::class.java, BusTopic.PROCESSOR_REGISTERED) {
+        Bus.register<PriorityProcessor>(PriorityProcessor::class.java, BusTopic.PROCESSOR_REGISTERED) {
             addProcessor(it)
             println("Processor added.")
         }
 
-        Bus.register(PriorityProcessor::class.java, BusTopic.PROCESSOR_UNREGISTERED) {
+        Bus.register<PriorityProcessor>(PriorityProcessor::class.java, BusTopic.PROCESSOR_UNREGISTERED) {
             removeProcessor(it)
         }
 

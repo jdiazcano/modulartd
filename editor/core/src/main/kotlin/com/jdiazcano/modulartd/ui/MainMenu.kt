@@ -5,6 +5,7 @@ import com.jdiazcano.modulartd.ActionManager
 import com.jdiazcano.modulartd.ParentedAction
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
+import com.jdiazcano.modulartd.config.Translations
 import com.jdiazcano.modulartd.plugins.actions.Action
 import com.jdiazcano.modulartd.plugins.actions.Menus
 import com.jdiazcano.modulartd.plugins.actions.SeparatorPlace
@@ -16,15 +17,15 @@ import com.kotcrab.vis.ui.widget.PopupMenu
 class MainMenu : MenuBar() {
     private val menuItems: MutableMap<Action, ActionedMenuItem> = mutableMapOf()
     private val menus = mapOf(
-            Menus.FILE to Menu("File"),
-            Menus.VIEW to Menu("View"),
-            Menus.EDIT to Menu("Edit"),
-            Menus.GAME to Menu("Game"),
-            Menus.HELP to Menu("Help")
+            Menus.FILE to Menu(Translations.of("menu.file", "File")),
+            Menus.VIEW to Menu(Translations.of("menu.view", "View")),
+            Menus.EDIT to Menu(Translations.of("menu.edit", "Edit")),
+            Menus.GAME to Menu(Translations.of("menu.game", "Game")),
+            Menus.HELP to Menu(Translations.of("menu.help", "Help"))
     )
     init {
         menus.forEach { addMenu(it.value) }
-        Bus.register(ParentedAction::class.java, BusTopic.ACTION_REGISTERED) {
+        Bus.register<ParentedAction>(ParentedAction::class.java, BusTopic.ACTION_REGISTERED) {
             createMenu(it)
         }
     }

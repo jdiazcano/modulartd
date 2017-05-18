@@ -15,7 +15,7 @@ class ExternalPreferencesNode(actor: Actor) : Tree.Node(actor) {
 
     private val nodeTables = mutableMapOf<Tree.Node, VisTable>()
     init {
-        Bus.register(PreferencesTable::class.java, BusTopic.PREFERENCES_REGISTERED) { table ->
+        Bus.register<PreferencesTable>(PreferencesTable::class.java, BusTopic.PREFERENCES_REGISTERED) { table ->
             val label = VisLabel(table.name)
             val node = Tree.Node(label)
             nodeTables[node] = table

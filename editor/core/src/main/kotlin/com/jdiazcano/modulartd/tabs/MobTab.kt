@@ -6,26 +6,26 @@ import com.kotcrab.vis.ui.widget.*
 
 class MobTab: BaseTab(Translations.of("tabs.mobs", "Mobs")) {
     private lateinit var splitPane: VisSplitPane
-    private lateinit var propertiesTable: VisTable
+    private val propertiesTable = VisTable(true)
 
-    private lateinit var labelName: VisLabel
-    private lateinit var textName: VisValidatableTextField
-    private lateinit var labelImage: VisLabel
+    private val labelName = VisLabel(Translations.of("name", "Name"))
+    private val textName = VisValidatableTextField()
+    private val labelImage = VisLabel(Translations.of("image", "Image"))
     //private lateinit var buttonImage: AnimatedButton
-    private lateinit var labelArmor: VisLabel
-    private lateinit var textArmor: VisValidatableTextField
-    private lateinit var labelMovementSpeed: VisLabel
-    private lateinit var textMovementSpeed: VisValidatableTextField
-    private lateinit var labelHitpoints: VisLabel
-    private lateinit var textHitpoints: VisValidatableTextField
-    private lateinit var labelHPregen: VisLabel
-    private lateinit var textHPregen: VisValidatableTextField
+    private val labelArmor = VisLabel(Translations.of("armor", "Armor"))
+    private val textArmor = VisValidatableTextField()
+    private val labelHitpoints = VisLabel(Translations.of("hitpoints", "Hit points"))
+    private val textHitpoints = VisValidatableTextField()
+    private val labelHPregen = VisLabel(Translations.of("hpregen", "HP regen"))
+    private val textHPregen = VisValidatableTextField()
+    private val labelMovementSpeed = VisLabel(Translations.of("speed", "Speed"))
+    private val textMovementSpeed = VisValidatableTextField()
 
     /* CheckBoxes */
-    private lateinit var checkAir: VisCheckBox
-    private lateinit var checkInvisible: VisCheckBox
-    private lateinit var checkAntiStun: VisCheckBox
-    private lateinit var checkAntiSlow: VisCheckBox
+    private val checkAir = VisCheckBox(Translations.of("air", "Air"))
+    private val checkInvisible = VisCheckBox(Translations.of("invisible", "Invisible"))
+    private val checkAntiSlow = VisCheckBox(Translations.of("antislow", "Anti slow"))
+    private val checkAntiStun = VisCheckBox(Translations.of("antistun", "Anti stun"))
 
     //private var soundTable: SoundTable<UnitSound>? = null
     //private var coinDropTable: CoinQuantifierTable? = null
@@ -35,7 +35,6 @@ class MobTab: BaseTab(Translations.of("tabs.mobs", "Mobs")) {
     }
 
     private fun buildTable() {
-        initializeComponents()
         setUpValidableForm()
         placeComponents()
 
@@ -86,14 +85,7 @@ class MobTab: BaseTab(Translations.of("tabs.mobs", "Mobs")) {
 
     private fun initializeComponents() {
         //list = UnitList(InfiniteEditor.game.getUnits(), this)
-        propertiesTable = VisTable(true)
 
-        /* Name */
-        labelName = VisLabel(Translations.of("name", "Name"))
-        textName = VisValidatableTextField()
-
-        /* Image */
-        labelImage = VisLabel(Translations.of("image", "Image"))
         //buttonImage = AnimatedButton(AnimatedActor(null))
         //buttonImage.addListener(object : ClickListener() {
         //    fun clicked(event: InputEvent, x: Float, y: Float) {
@@ -106,20 +98,6 @@ class MobTab: BaseTab(Translations.of("tabs.mobs", "Mobs")) {
         //    }
         //})
 
-        labelArmor = VisLabel(Translations.of("armor", "Armor"))
-        textArmor = VisValidatableTextField()
-        labelHitpoints = VisLabel(Translations.of("hitpoints", "Hit points"))
-        textHitpoints = VisValidatableTextField()
-        labelHPregen = VisLabel(Translations.of("hpregen", "HP regen"))
-        textHPregen = VisValidatableTextField()
-        labelMovementSpeed = VisLabel(Translations.of("speed", "Speed"))
-        textMovementSpeed = VisValidatableTextField()
-
-        /* CheckBoxes */
-        checkAir = VisCheckBox(Translations.of("air", "Air"))
-        checkInvisible = VisCheckBox(Translations.of("invisible", "Invisible"))
-        checkAntiSlow = VisCheckBox(Translations.of("antislow", "Anti slow"))
-        checkAntiStun = VisCheckBox(Translations.of("antistun", "Anti stun"))
     }
 
 }

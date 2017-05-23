@@ -3,18 +3,22 @@ package com.jdiazcano.modulartd
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
+import com.jdiazcano.modulartd.config.Configs
 import com.jdiazcano.modulartd.keys.Priorities
 import com.jdiazcano.modulartd.keys.PriorityInputMultiplexer
 import com.jdiazcano.modulartd.keys.PriorityProcessor
 import com.jdiazcano.modulartd.plugins.PluginLoader
 import com.jdiazcano.modulartd.ui.MainMenu
+import com.jdiazcano.modulartd.ui.widgets.OpenProjectDialog
 import com.jdiazcano.modulartd.utils.toURL
 import com.kotcrab.vis.ui.VisUI
 import com.kotcrab.vis.ui.widget.VisTable
+import com.kotcrab.vis.ui.widget.file.FileChooser
 import mu.KLogging
 import org.apache.log4j.PropertyConfigurator
 
@@ -28,7 +32,10 @@ class ModularTD : ApplicationAdapter() {
 
     override fun create() {
         PropertyConfigurator.configure(Gdx.files.internal("log4j.properties").toURL())
+        FileChooser.setDefaultPrefsName(Configs.editor().preferencesKey())
         VisUI.load()
+        registerBusTopics()
+        Gdx.graphics.setTitle(Configs.editor().baseTitle())
         stage = Stage(ScreenViewport())
         Gdx.input.inputProcessor = PriorityInputMultiplexer(stage)
         Bus.post(PriorityProcessor(stage, Priorities.STAGE), BusTopic.PROCESSOR_REGISTERED)
@@ -48,6 +55,15 @@ class ModularTD : ApplicationAdapter() {
         root.add(menu.table).expandX().fillX().padBottom(5F).row()
         root.add(screen).expand().fill().row()
         // TODO root.add("Lower label for displaying information")
+
+        OpenProjectDialog.select()
+    }
+
+    private fun registerBusTopics() {
+        // This will handle the dialogs that will be posted in the stage
+        Bus.register<Actor>(Actor::class.java, BusTopic.NEW_DIALOG) {
+            stage.addActor(it)
+        }
     }
 
     override fun resize(width: Int, height: Int) {

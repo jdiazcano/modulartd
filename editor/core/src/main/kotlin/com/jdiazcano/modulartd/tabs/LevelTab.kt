@@ -1,7 +1,7 @@
 package com.jdiazcano.modulartd.tabs
 
-import com.jdiazcano.modulartd.config.Translations
+import com.jdiazcano.modulartd.utils.translate
 
-class LevelTab: BaseTab(Translations.of("tabs.levels", "Levels")) {
+class LevelTab: BaseTab(translate("tabs.levels", "Levels")) {
 
 }

@@ -11,7 +11,7 @@ import com.kotcrab.vis.ui.VisUI
 import com.kotcrab.vis.ui.widget.VisScrollPane
 import com.kotcrab.vis.ui.widget.VisTable
 
-val highlightBackground = VisUI.getSkin().getDrawable("list-selection")
+val highlightBackground: Drawable = VisUI.getSkin().getDrawable("list-selection")
 
 abstract class TableList<O : Any, V : Table>(var objects: MutableList<O> = arrayListOf()) : VisTable(), BaseList<O, V> {
 

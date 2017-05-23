@@ -76,4 +76,14 @@ enum class BusTopic {
      */
     SHORTCUT_UPDATED,
 
+    /**
+     * A new dialog that will mostly be caught by the scene so it can pass objects around
+     */
+    NEW_DIALOG,
+
+    /**
+     * This will be invoked when a map is loaded (or created an loaded right after)
+     */
+    MAP_LOAD,
+
 }

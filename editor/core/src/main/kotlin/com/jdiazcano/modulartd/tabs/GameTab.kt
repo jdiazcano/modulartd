@@ -1,8 +1,8 @@
 package com.jdiazcano.modulartd.tabs
 
-import com.jdiazcano.modulartd.config.Translations
+import com.jdiazcano.modulartd.utils.translate
 
-class GameTab: BaseTab(Translations.of("tabs.game", "Game")) {
+class GameTab: BaseTab(translate("tabs.game", "Game")) {
     init {
 
     }

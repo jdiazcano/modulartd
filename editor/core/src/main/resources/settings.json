@@ -13,6 +13,7 @@
     "maxGridHeight": 40,
     "unitCount": 50,
     "circularRegions": false,
-    "preferencesKey": "com.jdiazcano.modulartd"
+    "preferencesKey": "com.jdiazcano.modulartd",
+    "baseTitle": "ModularTD"
   }
 }

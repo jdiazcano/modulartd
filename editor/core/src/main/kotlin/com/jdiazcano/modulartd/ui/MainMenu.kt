@@ -5,11 +5,11 @@ import com.jdiazcano.modulartd.ActionManager
 import com.jdiazcano.modulartd.ParentedAction
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
-import com.jdiazcano.modulartd.config.Translations
 import com.jdiazcano.modulartd.plugins.actions.Action
 import com.jdiazcano.modulartd.plugins.actions.Menus
 import com.jdiazcano.modulartd.plugins.actions.SeparatorPlace
 import com.jdiazcano.modulartd.utils.getOrThrow
+import com.jdiazcano.modulartd.utils.translate
 import com.kotcrab.vis.ui.widget.Menu
 import com.kotcrab.vis.ui.widget.MenuBar
 import com.kotcrab.vis.ui.widget.PopupMenu
@@ -17,11 +17,11 @@ import com.kotcrab.vis.ui.widget.PopupMenu
 class MainMenu : MenuBar() {
     private val menuItems: MutableMap<Action, ActionedMenuItem> = mutableMapOf()
     private val menus = mapOf(
-            Menus.FILE to Menu(Translations.of("menu.file", "File")),
-            Menus.VIEW to Menu(Translations.of("menu.view", "View")),
-            Menus.EDIT to Menu(Translations.of("menu.edit", "Edit")),
-            Menus.GAME to Menu(Translations.of("menu.game", "Game")),
-            Menus.HELP to Menu(Translations.of("menu.help", "Help"))
+            Menus.FILE to Menu(translate("menu.file", "File")),
+            Menus.VIEW to Menu(translate("menu.view", "View")),
+            Menus.EDIT to Menu(translate("menu.edit", "Edit")),
+            Menus.GAME to Menu(translate("menu.game", "Game")),
+            Menus.HELP to Menu(translate("menu.help", "Help"))
     )
     init {
         menus.forEach { addMenu(it.value) }

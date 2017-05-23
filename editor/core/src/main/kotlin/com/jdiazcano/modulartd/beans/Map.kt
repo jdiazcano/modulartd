@@ -15,8 +15,8 @@ data class Map(
 
         var gridWidth: Int = Configs.editor().gridWidth(),
         var gridHeight: Int = Configs.editor().gridHeight(),
-        var tileWidth: Int = Configs.editor().tileWidth(),
-        var tileHeight: Int = Configs.editor().tileHeight(),
+        var tileWidth: Float = Configs.editor().tileWidth(),
+        var tileHeight: Float = Configs.editor().tileHeight(),
 
         var timeBetweenLevels: Float = Configs.editor().timeBetweenLevels(),
         var interestRatio: Float = Configs.editor().interestRatio(),
@@ -29,13 +29,16 @@ data class Map(
         // var endAction: EndAction = Configs.editor().endAction()
         var unitCount: Int = Configs.editor().unitCount(),
 
-        override var script: String = ""
+        override var script: String = "",
+
+        var layers: MutableList<Layer> = arrayListOf(),
+        var turrets: MutableList<Turret> = arrayListOf(),
+        var units: MutableList<Unit> = arrayListOf(),
+        var waves: MutableList<Wave> = arrayListOf(),
+        var tiles: MutableList<Tile> = arrayListOf(),
+        val coins: MutableList<Coin> = arrayListOf(),
+        val resources: MutableList<Resource> = arrayListOf()
 ): Scriptable {
 
-    var layers: List<Layer> = arrayListOf()
-    var turrets: List<Turret> = arrayListOf()
-    var units: List<Unit> = arrayListOf()
-    var waves: List<Wave> = arrayListOf()
-    var tiles: List<Tile> = arrayListOf()
 
 }

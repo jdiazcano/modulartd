@@ -1,31 +1,35 @@
 package com.jdiazcano.modulartd.tabs
 
-import com.badlogic.gdx.scenes.scene2d.Actor
-import com.jdiazcano.modulartd.config.Translations
+import com.github.salomonbrys.kodein.instance
+import com.jdiazcano.modulartd.beans.Map
+import com.jdiazcano.modulartd.injections.kodein
+import com.jdiazcano.modulartd.ui.widgets.lists.UnitList
+import com.jdiazcano.modulartd.utils.translate
 import com.kotcrab.vis.ui.widget.*
 
-class MobTab: BaseTab(Translations.of("tabs.mobs", "Mobs")) {
+class MobTab: BaseTab(translate("tabs.mobs", "Mobs")) {
     private lateinit var splitPane: VisSplitPane
     private val propertiesTable = VisTable(true)
+    private val list = UnitList(kodein.instance<Map>().units)
 
-    private val labelName = VisLabel(Translations.of("name", "Name"))
+    private val labelName = VisLabel(translate("name", "Name"))
     private val textName = VisValidatableTextField()
-    private val labelImage = VisLabel(Translations.of("image", "Image"))
+    private val labelImage = VisLabel(translate("image", "Image"))
     //private lateinit var buttonImage: AnimatedButton
-    private val labelArmor = VisLabel(Translations.of("armor", "Armor"))
+    private val labelArmor = VisLabel(translate("armor", "Armor"))
     private val textArmor = VisValidatableTextField()
-    private val labelHitpoints = VisLabel(Translations.of("hitpoints", "Hit points"))
+    private val labelHitpoints = VisLabel(translate("hitpoints", "Hit points"))
     private val textHitpoints = VisValidatableTextField()
-    private val labelHPregen = VisLabel(Translations.of("hpregen", "HP regen"))
+    private val labelHPregen = VisLabel(translate("hpregen", "HP regen"))
     private val textHPregen = VisValidatableTextField()
-    private val labelMovementSpeed = VisLabel(Translations.of("speed", "Speed"))
+    private val labelMovementSpeed = VisLabel(translate("speed", "Speed"))
     private val textMovementSpeed = VisValidatableTextField()
 
     /* CheckBoxes */
-    private val checkAir = VisCheckBox(Translations.of("air", "Air"))
-    private val checkInvisible = VisCheckBox(Translations.of("invisible", "Invisible"))
-    private val checkAntiSlow = VisCheckBox(Translations.of("antislow", "Anti slow"))
-    private val checkAntiStun = VisCheckBox(Translations.of("antistun", "Anti stun"))
+    private val checkAir = VisCheckBox(translate("air", "Air"))
+    private val checkInvisible = VisCheckBox(translate("invisible", "Invisible"))
+    private val checkAntiSlow = VisCheckBox(translate("antislow", "Anti slow"))
+    private val checkAntiStun = VisCheckBox(translate("antistun", "Anti stun"))
 
     //private var soundTable: SoundTable<UnitSound>? = null
     //private var coinDropTable: CoinQuantifierTable? = null
@@ -67,9 +71,9 @@ class MobTab: BaseTab(Translations.of("tabs.mobs", "Mobs")) {
 
         //We must have this tables, else we can't place things at the top
         val tableList = VisTable(true)
-        tableList.add(VisTable()).fillX().expand().top()
+        tableList.add(list).fillX().expand().top()
         val tableProp = VisTable(true)
-        tableProp.add<Actor>(propertiesTable).padLeft(17f).fillX().expand().top()
+        tableProp.add(propertiesTable).padLeft(17f).fillX().expand().top()
 
         splitPane = VisSplitPane(tableList, tableProp, false)
         splitPane.setSplitAmount(0.40f)

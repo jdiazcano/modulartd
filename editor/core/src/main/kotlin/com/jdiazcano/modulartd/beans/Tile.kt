@@ -11,5 +11,5 @@ class Tile(
         rotationAngle: Float,
         var buildable: Boolean
 ) : MapObject(name, resource, rotationAngle), Scriptable {
-    override var script: String = ""
+
 }

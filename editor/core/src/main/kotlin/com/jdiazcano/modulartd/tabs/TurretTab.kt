@@ -1,7 +1,7 @@
 package com.jdiazcano.modulartd.tabs
 
-import com.jdiazcano.modulartd.config.Translations
+import com.jdiazcano.modulartd.utils.translate
 
-class TurretTab: BaseTab(Translations.of("tabs.turrets", "Turrets")) {
+class TurretTab: BaseTab(translate("tabs.turrets", "Turrets")) {
 
 }

@@ -1,7 +1,7 @@
 package com.jdiazcano.modulartd.tabs
 
-import com.jdiazcano.modulartd.config.Translations
+import com.jdiazcano.modulartd.utils.translate
 
-class TileTab: BaseTab(Translations.of("tabs.tiles", "Tiles")) {
+class TileTab: BaseTab(translate("tabs.tiles", "Tiles")) {
 
 }

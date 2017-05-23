@@ -35,12 +35,22 @@ interface EditorConfig {
     /**
      * Default tile width
      */
-    fun tileWidth(): Int
+    fun tileWidth(): Float
 
     /**
      * Default tile height
      */
-    fun tileHeight(): Int
+    fun tileHeight(): Float
+
+    /**
+     * Maximum tile width
+     */
+    fun maxTileWidth(): Float
+
+    /**
+     * Maximum tile height
+     */
+    fun maxTileHeight(): Float
 
     /**
      * The time that will have to pass between levels
@@ -66,5 +76,27 @@ interface EditorConfig {
      */
     fun unitCount(): Int
 
+    /**
+     * The key that will be used for libgdx preferences that will manage the configuration made to the editor.
+     */
     fun preferencesKey(): String
+
+    /**
+     * The file that will contain the whole map!
+     */
+    fun gameFileName(): String
+
+    /**
+     * The folder that will contain everything related to the map, this will be the folder that denotes if a map has
+     * been created in a folder or not!
+     */
+    fun gameConfigFolder(): String
+
+    /**
+     * The base title for the window. This will change overtime for example when opening a map!
+     *
+     * ModularTD 1.0 (base)
+     * C:\Whatever\bestmap - ModularTD 1.0 (when a map has been opened)
+     */
+    fun baseTitle(): String
 }

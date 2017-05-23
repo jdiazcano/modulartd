@@ -12,10 +12,7 @@ import com.jdiazcano.modulartd.config.EditorConfig
 import com.jdiazcano.modulartd.plugins.actions.Action
 import com.jdiazcano.modulartd.plugins.actions.Preferences
 import com.jdiazcano.modulartd.plugins.actions.RegisterAction
-import com.jdiazcano.modulartd.plugins.bundled.AboutPlugin
-import com.jdiazcano.modulartd.plugins.bundled.ExitPlugin
-import com.jdiazcano.modulartd.plugins.bundled.NewPlugin
-import com.jdiazcano.modulartd.plugins.bundled.PreferencesPlugin
+import com.jdiazcano.modulartd.plugins.bundled.*
 import com.jdiazcano.modulartd.utils.readUtf8
 import com.jdiazcano.modulartd.utils.toURL
 import mu.KLogging
@@ -86,7 +83,7 @@ class PluginLoader {
     fun loadBundledPlugins() {
         // File
         registerPlugin(NewPlugin())
-        // TODO Future plugins: registerPlugin(OpenPlugin())
+        registerPlugin(OpenPlugin())
         // TODO Future plugins: registerPlugin(SavePlugin(false))
         // TODO Future plugins: registerPlugin(SavePlugin(true))
 

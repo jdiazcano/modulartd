@@ -43,3 +43,8 @@ fun <T, V> MutableMap<T, V>.getOrThrow(key: T, throwable: Throwable = IllegalArg
 }
 
 fun translate(key: String, default: String) = Translations.of(key, default)
+
+/**
+ * Returns the text if the boolean value is true, else it will return an empty string.
+ */
+fun Boolean.text(string: String): String = if (this) string else ""

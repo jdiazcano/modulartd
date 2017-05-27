@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.files.FileHandle
 import com.github.salomonbrys.kodein.instance
+import com.google.gson.Gson
 import com.jdiazcano.modulartd.beans.Game
+import com.jdiazcano.modulartd.beans.Map
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.config.Configs
@@ -31,12 +33,45 @@ class OpenPlugin : Plugin {
     private var currentWatcher: AssetDirectoryWatcher = kodein.instance()
 
     init {
-        Bus.register<FileHandle>(FileHandle::class.java, BusTopic.MAP_LOAD) { file ->
-            val title = "${file.path()} - ${Configs.editor().baseTitle()}"
+        Bus.register<LoadMapEvent>(LoadMapEvent::class.java, BusTopic.MAP_LOAD) { (file, reloadMap) ->
+            val editor = Configs.editor
+
+            val title = "${file.path()} - ${Configs.editor.baseTitle()}"
             Gdx.graphics.setTitle(title)
 
             val game: Game = kodein.instance()
             game.gameFolder = file
+
+            if (reloadMap) {
+                val mapFile = file.child(editor.gameConfigFolder()).child(editor.gameFileName())
+                val loadedMap = Gson().fromJson(mapFile.reader(), Map::class.java)
+                val map: Map = kodein.instance()
+                map.apply {
+                    // TODO Do this with reflection so I don't have to add a new field here when a new field is added
+                    name = loadedMap.name
+                    version = loadedMap.version
+                    description = loadedMap.description
+                    author = loadedMap.author
+                    authorNotes = loadedMap.authorNotes
+                    gridWidth = loadedMap.gridWidth
+                    gridHeight = loadedMap.gridHeight
+                    tileWidth = loadedMap.tileWidth
+                    tileHeight = loadedMap.tileHeight
+                    timeBetweenLevels = loadedMap.timeBetweenLevels
+                    interestRatio = loadedMap.interestRatio
+                    turretSellProfit = loadedMap.turretSellProfit
+                    unitCount = loadedMap.unitCount
+                    layers = loadedMap.layers
+                    turrets = loadedMap.turrets
+                    units = loadedMap.units
+                    waves = loadedMap.waves
+                    tiles = loadedMap.tiles
+                    coins = loadedMap.coins
+                    resources = loadedMap.resources
+                    script = loadedMap.script
+                }
+                Bus.post(map.resources, BusTopic.RESOURCES_RELOAD)
+            }
 
             currentWatcher.stopWatching()
             currentWatcher = kodein.instance()
@@ -67,8 +102,8 @@ class OpenAction : Action("file.open", translate("file.open", "Open"), ShortCut(
         chooser.setWatchingFilesEnabled(true)
         chooser.selectionMode = FileChooser.SelectionMode.DIRECTORIES
         chooser.setSingleFileListener(errorDialog) { file ->
-            if (file.child(".itd").exists()) {
-                Bus.post(file, BusTopic.MAP_LOAD)
+            if (file.child(Configs.editor.gameConfigFolder()).exists()) {
+                Bus.post(LoadMapEvent(file, true), BusTopic.MAP_LOAD)
             } else {
                 showErrorDialog("Failed to open", "This is not a game folder")
             }
@@ -78,3 +113,5 @@ class OpenAction : Action("file.open", translate("file.open", "Open"), ShortCut(
         Bus.post(chooser.fadeIn(), BusTopic.NEW_DIALOG)
     }
 }
+
+data class LoadMapEvent(val file: FileHandle, val reloadMap: Boolean)

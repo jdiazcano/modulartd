@@ -2,6 +2,8 @@ package com.jdiazcano.modulartd.ui.widgets
 
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
+import com.jdiazcano.modulartd.config.Configs
+import com.jdiazcano.modulartd.plugins.bundled.LoadMapEvent
 import com.jdiazcano.modulartd.plugins.bundled.createBaseMapFiles
 import com.jdiazcano.modulartd.utils.addChangeListener
 import com.jdiazcano.modulartd.utils.createErrorDialog
@@ -24,12 +26,13 @@ object OpenProjectDialog : VisDialog(translate("select.project", "Select project
         chooser.setWatchingFilesEnabled(true)
         chooser.selectionMode = FileChooser.SelectionMode.DIRECTORIES
         chooser.setSingleFileListener(errorDialog) { file ->
-            val itdFolder = file.child(".itd")
-            if (!itdFolder.exists()) {
-                createBaseMapFiles(itdFolder)
+            val itdFolder = file.child(Configs.editor.gameConfigFolder())
+            val existingMap = itdFolder.exists()
+            if (!existingMap) {
+                createBaseMapFiles(file)
             }
 
-            Bus.post(file, BusTopic.MAP_LOAD)
+            Bus.post(LoadMapEvent(file, existingMap), BusTopic.MAP_LOAD)
 
             fadeOut()
         }

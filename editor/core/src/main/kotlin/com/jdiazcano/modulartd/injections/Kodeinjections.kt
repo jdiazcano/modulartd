@@ -16,7 +16,7 @@ val kodein = Kodein {
     bind<Game>() with singleton { Game() }
     bind<FileIO<Map>>() with singleton { JsonMapIO() }
     bind<MapObjectRenderer>() with singleton { MapObjectRenderer() }
-    bind<ResourceManager>() with eagerSingleton { ResourceManager() }
+    bind<ResourceManager>() with eagerSingleton { ResourceManager(instance()) }
     bind<AssetDirectoryWatcher>() with provider {
         val game = kodein.instance<Game>()
         AssetDirectoryWatcher(

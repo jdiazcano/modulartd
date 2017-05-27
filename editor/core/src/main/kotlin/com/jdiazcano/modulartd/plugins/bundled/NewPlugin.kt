@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.files.FileHandle
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
+import com.jdiazcano.modulartd.config.Configs
 import com.jdiazcano.modulartd.keys.Modifiers
 import com.jdiazcano.modulartd.keys.ShortCut
 import com.jdiazcano.modulartd.plugins.Plugin
@@ -45,11 +46,11 @@ class NewAction : Action("file.new", "New", ShortCut(Input.Keys.N, Modifiers(con
         chooser.setWatchingFilesEnabled(true)
         chooser.selectionMode = FileChooser.SelectionMode.DIRECTORIES
         chooser.setSingleFileListener(errorDialog) { file ->
-            val itdFolder = file.child(".itd")
+            val itdFolder = file.child(Configs.editor.gameConfigFolder())
             if (!itdFolder.exists()) {
                 createBaseMapFiles(file)
 
-                Bus.post(file, BusTopic.MAP_LOAD)
+                Bus.post(LoadMapEvent(file, false), BusTopic.MAP_LOAD)
             } else {
                 showErrorDialog("Failed to create", "This is an already created map, please open it.")
             }
@@ -61,8 +62,11 @@ class NewAction : Action("file.new", "New", ShortCut(Input.Keys.N, Modifiers(con
 
 }
 
+/**
+ * Create the base map files from the base folder of a map, this will NOT be the path for an .itd folder
+ */
 fun createBaseMapFiles(baseFile: FileHandle) {
-    val itdFolder = baseFile.child(".itd")
+    val itdFolder = baseFile.child(Configs.editor.gameConfigFolder())
     val soundsFolder = baseFile.child("sounds")
     val imagesFolder = baseFile.child("images")
     itdFolder.mkdirs()

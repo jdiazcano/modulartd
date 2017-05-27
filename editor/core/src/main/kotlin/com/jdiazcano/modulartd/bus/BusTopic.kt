@@ -90,4 +90,9 @@ enum class BusTopic {
      * When something has finished doing something this will be fired.
      */
     LOAD_FINISHED,
+
+    /**
+     * Fired when a map is reloaded and the resources must be cleared and reinserted
+     */
+    RESOURCES_RELOAD,
 }

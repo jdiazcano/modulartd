@@ -8,10 +8,9 @@ import com.jdiazcano.modulartd.utils.isAtlasFile
 import com.jdiazcano.modulartd.utils.resourceType
 
 /**
- * This class will be attached to the system waiting for changes in files. Inside the .itd folder there should be two
- * more folders that will contain the sounds and the images (soon(TM) it will be possible to just drag the resources
- * inside the editor and they will be copied/imported automatically). So normally it will be used with these two
- * directories.
+ * This class will be attached to the system waiting for changes in files. Inside the .itd folder (Configs.editor().gameConfigFolder())
+ * there should be two more folders that will contain the sounds and the images (soon(TM) it will be possible to just drag the resources
+ * inside the editor and they will be copied/imported automatically). So normally it will be used with these two directories.
  *
  * TODO Scan for current images in these directories when a new map is created, NOT when is opened. When is opened, the
  * TODO GAMEFILE should be the one containing the resources and shall be loaded that way. This will be unlikely to happen though.

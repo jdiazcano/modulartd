@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.assets.loaders.resolvers.AbsoluteFileHandleResolver
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.utils.Disposable
+import com.jdiazcano.modulartd.beans.Map
 import com.jdiazcano.modulartd.beans.Resource
 import com.jdiazcano.modulartd.beans.ResourceType
 import com.jdiazcano.modulartd.bus.Bus
@@ -16,14 +17,14 @@ import mu.KLogging
  * This will be the resource manager that will become the handler for all the resources. A resource is a file auto loaded
  * from a file which can be of any of the ResourceType(s)
  */
-class ResourceManager: Disposable {
+class ResourceManager(map: Map): Disposable {
 
     companion object : KLogging() {
         val NO_SOUND = Resource(Gdx.files.absolute(" - No sound - "), ResourceType.SOUND)
     }
 
     private val manager = AssetManager(AbsoluteFileHandleResolver())
-    private val resources = arrayListOf<Resource>()
+    private var resources: MutableSet<Resource> = map.resources
 
     init {
         // Custom handler for the Sprites because they actually need to load different images all corresponding to the
@@ -47,6 +48,12 @@ class ResourceManager: Disposable {
             }
         }
 
+        Bus.register<MutableSet<Resource>>(MutableSet::class.java, BusTopic.RESOURCES_RELOAD) { resources ->
+            this.resources = resources
+            resources.forEach {
+                addResource(it, true)
+            }
+        }
         // The NO_SOUND needs to be addressed because an action is not mandatory to have a sound
         Bus.post(NO_SOUND, BusTopic.CREATED)
     }
@@ -74,8 +81,10 @@ class ResourceManager: Disposable {
      *
      * This should not be used directly because the bus should catch the event and act accordingly.
      */
-    private fun addResource(resource: Resource) {
-        resources.add(resource)
+    private fun addResource(resource: Resource, loadOnly: Boolean = false) {
+        if (!loadOnly) {
+            resources.add(resource)
+        }
         manager.load(resource.file.path(), resource.assetType())
     }
 

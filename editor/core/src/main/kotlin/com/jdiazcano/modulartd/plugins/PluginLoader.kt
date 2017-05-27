@@ -28,7 +28,7 @@ class PluginLoader {
 
     private val plugins: MutableList<Plugin> = mutableListOf()
 
-    private val config : EditorConfig = Configs.editor()
+    private val config : EditorConfig = Configs.editor
 
     init {
         Bus.register<Plugin>(Plugin::class.java, BusTopic.PLUGIN_REGISTERED) { plugin ->
@@ -84,8 +84,8 @@ class PluginLoader {
         // File
         registerPlugin(NewPlugin())
         registerPlugin(OpenPlugin())
-        // TODO Future plugins: registerPlugin(SavePlugin(false))
-        // TODO Future plugins: registerPlugin(SavePlugin(true))
+        registerPlugin(SavePlugin(false))
+        registerPlugin(SavePlugin(true))
 
         // Edit
         registerPlugin(PreferencesPlugin())

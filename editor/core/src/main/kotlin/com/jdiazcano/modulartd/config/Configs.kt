@@ -20,14 +20,13 @@ object Configs {
     )
     private val provider = OverrideConfigProvider(classPathSource, overrideSource)
 
-    val preferences = RxDesktopPreferences(Preferences.userRoot().node(editor().preferencesKey()))
-
     /**
      * Editor config, this config will be mostly GUI and tower defense specific stuff. This is a static default value
      * store, nothing else.
      */
-    fun editor() = provider.bind<EditorConfig>("editor")
+    val editor = provider.bind<EditorConfig>("editor")
 
+    val preferences = RxDesktopPreferences(Preferences.userRoot().node(editor.preferencesKey()))
 }
 
 // TODO rethink if the override is needed, all strings should be there and if something fails is because it should fail

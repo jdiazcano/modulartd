@@ -35,10 +35,10 @@ class ModularTD : ApplicationAdapter() {
 
     override fun create() {
         PropertyConfigurator.configure(Gdx.files.internal("log4j.properties").toURL())
-        FileChooser.setDefaultPrefsName(Configs.editor().preferencesKey())
+        FileChooser.setDefaultPrefsName(Configs.editor.preferencesKey())
         VisUI.load()
         registerBusTopics()
-        Gdx.graphics.setTitle(Configs.editor().baseTitle())
+        Gdx.graphics.setTitle(Configs.editor.baseTitle())
         kodein.instance<AssetDirectoryWatcher>().startWatching()
         stage = Stage(ScreenViewport())
         Gdx.input.inputProcessor = PriorityInputMultiplexer(stage)

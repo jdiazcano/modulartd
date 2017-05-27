@@ -10,6 +10,7 @@ import com.jdiazcano.modulartd.beans.ResourceType
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.utils.SpriteLoader
+import mu.KLogging
 
 /**
  * This will be the resource manager that will become the handler for all the resources. A resource is a file auto loaded
@@ -17,7 +18,7 @@ import com.jdiazcano.modulartd.utils.SpriteLoader
  */
 class ResourceManager: Disposable {
 
-    companion object {
+    companion object : KLogging() {
         val NO_SOUND = Resource(Gdx.files.absolute(" - No sound - "), ResourceType.SOUND)
     }
 
@@ -31,14 +32,31 @@ class ResourceManager: Disposable {
 
         Bus.register<Resource>(Resource::class.java, BusTopic.CREATED) {
             addResource(it)
+            logger.debug { "Loaded resource: $it" }
         }
 
         Bus.register<Resource>(Resource::class.java, BusTopic.DELETED) {
             removeResource(it)
+            logger.debug { "Deleted resource: $it" }
+        }
+
+        Bus.register<Resource>(Resource::class.java, BusTopic.DELETED) {
+            if (it in resources) {
+                reloadResource(it)
+                logger.debug { "Reloaded resource $it" }
+            }
         }
 
         // The NO_SOUND needs to be addressed because an action is not mandatory to have a sound
         Bus.post(NO_SOUND, BusTopic.CREATED)
+    }
+
+    private fun reloadResource(resource: Resource) {
+        val path = resource.file.path()
+        manager.unload(path)
+        manager.load(path, resource.assetType())
+        manager.finishLoadingAsset(path)
+        Bus.post(resource, BusTopic.LOAD_FINISHED)
     }
 
     /**

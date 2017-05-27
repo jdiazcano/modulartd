@@ -17,6 +17,7 @@ import com.jdiazcano.modulartd.plugins.actions.Menus
 import com.jdiazcano.modulartd.plugins.actions.RegisterAction
 import com.jdiazcano.modulartd.plugins.ui.StageWrapper
 import com.jdiazcano.modulartd.utils.createErrorDialog
+import com.jdiazcano.modulartd.utils.filewatcher.AssetDirectoryWatcher
 import com.jdiazcano.modulartd.utils.setSingleFileListener
 import com.jdiazcano.modulartd.utils.showErrorDialog
 import com.jdiazcano.modulartd.utils.translate
@@ -27,6 +28,8 @@ import com.kotcrab.vis.ui.widget.file.FileChooser
  */
 class OpenPlugin : Plugin {
 
+    private var currentWatcher: AssetDirectoryWatcher = kodein.instance()
+
     init {
         Bus.register<FileHandle>(FileHandle::class.java, BusTopic.MAP_LOAD) { file ->
             val title = "${file.path()} - ${Configs.editor().baseTitle()}"
@@ -34,7 +37,10 @@ class OpenPlugin : Plugin {
 
             val game: Game = kodein.instance()
             game.gameFolder = file
-            Unit // TODO look for a better way to return nothing from a method (In Kotlin it is UNIT)
+
+            currentWatcher.stopWatching()
+            currentWatcher = kodein.instance()
+            currentWatcher.startWatching()
         }
     }
 

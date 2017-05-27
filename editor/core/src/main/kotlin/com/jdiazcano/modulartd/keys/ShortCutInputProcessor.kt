@@ -32,7 +32,7 @@ class ShortCutInputProcessor(stage: Stage) : InputAdapter() {
 
         Bus.register<ShortCutAction>(ShortCutAction::class.java, BusTopic.SHORTCUT_UPDATED) {
             actionMap[it.shortCut] = it.action
-            logger.debug { "Shortcut updated : ${KeyPrinters.print(it.shortCut)}" }
+            logger.debug { "Shortcut modified : ${KeyPrinters.print(it.shortCut)}" }
         }
 
         Bus.register<ParentedAction>(ParentedAction::class.java, BusTopic.ACTION_UNREGISTERED) {

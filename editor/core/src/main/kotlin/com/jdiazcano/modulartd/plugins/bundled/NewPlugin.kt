@@ -47,7 +47,7 @@ class NewAction : Action("file.new", "New", ShortCut(Input.Keys.N, Modifiers(con
         chooser.setSingleFileListener(errorDialog) { file ->
             val itdFolder = file.child(".itd")
             if (!itdFolder.exists()) {
-                createBaseMapFiles(itdFolder)
+                createBaseMapFiles(file)
 
                 Bus.post(file, BusTopic.MAP_LOAD)
             } else {
@@ -61,6 +61,11 @@ class NewAction : Action("file.new", "New", ShortCut(Input.Keys.N, Modifiers(con
 
 }
 
-fun createBaseMapFiles(itdFolder: FileHandle) {
+fun createBaseMapFiles(baseFile: FileHandle) {
+    val itdFolder = baseFile.child(".itd")
+    val soundsFolder = baseFile.child("sounds")
+    val imagesFolder = baseFile.child("images")
     itdFolder.mkdirs()
+    soundsFolder.mkdirs()
+    imagesFolder.mkdirs()
 }

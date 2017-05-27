@@ -86,4 +86,8 @@ enum class BusTopic {
      */
     MAP_LOAD,
 
+    /**
+     * When something has finished doing something this will be fired.
+     */
+    LOAD_FINISHED,
 }

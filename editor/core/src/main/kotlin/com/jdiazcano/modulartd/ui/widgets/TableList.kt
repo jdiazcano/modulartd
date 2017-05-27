@@ -202,6 +202,14 @@ abstract class TableList<O : Any, V : Table>(var objects: MutableList<O> = array
         viewDrop?.remove()
         viewDrop = null
     }
+
+    fun invalidateList() {
+        items.forEach { it.hashCode = -12345 }
+        notifyDataSetChanged()
+        if (hasSelection()) {
+            selectItem(selectedIndex)
+        }
+    }
 }
 
 class Item<V : Table>(

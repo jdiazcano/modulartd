@@ -6,15 +6,18 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.github.salomonbrys.kodein.instance
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.config.Configs
+import com.jdiazcano.modulartd.injections.kodein
 import com.jdiazcano.modulartd.keys.Priorities
 import com.jdiazcano.modulartd.keys.PriorityInputMultiplexer
 import com.jdiazcano.modulartd.keys.PriorityProcessor
 import com.jdiazcano.modulartd.plugins.PluginLoader
 import com.jdiazcano.modulartd.ui.MainMenu
 import com.jdiazcano.modulartd.ui.widgets.OpenProjectDialog
+import com.jdiazcano.modulartd.utils.filewatcher.AssetDirectoryWatcher
 import com.jdiazcano.modulartd.utils.toURL
 import com.kotcrab.vis.ui.VisUI
 import com.kotcrab.vis.ui.widget.VisTable
@@ -36,6 +39,7 @@ class ModularTD : ApplicationAdapter() {
         VisUI.load()
         registerBusTopics()
         Gdx.graphics.setTitle(Configs.editor().baseTitle())
+        kodein.instance<AssetDirectoryWatcher>().startWatching()
         stage = Stage(ScreenViewport())
         Gdx.input.inputProcessor = PriorityInputMultiplexer(stage)
         Bus.post(PriorityProcessor(stage, Priorities.STAGE), BusTopic.PROCESSOR_REGISTERED)
@@ -78,6 +82,7 @@ class ModularTD : ApplicationAdapter() {
     }
 
     override fun dispose() {
+        kodein.instance<AssetDirectoryWatcher>().stopWatching()
         VisUI.dispose()
         stage.dispose()
     }

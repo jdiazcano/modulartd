@@ -15,7 +15,7 @@ import com.jdiazcano.modulartd.utils.clickListener
 import com.jdiazcano.modulartd.utils.translate
 import com.kotcrab.vis.ui.widget.*
 
-class MobTab: BaseTab<Unit>(translate("tabs.mobs", "Mobs")) {
+class UnitTab: BaseTab<Unit>(translate("tabs.units", "Units")) {
 
     private lateinit var splitPane: VisSplitPane
     private val propertiesTable = VisTable(true)
@@ -33,7 +33,7 @@ class MobTab: BaseTab<Unit>(translate("tabs.mobs", "Mobs")) {
     private val textHPregen = VisValidatableTextField()
     private val labelMovementSpeed = VisLabel(translate("speed", "Speed"))
     private val textMovementSpeed = VisValidatableTextField()
-    private val labelLivesTaken = VisLabel(translate("livestaken", "Lives"))
+    private val labelLivesTaken = VisLabel(translate("livestaken", "Lives taken"))
     private val textLivesTaken = VisValidatableTextField()
 
     /* CheckBoxes */
@@ -46,6 +46,10 @@ class MobTab: BaseTab<Unit>(translate("tabs.mobs", "Mobs")) {
     //private var coinDropTable: CoinQuantifierTable? = null
 
     init {
+        Bus.register<Unit>(Unit::class.java, BusTopic.SELECTED) {
+            updateUI(it)
+        }
+
         buildTable()
     }
 
@@ -64,12 +68,20 @@ class MobTab: BaseTab<Unit>(translate("tabs.mobs", "Mobs")) {
     }
 
     override fun save(): Boolean {
-        Bus.post(getCurrentObject(), BusTopic.CREATED)
+        if (list.hasSelection()) {
+            val item = list.selectedItem
+            item.update(getCurrentObject())
+            list.notifyDataSetChanged()
+        } else {
+            Bus.post(getCurrentObject(), BusTopic.CREATED)
+        }
         return true
     }
 
     override fun reset() {
-        list.selectItem(list.selectedIndex)
+        if (list.hasSelection()) {
+            updateUI(list.selectedItem)
+        }
     }
 
     override fun newItem() {
@@ -82,6 +94,7 @@ class MobTab: BaseTab<Unit>(translate("tabs.mobs", "Mobs")) {
         textHitpoints.text = item.hitPoints.toString()
         textArmor.text = item.armor.toString()
         textHPregen.text = item.hpRegenPerSecond.toString()
+        textLivesTaken.text = item.livesTaken.toString()
         buttonImage.resource = item.resource
         buttonImage.rotation = item.rotationAngle
         checkAntiSlow.isChecked = item.antiSlow

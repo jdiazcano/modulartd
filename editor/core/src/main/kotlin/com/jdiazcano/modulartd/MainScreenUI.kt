@@ -23,7 +23,7 @@ class MainScreenUI(parentActor: Table) : VisTable() {
         creatorsTabbedPane.add(TileTab())
         creatorsTabbedPane.add(TurretTab())
         creatorsTabbedPane.add(LevelTab())
-        creatorsTabbedPane.add(MobTab())
+        creatorsTabbedPane.add(UnitTab())
         val leftSide = VisTable()
         leftSide.add(creatorsTabbedPane.table).center().expandX().fillX().padBottom(5F).row()
         leftSide.add(creatorsTable).expand().fill()

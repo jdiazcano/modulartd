@@ -6,6 +6,7 @@ import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.ui.MapObjectView
 import com.jdiazcano.modulartd.ui.widgets.TableList
+import com.jdiazcano.modulartd.utils.clickListener
 import mu.KLogging
 
 class UnitList(units: MutableList<Unit>): TableList<Unit, MapObjectView>(units) {
@@ -16,6 +17,8 @@ class UnitList(units: MutableList<Unit>): TableList<Unit, MapObjectView>(units) 
             addItem(it)
             logger.debug { "Added unit: ${it.name}" }
         }
+
+
 
         Bus.register<kotlin.Unit>(Unit::class.java, BusTopic.RESET) {
             clearList()
@@ -28,6 +31,17 @@ class UnitList(units: MutableList<Unit>): TableList<Unit, MapObjectView>(units) 
     }
 
     override fun getView(position: Int, lastView: MapObjectView?): MapObjectView {
-        return MapObjectView(getItem(position))
+        val item = getItem(position)
+        val view = if (lastView == null) {
+            val objectView = MapObjectView(item)
+            objectView.clickListener { _, _, _ -> Bus.post(getItem(position), BusTopic.SELECTED) }
+            objectView
+        } else {
+            lastView
+        }
+        view.image.swapResource(item.resource)
+        view.rotation = item.rotationAngle
+        view.labelName.setText(item.name)
+        return view
     }
 }

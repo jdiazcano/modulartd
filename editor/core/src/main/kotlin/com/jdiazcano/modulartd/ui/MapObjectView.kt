@@ -6,13 +6,10 @@ import com.kotcrab.vis.ui.widget.VisTable
 
 class MapObjectView(item: MapObject, private val vertical: Boolean = false) : VisTable() {
 
-    var image: AnimatedActor? = null
-    val labelName: VisLabel
+    var image = AnimatedActor(item)
+    var labelName = VisLabel(item.name)
 
     init {
-        image = AnimatedActor(item)
-        labelName = VisLabel(item.name)
-
         add(image).size(50F, 50F)
         if (vertical) {
             row()
@@ -21,7 +18,7 @@ class MapObjectView(item: MapObject, private val vertical: Boolean = false) : Vi
     }
 
     override fun setRotation(degrees: Float) {
-        image?.rotation = degrees
+        image.rotation = degrees
     }
 
     fun updateImage(image: AnimatedActor) {

@@ -44,6 +44,30 @@ open class MapObject(
             }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other?.javaClass != javaClass) return false
+
+        other as Unit
+
+        if (name != other.name) return false
+        if (resource != other.resource) return false
+        if (rotationAngle != other.rotationAngle) return false
+        if (script != other.script) return false
+        if (animationTimer != other.animationTimer) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = name.hashCode()
+        result = 31 * result + resource.hashCode()
+        result = 31 * result + rotationAngle.hashCode()
+        result = 31 * result + script.hashCode()
+        result = 31 * result + animationTimer.hashCode()
+        return result
+    }
 }
 
 class MapObjectRenderer {

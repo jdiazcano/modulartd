@@ -21,6 +21,14 @@ fun <T, V> MutableMap<T, V>.getOrThrow(key: T, throwable: Throwable = IllegalArg
     }
 }
 
+/**
+ * Translate a key and uses itself as default so it is possible to identify which key is missing in the source
+ */
+fun translate(key: String) = translate(key, key)
+
+/**
+ * Calls the translations of with a default
+ */
 fun translate(key: String, default: String) = Translations.of(key, default)
 
 /**

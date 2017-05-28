@@ -214,6 +214,12 @@ abstract class TableList<O : Any, V : Table>(var objects: MutableList<O> = array
             selectItem(selectedIndex)
         }
     }
+
+    fun invalidate(index: Int) {
+
+    }
+
+    val selectedItem: O get() = getItem(selectedIndex)
 }
 
 class Item<V : Table>(

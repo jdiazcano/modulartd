@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.github.salomonbrys.kodein.instance
 import com.jdiazcano.modulartd.bus.Bus
@@ -58,6 +59,7 @@ class ModularTD : ApplicationAdapter() {
 
         root.add(menu.table).expandX().fillX().padBottom(5F).row()
         root.add(screen).expand().fill().row()
+        root.add(kodein.instance<Label>("globalMessageLabel")).expandX().left().row()
         // TODO root.add("Lower label for displaying information")
 
         OpenProjectDialog.select()

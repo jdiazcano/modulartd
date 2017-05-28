@@ -5,7 +5,7 @@ import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.config.Configs
 import com.jdiazcano.modulartd.plugins.bundled.LoadMapEvent
 import com.jdiazcano.modulartd.plugins.bundled.createBaseMapFiles
-import com.jdiazcano.modulartd.utils.addChangeListener
+import com.jdiazcano.modulartd.utils.changeListener
 import com.jdiazcano.modulartd.utils.createErrorDialog
 import com.jdiazcano.modulartd.utils.setSingleFileListener
 import com.jdiazcano.modulartd.utils.translate
@@ -38,11 +38,11 @@ object OpenProjectDialog : VisDialog(translate("select.project", "Select project
         }
 
         open = VisTextButton(translate("file.open", "Open"))
-        open.addChangeListener { _, _ ->
+        open.changeListener { _, _ ->
             Bus.post(chooser.fadeIn(), BusTopic.NEW_DIALOG)
         }
         newMap = VisTextButton(translate("file.new", "New map"))
-        newMap.addChangeListener { _, _ ->
+        newMap.changeListener { _, _ ->
             Bus.post(chooser.fadeIn(), BusTopic.NEW_DIALOG)
         }
 

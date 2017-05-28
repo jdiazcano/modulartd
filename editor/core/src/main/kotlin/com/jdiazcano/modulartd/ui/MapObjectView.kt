@@ -13,7 +13,7 @@ class MapObjectView(unit: MapObject, private val vertical: Boolean = false) : Vi
         image = AnimatedActor(MapObject())
         labelName = VisLabel(unit.name)
 
-        add(image).size(50f, 50f)
+        add(image).size(50F, 50F)
         if (vertical) {
             row()
         }

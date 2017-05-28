@@ -2,8 +2,13 @@ package com.jdiazcano.modulartd.tabs
 
 import com.github.salomonbrys.kodein.instance
 import com.jdiazcano.modulartd.beans.Map
+import com.jdiazcano.modulartd.beans.ResourceType
 import com.jdiazcano.modulartd.injections.kodein
+import com.jdiazcano.modulartd.ui.AnimatedActor
+import com.jdiazcano.modulartd.ui.widgets.AnimatedButton
 import com.jdiazcano.modulartd.ui.widgets.lists.UnitList
+import com.jdiazcano.modulartd.ui.widgets.pickResource
+import com.jdiazcano.modulartd.utils.clickListener
 import com.jdiazcano.modulartd.utils.translate
 import com.kotcrab.vis.ui.widget.*
 
@@ -15,7 +20,7 @@ class MobTab: BaseTab(translate("tabs.mobs", "Mobs")) {
     private val labelName = VisLabel(translate("name", "Name"))
     private val textName = VisValidatableTextField()
     private val labelImage = VisLabel(translate("image", "Image"))
-    //private lateinit var buttonImage: AnimatedButton
+    private val buttonImage = AnimatedButton(AnimatedActor())
     private val labelArmor = VisLabel(translate("armor", "Armor"))
     private val textArmor = VisValidatableTextField()
     private val labelHitpoints = VisLabel(translate("hitpoints", "Hit points"))
@@ -42,6 +47,13 @@ class MobTab: BaseTab(translate("tabs.mobs", "Mobs")) {
         setUpValidableForm()
         placeComponents()
 
+        buttonImage.clickListener { _, _, _ ->
+            pickResource("Pick", ResourceType.IMAGE) {
+                buttonImage.resource = it
+                list.notifyDataSetChanged()
+            }
+        }
+
         content.add(splitPane).expand().fill()
     }
 
@@ -51,8 +63,8 @@ class MobTab: BaseTab(translate("tabs.mobs", "Mobs")) {
         propertiesTable.add(textName).padBottom(7F).row()
         propertiesTable.add(labelMovementSpeed).left().padRight(10F)
         propertiesTable.add(textMovementSpeed).row()
-        propertiesTable.add(labelImage).left().padRight(10F).row()
-        //propertiesTable.add(ImagePickerWindow(editor, buttonImage)).size(50).row()
+        propertiesTable.add(labelImage).left().padRight(10F)
+        propertiesTable.add(buttonImage).size(50F).row()
         propertiesTable.add(labelHitpoints).left().padRight(10F)
         propertiesTable.add(textHitpoints).row()
         propertiesTable.add(labelArmor).left().padRight(10F)
@@ -85,23 +97,6 @@ class MobTab: BaseTab(translate("tabs.mobs", "Mobs")) {
         validator.valueGreaterThan(textHitpoints, "It needs to be a positive value", 0F, true)
         validator.valueGreaterThan(textHPregen, "It needs to be a positive value", 0F, true)
         validator.valueGreaterThan(textMovementSpeed, "It needs to be a positive value", 0F, true)
-    }
-
-    private fun initializeComponents() {
-        //list = UnitList(InfiniteEditor.game.getUnits(), this)
-
-        //buttonImage = AnimatedButton(AnimatedActor(null))
-        //buttonImage.addListener(object : ClickListener() {
-        //    fun clicked(event: InputEvent, x: Float, y: Float) {
-        //        picker.addPickListener({ resource ->
-        //            buttonImage.setResource(resource)
-        //            getList().notifyDataSetChanged()
-        //        })
-        //
-        //        picker.pickResource(ResourceType.IMAGE)
-        //    }
-        //})
-
     }
 
 }

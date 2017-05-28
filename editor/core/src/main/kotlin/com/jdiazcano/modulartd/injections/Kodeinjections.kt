@@ -1,5 +1,6 @@
 package com.jdiazcano.modulartd.injections
 
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.github.salomonbrys.kodein.*
 import com.jdiazcano.modulartd.ResourceManager
 import com.jdiazcano.modulartd.beans.Game
@@ -10,6 +11,7 @@ import com.jdiazcano.modulartd.io.JsonMapIO
 import com.jdiazcano.modulartd.utils.filewatcher.AssetDirectoryWatcher
 import com.jdiazcano.modulartd.utils.filewatcher.DirectoryWatcher
 import com.jdiazcano.modulartd.utils.toPath
+import com.kotcrab.vis.ui.widget.VisLabel
 
 val kodein = Kodein {
     bind<Map>() with singleton { Map() }
@@ -25,4 +27,5 @@ val kodein = Kodein {
 
         )
     }
+    bind<Label>("globalMessageLabel") with singleton { VisLabel() }
 }

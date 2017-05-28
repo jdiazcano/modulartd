@@ -33,6 +33,7 @@ class ResourceManager(map: Map): Disposable {
 
         Bus.register<Resource>(Resource::class.java, BusTopic.CREATED) {
             addResource(it)
+            manager.finishLoading()
             logger.debug { "Loaded resource: $it" }
         }
 
@@ -53,6 +54,7 @@ class ResourceManager(map: Map): Disposable {
             resources.forEach {
                 addResource(it, true)
             }
+            manager.finishLoading()
         }
         // The NO_SOUND needs to be addressed because an action is not mandatory to have a sound
         Bus.post(NO_SOUND, BusTopic.CREATED)
@@ -85,7 +87,9 @@ class ResourceManager(map: Map): Disposable {
         if (!loadOnly) {
             resources.add(resource)
         }
-        manager.load(resource.file.path(), resource.assetType())
+        if (resource != NO_SOUND) { // This is a resource that we can't load, it doesn't exist!
+            manager.load(resource.file.path(), resource.assetType())
+        }
     }
 
     /**
@@ -104,6 +108,11 @@ class ResourceManager(map: Map): Disposable {
     override fun dispose() {
         manager.dispose()
         resources.clear()
+    }
+
+    operator fun  contains(resource: Resource) = resource in resources
+    fun <T> get(path: String, clazz: Class<T>): T {
+        return manager.get(path, clazz)
     }
 
 }

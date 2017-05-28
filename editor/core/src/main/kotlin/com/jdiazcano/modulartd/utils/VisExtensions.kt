@@ -1,8 +1,6 @@
 package com.jdiazcano.modulartd.utils
 
 import com.badlogic.gdx.files.FileHandle
-import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Array
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
@@ -19,12 +17,6 @@ import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneAdapter
 fun TabbedPane.addListener(listener: (Tab) -> Unit) = addListener(object: TabbedPaneAdapter() {
     override fun switchedTab(tab: Tab?) {
         tab?.let { listener(tab) }
-    }
-})
-
-fun Actor.addChangeListener(listener: (ChangeListener.ChangeEvent?, Actor?) -> Unit) = addListener(object: ChangeListener() {
-    override fun changed(event: ChangeEvent?, actor: Actor?) {
-        listener(event, actor)
     }
 })
 

@@ -1,6 +1,10 @@
 package com.jdiazcano.modulartd.utils
 
 import com.badlogic.gdx.files.FileHandle
+import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.jdiazcano.modulartd.beans.ResourceType
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
@@ -37,3 +41,17 @@ fun FileHandle.isAtlasFile(): Boolean {
 }
 
 fun FileHandle.toPath(): Path = file().toPath()
+
+fun Actor.clickListener(listener: (InputEvent?, Float, Float) -> Unit) = addListener(object : ClickListener() {
+    override fun clicked(event: InputEvent?, x: Float, y: Float) {
+        listener(event, x, y)
+    }
+})
+
+fun Actor.changeListener(listener: (ChangeListener.ChangeEvent, Actor) -> Unit) {
+    addListener(object : ChangeListener() {
+        override fun changed(event: ChangeEvent, actor: Actor) {
+            listener(event, actor)
+        }
+    })
+}

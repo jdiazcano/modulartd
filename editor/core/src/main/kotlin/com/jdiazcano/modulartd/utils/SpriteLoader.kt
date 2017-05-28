@@ -5,7 +5,6 @@ import com.badlogic.gdx.assets.AssetLoaderParameters
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.assets.loaders.AsynchronousAssetLoader
 import com.badlogic.gdx.assets.loaders.FileHandleResolver
-import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
@@ -13,7 +12,7 @@ import com.badlogic.gdx.graphics.TextureData
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.utils.Array
 
-class SpriteLoader(resolver: FileHandleResolver = InternalFileHandleResolver())
+class SpriteLoader(resolver: FileHandleResolver?)
     : AsynchronousAssetLoader<Sprite, SpriteLoader.TextureParameter>(resolver) {
 
     class SpriteLoaderInfo {
@@ -22,36 +21,35 @@ class SpriteLoader(resolver: FileHandleResolver = InternalFileHandleResolver())
         internal var texture: Texture? = null
     }
 
-    internal var info: SpriteLoaderInfo? = SpriteLoaderInfo()
+    internal var info: SpriteLoaderInfo = SpriteLoaderInfo()
 
     override fun loadAsync(manager: AssetManager, fileName: String, file: FileHandle, parameter: TextureParameter?) {
-        info!!.filename = fileName
+        info.filename = fileName
         if (parameter == null || parameter.textureData == null) {
             var format: Pixmap.Format? = null
             var genMipMaps = false
-            info!!.texture = null
+            info.texture = null
 
             if (parameter != null) {
                 format = parameter.format
                 genMipMaps = parameter.genMipMaps
-                info!!.texture = parameter.texture
+                info.texture = parameter.texture
             }
 
-            info!!.data = TextureData.Factory.loadFromFile(file, format, genMipMaps)
+            info.data = TextureData.Factory.loadFromFile(file, format, genMipMaps)
         } else {
-            info!!.data = parameter.textureData
-            info!!.texture = parameter.texture
+            info.data = parameter.textureData
+            info.texture = parameter.texture
         }
-        if (!info!!.data!!.isPrepared) info!!.data!!.prepare()
+        if (!info.data!!.isPrepared) info.data!!.prepare()
     }
 
     override fun loadSync(manager: AssetManager, fileName: String, file: FileHandle, parameter: TextureParameter?): Sprite? {
-        if (info == null) return null
-        var texture = info!!.texture
+        var texture = info.texture
         if (texture != null) {
-            texture.load(info!!.data!!)
+            texture.load(info.data!!)
         } else {
-            texture = Texture(info!!.data!!)
+            texture = Texture(info.data!!)
         }
         if (parameter != null) {
             texture.setFilter(parameter.minFilter, parameter.magFilter)
@@ -60,7 +58,7 @@ class SpriteLoader(resolver: FileHandleResolver = InternalFileHandleResolver())
         return Sprite(texture)
     }
 
-    override fun getDependencies(fileName: String, file: FileHandle, parameter: TextureParameter): Array<AssetDescriptor<*>>? {
+    override fun getDependencies(fileName: String, file: FileHandle, parameter: TextureParameter?): Array<AssetDescriptor<*>>? {
         return null
     }
 

@@ -8,7 +8,4 @@ enum class ResourceType(val folder: String) {
     EMPTY("nothing"),
     SOUND("sounds"),
     IMAGE("images"),
-    ANIMATION("animations")
-
-
 }

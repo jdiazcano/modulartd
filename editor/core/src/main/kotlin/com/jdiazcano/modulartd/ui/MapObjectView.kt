@@ -4,14 +4,14 @@ import com.jdiazcano.modulartd.beans.MapObject
 import com.kotcrab.vis.ui.widget.VisLabel
 import com.kotcrab.vis.ui.widget.VisTable
 
-class MapObjectView(unit: MapObject, private val vertical: Boolean = false) : VisTable() {
+class MapObjectView(item: MapObject, private val vertical: Boolean = false) : VisTable() {
 
     var image: AnimatedActor? = null
     val labelName: VisLabel
 
     init {
-        image = AnimatedActor(MapObject())
-        labelName = VisLabel(unit.name)
+        image = AnimatedActor(item)
+        labelName = VisLabel(item.name)
 
         add(image).size(50F, 50F)
         if (vertical) {

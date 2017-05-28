@@ -3,6 +3,9 @@ package com.jdiazcano.modulartd.tabs
 import com.github.salomonbrys.kodein.instance
 import com.jdiazcano.modulartd.beans.Map
 import com.jdiazcano.modulartd.beans.ResourceType
+import com.jdiazcano.modulartd.beans.Unit
+import com.jdiazcano.modulartd.bus.Bus
+import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.injections.kodein
 import com.jdiazcano.modulartd.ui.AnimatedActor
 import com.jdiazcano.modulartd.ui.widgets.AnimatedButton
@@ -12,7 +15,8 @@ import com.jdiazcano.modulartd.utils.clickListener
 import com.jdiazcano.modulartd.utils.translate
 import com.kotcrab.vis.ui.widget.*
 
-class MobTab: BaseTab(translate("tabs.mobs", "Mobs")) {
+class MobTab: BaseTab<Unit>(translate("tabs.mobs", "Mobs")) {
+
     private lateinit var splitPane: VisSplitPane
     private val propertiesTable = VisTable(true)
     private val list = UnitList(kodein.instance<Map>().units)
@@ -29,6 +33,8 @@ class MobTab: BaseTab(translate("tabs.mobs", "Mobs")) {
     private val textHPregen = VisValidatableTextField()
     private val labelMovementSpeed = VisLabel(translate("speed", "Speed"))
     private val textMovementSpeed = VisValidatableTextField()
+    private val labelLivesTaken = VisLabel(translate("livestaken", "Lives"))
+    private val textLivesTaken = VisValidatableTextField()
 
     /* CheckBoxes */
     private val checkAir = VisCheckBox(translate("air", "Air"))
@@ -57,6 +63,52 @@ class MobTab: BaseTab(translate("tabs.mobs", "Mobs")) {
         content.add(splitPane).expand().fill()
     }
 
+    override fun save(): Boolean {
+        Bus.post(getCurrentObject(), BusTopic.CREATED)
+        return true
+    }
+
+    override fun reset() {
+        list.selectItem(list.selectedIndex)
+    }
+
+    override fun newItem() {
+        list.clearSelection()
+    }
+
+    override fun updateUI(item: Unit) {
+        textName.text = item.name
+        textMovementSpeed.text = item.movementSpeed.toString()
+        textHitpoints.text = item.hitPoints.toString()
+        textArmor.text = item.armor.toString()
+        textHPregen.text = item.hpRegenPerSecond.toString()
+        buttonImage.resource = item.resource
+        buttonImage.rotation = item.rotationAngle
+        checkAntiSlow.isChecked = item.antiSlow
+        checkAntiStun.isChecked = item.antiStun
+        checkAir.isChecked = item.air
+        checkInvisible.isChecked = item.invisible
+        // soundTable.useSounds(unit.getSoundMap(), UnitSound::class.java)
+        // coinDropTable.setCoins(unit.getDrop())
+    }
+
+    override fun getCurrentObject(): Unit {
+        return Unit(
+                textName.text,
+                buttonImage.resource,
+                buttonImage.rotation,
+                textMovementSpeed.text.toFloat(),
+                textHitpoints.text.toFloat(),
+                textArmor.text.toFloat(),
+                checkInvisible.isChecked,
+                checkAir.isChecked,
+                checkAntiStun.isChecked,
+                checkAntiSlow.isChecked,
+                textLivesTaken.text.toInt(),
+                textHPregen.text.toFloat()
+        )
+    }
+
     private fun placeComponents() {
         //Build the table
         propertiesTable.add(labelName).left().padRight(10F)
@@ -71,6 +123,8 @@ class MobTab: BaseTab(translate("tabs.mobs", "Mobs")) {
         propertiesTable.add(textArmor).row()
         propertiesTable.add(labelHPregen).left().padRight(10F)
         propertiesTable.add(textHPregen).row()
+        propertiesTable.add(labelLivesTaken).left().padRight(10F)
+        propertiesTable.add(textLivesTaken).row()
 
         propertiesTable.add(checkAir).left()
         propertiesTable.add(checkAntiSlow).left().row()
@@ -97,6 +151,7 @@ class MobTab: BaseTab(translate("tabs.mobs", "Mobs")) {
         validator.valueGreaterThan(textHitpoints, "It needs to be a positive value", 0F, true)
         validator.valueGreaterThan(textHPregen, "It needs to be a positive value", 0F, true)
         validator.valueGreaterThan(textMovementSpeed, "It needs to be a positive value", 0F, true)
+        validator.valueGreaterThan(textLivesTaken, "It needs to be a positive value", 0F, true)
     }
 
 }

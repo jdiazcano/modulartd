@@ -21,7 +21,7 @@ abstract class TableList<O : Any, V : Table>(var objects: MutableList<O> = array
     private var indexTemp = -1
     private var viewDrop: V? = null
 
-    private var selectedIndex = -1
+    var selectedIndex = -1
 
     private val scroll = VisScrollPane(this)
 
@@ -94,13 +94,17 @@ abstract class TableList<O : Any, V : Table>(var objects: MutableList<O> = array
         }
     }
 
+    fun clearList() {
+        objects.forEach { removeItem(it) }
+    }
+
     private fun putItem(obj: O) {
         objects.add(obj)
         val index = objects.indexOf(obj)
         val view = getView(index, null)
         val item = Item(obj.hashCode(), view)
         items.add(item)
-        add<V>(view).left().padLeft(10f).expandX().fillX().row()
+        add(view).left().padLeft(10f).expandX().fillX().row()
     }
 
     override fun removeItem(item: O): Boolean {
@@ -220,7 +224,7 @@ class Item<V : Table>(
         if (selected) {
             view?.background = highlightBackground
         } else {
-            view?.background = null as Drawable
+            view?.background = null
         }
     }
 }

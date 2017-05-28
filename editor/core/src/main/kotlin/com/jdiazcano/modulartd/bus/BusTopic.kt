@@ -95,4 +95,9 @@ enum class BusTopic {
      * Fired when a map is reloaded and the resources must be cleared and reinserted
      */
     RESOURCES_RELOAD,
+
+    /**
+     * Reset everything!
+     */
+    RESET,
 }

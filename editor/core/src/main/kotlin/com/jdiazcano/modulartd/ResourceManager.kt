@@ -50,6 +50,7 @@ class ResourceManager(map: Map): Disposable {
         }
 
         Bus.register<MutableSet<Resource>>(MutableSet::class.java, BusTopic.RESOURCES_RELOAD) { resources ->
+            manager.clear()
             this.resources = resources
             resources.forEach {
                 addResource(it, true)

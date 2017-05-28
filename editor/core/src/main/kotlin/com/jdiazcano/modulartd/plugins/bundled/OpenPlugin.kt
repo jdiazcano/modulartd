@@ -46,7 +46,12 @@ class OpenPlugin : Plugin {
                 val mapFile = file.child(editor.gameConfigFolder()).child(editor.gameFileName())
                 val loadedMap = Gson().fromJson(mapFile.reader(), Map::class.java)
                 val map: Map = kodein.instance()
+                Bus.post(Unit, BusTopic.RESET)
                 map.apply {
+                    resources.clear()
+                    resources.addAll(loadedMap.resources)
+                    Bus.post(map.resources, BusTopic.RESOURCES_RELOAD)
+
                     // TODO Do this with reflection so I don't have to add a new field here when a new field is added
                     name = loadedMap.name
                     version = loadedMap.version
@@ -61,16 +66,14 @@ class OpenPlugin : Plugin {
                     interestRatio = loadedMap.interestRatio
                     turretSellProfit = loadedMap.turretSellProfit
                     unitCount = loadedMap.unitCount
-                    layers = loadedMap.layers
-                    turrets = loadedMap.turrets
-                    units = loadedMap.units
-                    waves = loadedMap.waves
-                    tiles = loadedMap.tiles
-                    coins = loadedMap.coins
-                    resources = loadedMap.resources
+                    loadedMap.units.forEach { Bus.post(it, BusTopic.CREATED) }
+                    loadedMap.layers.forEach { Bus.post(it, BusTopic.CREATED) }
+                    loadedMap.turrets.forEach { Bus.post(it, BusTopic.CREATED) }
+                    loadedMap.waves.forEach { Bus.post(it, BusTopic.CREATED) }
+                    loadedMap.tiles.forEach { Bus.post(it, BusTopic.CREATED) }
+                    loadedMap.coins.forEach { Bus.post(it, BusTopic.CREATED) }
                     script = loadedMap.script
                 }
-                Bus.post(map.resources, BusTopic.RESOURCES_RELOAD)
             }
 
             currentWatcher.stopWatching()

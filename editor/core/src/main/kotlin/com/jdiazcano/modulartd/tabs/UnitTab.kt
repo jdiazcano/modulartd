@@ -2,6 +2,7 @@ package com.jdiazcano.modulartd.tabs
 
 import com.github.salomonbrys.kodein.instance
 import com.jdiazcano.modulartd.beans.Map
+import com.jdiazcano.modulartd.beans.Resource
 import com.jdiazcano.modulartd.beans.ResourceType
 import com.jdiazcano.modulartd.beans.Unit
 import com.jdiazcano.modulartd.bus.Bus
@@ -9,22 +10,28 @@ import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.injections.kodein
 import com.jdiazcano.modulartd.ui.AnimatedActor
 import com.jdiazcano.modulartd.ui.widgets.AnimatedButton
-import com.jdiazcano.modulartd.ui.widgets.lists.UnitList
+import com.jdiazcano.modulartd.ui.widgets.lists.MapObjectList
 import com.jdiazcano.modulartd.ui.widgets.pickResource
 import com.jdiazcano.modulartd.utils.clickListener
+import com.jdiazcano.modulartd.utils.sneakyChange
 import com.jdiazcano.modulartd.utils.translate
 import com.kotcrab.vis.ui.widget.*
+import com.kotcrab.vis.ui.widget.spinner.Spinner
+import mu.KLogging
+import java.util.*
 
 class UnitTab: BaseTab<Unit>(translate("tabs.units", "Units")) {
+    companion object : KLogging()
 
     private lateinit var splitPane: VisSplitPane
     private val propertiesTable = VisTable(true)
-    private val list = UnitList(kodein.instance<Map>().units)
+    private val list = MapObjectList(kodein.instance<Map>().units, Unit::class.java)
 
     private val labelName = VisLabel(translate("name", "Name"))
     private val textName = VisValidatableTextField()
     private val labelImage = VisLabel(translate("image", "Image"))
-    private val buttonImage = AnimatedButton(AnimatedActor())
+    private val actor = AnimatedActor()
+    private val buttonImage = AnimatedButton(actor)
     private val labelArmor = VisLabel(translate("armor", "Armor"))
     private val textArmor = VisValidatableTextField()
     private val labelHitpoints = VisLabel(translate("hitpoints", "Hit points"))
@@ -35,6 +42,8 @@ class UnitTab: BaseTab<Unit>(translate("tabs.units", "Units")) {
     private val textMovementSpeed = VisValidatableTextField()
     private val labelLivesTaken = VisLabel(translate("livestaken", "Lives taken"))
     private val textLivesTaken = VisValidatableTextField()
+    private val labelAnimationTime = VisLabel(translate("animationtime", "Animation time"))
+    private val spinnerAnimationTime = Spinner("", kodein.instance("float"))
 
     /* CheckBoxes */
     private val checkAir = VisCheckBox(translate("air", "Air"))
@@ -56,36 +65,70 @@ class UnitTab: BaseTab<Unit>(translate("tabs.units", "Units")) {
     private fun buildTable() {
         setUpValidableForm()
         placeComponents()
-
-        buttonImage.clickListener { _, _, _ ->
-            pickResource("Pick", ResourceType.IMAGE) {
-                buttonImage.resource = it
-                list.notifyDataSetChanged()
-            }
-        }
+        addUpdateListeners()
 
         content.add(splitPane).expand().fill()
     }
 
-    override fun save(): Boolean {
-        if (list.hasSelection()) {
-            val item = list.selectedItem
-            item.update(getCurrentObject())
-            list.notifyDataSetChanged()
-        } else {
-            Bus.post(getCurrentObject(), BusTopic.CREATED)
+    /**
+     * These are the listeners that will be listening for changes in the textviews and will
+     * update the selected item in the list
+     */
+    private fun addUpdateListeners() {
+        buttonImage.clickListener { _, _, _ ->
+            pickResource("Pick", ResourceType.IMAGE) {
+                buttonImage.resource = it
+                list.selectedItem.resource = it
+                list.notifyDataSetChanged()
+            }
         }
-        return true
-    }
 
-    override fun reset() {
-        if (list.hasSelection()) {
-            updateUI(list.selectedItem)
+        textArmor.sneakyChange {
+            list.selectedItem.armor = textArmor.text.toFloat()
+        }
+        textHPregen.sneakyChange {
+            list.selectedItem.hpRegenPerSecond = textHPregen.text.toFloat()
+        }
+        textHitpoints.sneakyChange {
+            list.selectedItem.hitPoints = textHitpoints.text.toFloat()
+        }
+        textLivesTaken.sneakyChange {
+            list.selectedItem.livesTaken = textLivesTaken.text.toInt()
+        }
+        textMovementSpeed.sneakyChange {
+            list.selectedItem.movementSpeed = textMovementSpeed.text.toFloat()
+        }
+        textName.sneakyChange {
+            list.selectedItem.name = textName.text
+            list.invalidateSelected()
+        }
+        checkAir.sneakyChange {
+            list.selectedItem.air = checkAir.isChecked
+        }
+        checkAntiSlow.sneakyChange {
+            list.selectedItem.antiSlow = checkAntiSlow.isChecked
+        }
+        checkAntiStun.sneakyChange {
+            list.selectedItem.antiStun = checkAntiStun.isChecked
+        }
+        checkInvisible.sneakyChange {
+            list.selectedItem.invisible = checkInvisible.isChecked
+        }
+
+        spinnerAnimationTime.sneakyChange {
+            val time = spinnerAnimationTime.model.text.toFloat()
+            list.selectedItem.animationTimer = time
+            buttonImage.animationTimer = time
+            logger.debug { "Animation timer changed to $time" }
+            list.notifyDataSetChanged()
         }
     }
 
     override fun newItem() {
-        list.clearSelection()
+        val unit = Unit("Unit ${Random().nextInt(10000)}", Resource())
+        Bus.post(unit, BusTopic.CREATED)
+        list.selectItem(unit)
+        updateUI(unit)
     }
 
     override fun updateUI(item: Unit) {
@@ -105,23 +148,6 @@ class UnitTab: BaseTab<Unit>(translate("tabs.units", "Units")) {
         // coinDropTable.setCoins(unit.getDrop())
     }
 
-    override fun getCurrentObject(): Unit {
-        return Unit(
-                textName.text,
-                buttonImage.resource,
-                buttonImage.rotation,
-                textMovementSpeed.text.toFloat(),
-                textHitpoints.text.toFloat(),
-                textArmor.text.toFloat(),
-                checkInvisible.isChecked,
-                checkAir.isChecked,
-                checkAntiStun.isChecked,
-                checkAntiSlow.isChecked,
-                textLivesTaken.text.toInt(),
-                textHPregen.text.toFloat()
-        )
-    }
-
     private fun placeComponents() {
         //Build the table
         propertiesTable.add(labelName).left().padRight(10F)
@@ -130,6 +156,8 @@ class UnitTab: BaseTab<Unit>(translate("tabs.units", "Units")) {
         propertiesTable.add(textMovementSpeed).row()
         propertiesTable.add(labelImage).left().padRight(10F)
         propertiesTable.add(buttonImage).size(50F).row()
+        propertiesTable.add(labelAnimationTime).left().padRight(10F)
+        propertiesTable.add(spinnerAnimationTime).row()
         propertiesTable.add(labelHitpoints).left().padRight(10F)
         propertiesTable.add(textHitpoints).row()
         propertiesTable.add(labelArmor).left().padRight(10F)
@@ -152,10 +180,10 @@ class UnitTab: BaseTab<Unit>(translate("tabs.units", "Units")) {
         val tableList = VisTable(true)
         tableList.add(list).fillX().expand().top()
         val tableProp = VisTable(true)
-        tableProp.add(propertiesTable).padLeft(17f).fillX().expand().top()
+        tableProp.add(propertiesTable).padLeft(17F).fillX().expand().top()
 
         splitPane = VisSplitPane(tableList, tableProp, false)
-        splitPane.setSplitAmount(0.40f)
+        splitPane.setSplitAmount(0.40F)
     }
 
     private fun setUpValidableForm() {

@@ -17,7 +17,6 @@ abstract class BaseTab<T>(
     private val fullContent = VisTable()
     protected val content = VisTable()
     protected val save = VisTextButton(translate("save", "Save"))
-    protected val cancel = VisTextButton(translate("cancel", "Cancel"))
     protected val new = VisTextButton(translate("new", "New"))
     protected val script = VisTextButton(translate("script", "Script"))
     protected val validator = FormValidator(save, kodein.instance("globalMessageLabel"))
@@ -29,21 +28,13 @@ abstract class BaseTab<T>(
         if (scriptable) {
             buttons.add(script).padRight(10F)
         }
-        buttons.add(save).padRight(10F)
-        buttons.add(cancel)
 
         fullContent.add(content).expand().fill().row()
         fullContent.add(buttons).expandX().right().padBottom(10F)
 
-        save.clickListener { inputEvent, x, y -> save() }
-        cancel.clickListener { inputEvent, x, y -> reset() }
-        new.clickListener { inputEvent, x, y -> newItem() }
+        new.clickListener { _, _, _ -> newItem() }
     }
 
-    /**
-     * Resets the current state (and this will set the dirty to false)
-     */
-    abstract fun reset()
 
     /**
      * Creates a new item. Right now a new item is done by just unselecting the list and then you can save your current one.
@@ -51,9 +42,11 @@ abstract class BaseTab<T>(
      */
     abstract fun newItem()
 
+    /**
+     * Updates the table accordingly to the item passed as argument. The tabs will have a table that contains all the
+     * information when selecting an item so this is the method that will be called when the selection changes for example.
+     */
     abstract fun updateUI(item: T)
-
-    abstract fun getCurrentObject(): T
 
     override fun getContentTable(): Table {
         return fullContent

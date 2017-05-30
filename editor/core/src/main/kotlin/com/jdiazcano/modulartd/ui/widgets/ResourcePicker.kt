@@ -2,7 +2,6 @@ package com.jdiazcano.modulartd.ui.widgets
 
 import com.github.salomonbrys.kodein.instance
 import com.jdiazcano.modulartd.ResourceManager
-import com.jdiazcano.modulartd.beans.MapObject
 import com.jdiazcano.modulartd.beans.Resource
 import com.jdiazcano.modulartd.beans.ResourceType
 import com.jdiazcano.modulartd.bus.Bus
@@ -42,7 +41,7 @@ class ResourcePicker(title: String) : VisDialog(title) {
         val resources = kodein.instance<ResourceManager>().getResourcesByType(type)
 
         resources.forEach { resource ->
-            val view = ResourceView(MapObject(resource = resource))
+            val view = ResourceView(resource)
             view.clickListener { _, _, _ ->
                 listeners.forEach { it(resource) }
                 fadeOut()

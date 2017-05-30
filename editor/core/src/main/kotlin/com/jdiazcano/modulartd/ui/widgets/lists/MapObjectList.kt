@@ -1,7 +1,7 @@
 package com.jdiazcano.modulartd.ui.widgets.lists
 
+import com.jdiazcano.modulartd.beans.MapObject
 import com.jdiazcano.modulartd.beans.Resource
-import com.jdiazcano.modulartd.beans.Unit
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.ui.MapObjectView
@@ -9,20 +9,18 @@ import com.jdiazcano.modulartd.ui.widgets.TableList
 import com.jdiazcano.modulartd.utils.clickListener
 import mu.KLogging
 
-class UnitList(units: MutableList<Unit>): TableList<Unit, MapObjectView>(units) {
+class MapObjectList<T: MapObject>(objects: MutableList<T>, clazz: Class<T>): TableList<T, MapObjectView>(objects) {
     companion object: KLogging()
 
     init {
-        Bus.register<Unit>(Unit::class.java, BusTopic.CREATED) {
+        Bus.register<T>(clazz, BusTopic.CREATED) {
             addItem(it)
-            logger.debug { "Added unit: ${it.name}" }
+            logger.debug { "Added ${clazz.simpleName}: ${it.name}" }
         }
 
-
-
-        Bus.register<kotlin.Unit>(Unit::class.java, BusTopic.RESET) {
+        Bus.register<kotlin.Unit>(clazz, BusTopic.RESET) {
             clearList()
-            logger.debug { "Cleared list of units" }
+            logger.debug { "Cleared list of: ${clazz.simpleName}" }
         }
 
         Bus.register<Resource>(Resource::class.java, BusTopic.LOAD_FINISHED) {
@@ -40,6 +38,7 @@ class UnitList(units: MutableList<Unit>): TableList<Unit, MapObjectView>(units) 
             lastView
         }
         view.image.swapResource(item.resource)
+        view.image.spriteTimer = item.animationTimer
         view.rotation = item.rotationAngle
         view.labelName.setText(item.name)
         return view

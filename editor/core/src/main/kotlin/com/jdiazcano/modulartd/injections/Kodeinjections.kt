@@ -5,19 +5,19 @@ import com.github.salomonbrys.kodein.*
 import com.jdiazcano.modulartd.ResourceManager
 import com.jdiazcano.modulartd.beans.Game
 import com.jdiazcano.modulartd.beans.Map
-import com.jdiazcano.modulartd.beans.MapObjectRenderer
 import com.jdiazcano.modulartd.io.FileIO
 import com.jdiazcano.modulartd.io.JsonMapIO
 import com.jdiazcano.modulartd.utils.filewatcher.AssetDirectoryWatcher
 import com.jdiazcano.modulartd.utils.filewatcher.DirectoryWatcher
 import com.jdiazcano.modulartd.utils.toPath
 import com.kotcrab.vis.ui.widget.VisLabel
+import com.kotcrab.vis.ui.widget.spinner.SimpleFloatSpinnerModel
+import com.kotcrab.vis.ui.widget.spinner.SpinnerModel
 
 val kodein = Kodein {
     bind<Map>() with singleton { Map() }
     bind<Game>() with singleton { Game() }
     bind<FileIO<Map>>() with singleton { JsonMapIO() }
-    bind<MapObjectRenderer>() with singleton { MapObjectRenderer() }
     bind<ResourceManager>() with eagerSingleton { ResourceManager(instance()) }
     bind<AssetDirectoryWatcher>() with provider {
         val game = kodein.instance<Game>()
@@ -28,4 +28,5 @@ val kodein = Kodein {
         )
     }
     bind<Label>("globalMessageLabel") with singleton { VisLabel() }
+    bind<SpinnerModel>("float") with provider { SimpleFloatSpinnerModel(0.2F, 0.04F, 100F, 0.02F, 2) }
 }

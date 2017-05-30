@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.ui.Button
-import com.jdiazcano.modulartd.beans.MapObject
 import com.jdiazcano.modulartd.beans.Resource
 import com.jdiazcano.modulartd.ui.AnimatedActor
 import com.kotcrab.vis.ui.Focusable
@@ -38,16 +37,16 @@ class AnimatedButton(private val actor: AnimatedActor) : Button(), Focusable {
         return actor.rotation
     }
 
-    var mapObject: MapObject
-        get() = actor.mapObject
-        set(obj) {
-            actor.mapObject = obj
-        }
-
     var resource: Resource
-        get() = actor.mapObject.resource
+        get() = actor.resource
         set(r) {
             actor.swapResource(r)
+        }
+
+    var animationTimer: Float
+        get() = actor.spriteTimer
+        set(value) {
+            actor.spriteTimer = value
         }
 
     override fun setStyle(style: Button.ButtonStyle) {

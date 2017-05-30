@@ -8,9 +8,6 @@ class GameTab: BaseTab<Map>(translate("tabs.game", "Game")) {
     init {
 
     }
-    override fun reset() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     override fun newItem() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -20,7 +17,4 @@ class GameTab: BaseTab<Map>(translate("tabs.game", "Game")) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getCurrentObject(): Map {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 }

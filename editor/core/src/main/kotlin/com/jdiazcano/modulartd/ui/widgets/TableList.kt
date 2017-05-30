@@ -216,10 +216,16 @@ abstract class TableList<O : Any, V : Table>(var objects: MutableList<O> = array
     }
 
     fun invalidate(index: Int) {
-
+        if (items[index].hashCode != getItem(index).hashCode()) {
+            getView(index, items[index].view).invalidate()
+            items[index].hashCode = getItem(index).hashCode()
+        }
     }
 
     val selectedItem: O get() = getItem(selectedIndex)
+    fun invalidateSelected() {
+        invalidate(selectedIndex)
+    }
 }
 
 class Item<V : Table>(

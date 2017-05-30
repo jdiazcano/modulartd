@@ -55,3 +55,15 @@ fun Actor.changeListener(listener: (ChangeListener.ChangeEvent, Actor) -> Unit) 
         }
     })
 }
+
+fun Actor.sneakyChange(listener: () -> Unit) {
+    addListener(object : ChangeListener() {
+        override fun changed(event: ChangeEvent, actor: Actor) {
+            try {
+                listener()
+            } catch (exception: Exception) {
+                // If we can't execute the listener then we just ignore everything and it won't be saved
+            }
+        }
+    })
+}

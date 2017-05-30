@@ -6,7 +6,7 @@ import com.kotcrab.vis.ui.widget.VisTable
 
 class MapObjectView(item: MapObject, private val vertical: Boolean = false) : VisTable() {
 
-    var image = AnimatedActor(item)
+    var image = AnimatedActor(item.resource)
     var labelName = VisLabel(item.name)
 
     init {

@@ -1,3 +1,8 @@
 package com.jdiazcano.modulartd.beans
 
-class Coin(name: String, resource: Resource, rotationAngle: Float): MapObject(name, resource, rotationAngle)
+data class Coin(
+        override var name: String,
+        override var resource: Resource,
+        override var rotationAngle: Float,
+        override var animationTimer: Float
+): MapObject

@@ -60,7 +60,6 @@ class ModularTD : ApplicationAdapter() {
         root.add(menu.table).expandX().fillX().padBottom(5F).row()
         root.add(screen).expand().fill().row()
         root.add(kodein.instance<Label>("globalMessageLabel")).expandX().left().row()
-        // TODO root.add("Lower label for displaying information")
 
         OpenProjectDialog.select()
     }
@@ -85,6 +84,7 @@ class ModularTD : ApplicationAdapter() {
 
     override fun dispose() {
         kodein.instance<AssetDirectoryWatcher>().stopWatching()
+        kodein.instance<ResourceManager>().dispose()
         VisUI.dispose()
         stage.dispose()
     }

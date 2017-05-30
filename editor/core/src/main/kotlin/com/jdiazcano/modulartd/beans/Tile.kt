@@ -5,11 +5,10 @@ package com.jdiazcano.modulartd.beans
  *
  * Created by javierdiaz on 16/11/2016.
  */
-class Tile(
-        name: String,
-        resource: Resource,
-        rotationAngle: Float,
-        var buildable: Boolean
-) : MapObject(name, resource, rotationAngle), Scriptable {
-
-}
+data class Tile(
+        override var name: String,
+        override var resource: Resource,
+        override var script: String,
+        override var rotationAngle: Float,
+        override var animationTimer: Float
+) : MapObject, Scriptable

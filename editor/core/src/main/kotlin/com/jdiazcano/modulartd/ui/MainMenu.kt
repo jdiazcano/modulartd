@@ -17,11 +17,11 @@ import com.kotcrab.vis.ui.widget.PopupMenu
 class MainMenu : MenuBar() {
     private val menuItems: MutableMap<Action, ActionedMenuItem> = mutableMapOf()
     private val menus = mapOf(
-            Menus.FILE to Menu(translate("menu.file", "File")),
-            Menus.VIEW to Menu(translate("menu.view", "View")),
-            Menus.EDIT to Menu(translate("menu.edit", "Edit")),
-            Menus.GAME to Menu(translate("menu.game", "Game")),
-            Menus.HELP to Menu(translate("menu.help", "Help"))
+            Menus.FILE to Menu(translate("menu.file")),
+            Menus.VIEW to Menu(translate("menu.view")),
+            Menus.EDIT to Menu(translate("menu.edit")),
+            Menus.GAME to Menu(translate("menu.game")),
+            Menus.HELP to Menu(translate("menu.help"))
     )
     init {
         menus.forEach { addMenu(it.value) }

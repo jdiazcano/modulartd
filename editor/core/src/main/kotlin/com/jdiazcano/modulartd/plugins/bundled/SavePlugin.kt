@@ -51,7 +51,7 @@ class SaveAction(private val saveAs: Boolean) :
         val game = kodein.instance<Game>()
         if (saveAs) {
             val errorDialog = createErrorDialog("Failed to save", "You can only select one folder when opening or creating a project")
-            val chooser = FileChooser(translate("select.project", "Select project"), FileChooser.Mode.SAVE)
+            val chooser = FileChooser(translate("select.project"), FileChooser.Mode.SAVE)
             chooser.setWatchingFilesEnabled(true)
             chooser.selectionMode = FileChooser.SelectionMode.DIRECTORIES
             chooser.setSingleFileListener(errorDialog) { file ->

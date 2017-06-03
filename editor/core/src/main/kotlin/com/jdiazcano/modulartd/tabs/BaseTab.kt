@@ -16,9 +16,9 @@ abstract class BaseTab<T>(
 ): Tab(true, false) {
     private val fullContent = VisTable()
     protected val content = VisTable()
-    protected val save = VisTextButton(translate("save", "Save"))
-    protected val new = VisTextButton(translate("new", "New"))
-    protected val script = VisTextButton(translate("script", "Script"))
+    protected val save = VisTextButton(translate("save"))
+    protected val new = VisTextButton(translate("new"))
+    protected val script = VisTextButton(translate("script"))
     protected val validator = FormValidator(save, kodein.instance("globalMessageLabel"))
 
     init {

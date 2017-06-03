@@ -25,7 +25,7 @@ fun showErrorDialog(text: String, details: String): Dialogs.DetailsDialog {
  * Creates an error dialog with a translated Error!
  */
 fun createErrorDialog(text: String, details: String): Dialogs.DetailsDialog {
-    return Dialogs.DetailsDialog(text, translate("error", "Error"), details)
+    return Dialogs.DetailsDialog(text, translate("error"), details)
 }
 
 fun FileHandle.resourceType(): ResourceType {

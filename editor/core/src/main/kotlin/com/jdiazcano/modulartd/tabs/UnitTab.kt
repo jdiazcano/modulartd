@@ -20,35 +20,35 @@ import com.kotcrab.vis.ui.widget.spinner.Spinner
 import mu.KLogging
 import java.util.*
 
-class UnitTab: BaseTab<Unit>(translate("tabs.units", "Units")) {
+class UnitTab: BaseTab<Unit>(translate("tabs.units")) {
     companion object : KLogging()
 
     private lateinit var splitPane: VisSplitPane
     private val propertiesTable = VisTable(true)
     private val list = MapObjectList(kodein.instance<Map>().units, Unit::class.java)
 
-    private val labelName = VisLabel(translate("name", "Name"))
+    private val labelName = VisLabel(translate("name"))
     private val textName = VisValidatableTextField()
-    private val labelImage = VisLabel(translate("image", "Image"))
+    private val labelImage = VisLabel(translate("image"))
     private val buttonImage = AnimatedButton(AnimatedActor())
-    private val labelArmor = VisLabel(translate("armor", "Armor"))
+    private val labelArmor = VisLabel(translate("armor"))
     private val textArmor = VisValidatableTextField()
-    private val labelHitpoints = VisLabel(translate("hitpoints", "Hit points"))
+    private val labelHitpoints = VisLabel(translate("hitpoints"))
     private val textHitpoints = VisValidatableTextField()
-    private val labelHPregen = VisLabel(translate("hpregen", "HP regen"))
+    private val labelHPregen = VisLabel(translate("hpregen"))
     private val textHPregen = VisValidatableTextField()
-    private val labelMovementSpeed = VisLabel(translate("speed", "Speed"))
+    private val labelMovementSpeed = VisLabel(translate("speed"))
     private val textMovementSpeed = VisValidatableTextField()
-    private val labelLivesTaken = VisLabel(translate("livestaken", "Lives taken"))
+    private val labelLivesTaken = VisLabel(translate("livestaken"))
     private val textLivesTaken = VisValidatableTextField()
-    private val labelAnimationTime = VisLabel(translate("animationtime", "Animation time"))
+    private val labelAnimationTime = VisLabel(translate("animationtime"))
     private val spinnerAnimationTime = Spinner("", kodein.instance("float"))
 
     /* CheckBoxes */
-    private val checkAir = VisCheckBox(translate("air", "Air"))
-    private val checkInvisible = VisCheckBox(translate("invisible", "Invisible"))
-    private val checkAntiSlow = VisCheckBox(translate("antislow", "Anti slow"))
-    private val checkAntiStun = VisCheckBox(translate("antistun", "Anti stun"))
+    private val checkAir = VisCheckBox(translate("air"))
+    private val checkInvisible = VisCheckBox(translate("invisible"))
+    private val checkAntiSlow = VisCheckBox(translate("antislow"))
+    private val checkAntiStun = VisCheckBox(translate("antistun"))
 
     //private var soundTable: SoundTable<UnitSound>? = null
     //private var coinDropTable: CoinQuantifierTable? = null

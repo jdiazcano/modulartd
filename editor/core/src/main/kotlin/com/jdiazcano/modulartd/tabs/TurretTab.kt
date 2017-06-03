@@ -18,7 +18,7 @@ import com.jdiazcano.modulartd.utils.translate
 import com.kotcrab.vis.ui.widget.*
 import java.util.*
 
-class TurretTab: BaseTab<Turret>(translate("tabs.turrets", "Turrets")) {
+class TurretTab: BaseTab<Turret>(translate("tabs.turrets")) {
     private val list = MapObjectList(kodein.instance<Map>().turrets, Turret::class.java)
 
     private lateinit var splitPane: VisSplitPane

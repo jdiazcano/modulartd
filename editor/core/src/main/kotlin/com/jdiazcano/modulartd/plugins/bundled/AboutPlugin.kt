@@ -29,9 +29,9 @@ class AboutPlugin : Plugin {
     fun About() = AboutAction()
 }
 
-class AboutAction : Action("help.about", translate("help.about", "About"), ShortCut(Input.Keys.Q, Modifiers(control = true)), SeparatorPlace.ABOVE) {
+class AboutAction : Action("help.about", translate("help.about"), ShortCut(Input.Keys.Q, Modifiers(control = true)), SeparatorPlace.ABOVE) {
     override fun perform(stage: StageWrapper) {
-        val window = VisWindow(translate("help.about", "About"))
+        val window = VisWindow(translate("help.about"))
         window.closeOnEscape()
         window.addCloseButton()
         window.add("By me!!") // TODO add a proper about

@@ -29,7 +29,7 @@ fun <T, V> MutableMap<T, V>.getOrThrow(key: T, throwable: Throwable = IllegalArg
  */
 fun translate(key: String): String {
     val translation = translate(key, key)
-    if (translation != key) {
+    if (translation == key) {
         globalLogger.logger.warn { "Missing translation for: $key" }
     }
     return translation
@@ -38,7 +38,7 @@ fun translate(key: String): String {
 /**
  * Calls the translations of with a default
  */
-fun translate(key: String, default: String) = Translations.of(key, default)
+private fun translate(key: String, default: String) = Translations.of(key, default)
 
 /**
  * Returns the text if the boolean value is true, else it will return an empty string.

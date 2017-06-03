@@ -13,7 +13,7 @@ import com.kotcrab.vis.ui.widget.VisDialog
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.file.FileChooser
 
-object OpenProjectDialog : VisDialog(translate("select.project", "Select project")) {
+object OpenProjectDialog : VisDialog(translate("select.project")) {
 
     private val open: VisTextButton
     private val newMap: VisTextButton
@@ -22,7 +22,7 @@ object OpenProjectDialog : VisDialog(translate("select.project", "Select project
         isModal = true
 
         val errorDialog = createErrorDialog("Failed to open", "You can only select one folder when opening or creating a project")
-        val chooser = FileChooser(translate("select.project", "Select project"), FileChooser.Mode.OPEN)
+        val chooser = FileChooser(translate("select.project"), FileChooser.Mode.OPEN)
         chooser.setWatchingFilesEnabled(true)
         chooser.selectionMode = FileChooser.SelectionMode.DIRECTORIES
         chooser.setSingleFileListener(errorDialog) { file ->
@@ -37,11 +37,11 @@ object OpenProjectDialog : VisDialog(translate("select.project", "Select project
             fadeOut()
         }
 
-        open = VisTextButton(translate("file.open", "Open"))
+        open = VisTextButton(translate("file.open"))
         open.changeListener { _, _ ->
             Bus.post(chooser.fadeIn(), BusTopic.NEW_DIALOG)
         }
-        newMap = VisTextButton(translate("file.new", "New map"))
+        newMap = VisTextButton(translate("file.new"))
         newMap.changeListener { _, _ ->
             Bus.post(chooser.fadeIn(), BusTopic.NEW_DIALOG)
         }

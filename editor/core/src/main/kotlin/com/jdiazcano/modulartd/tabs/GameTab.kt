@@ -3,7 +3,7 @@ package com.jdiazcano.modulartd.tabs
 import com.jdiazcano.modulartd.beans.Map
 import com.jdiazcano.modulartd.utils.translate
 
-class GameTab: BaseTab<Map>(translate("tabs.game", "Game")) {
+class GameTab: BaseTab<Map>(translate("tabs.game")) {
 
     init {
 

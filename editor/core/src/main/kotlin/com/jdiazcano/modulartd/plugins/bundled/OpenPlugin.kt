@@ -98,10 +98,10 @@ class OpenPlugin : Plugin {
     fun open() = OpenAction()
 }
 
-class OpenAction : Action("file.open", translate("file.open", "Open"), ShortCut(Input.Keys.O, Modifiers(control = true))) {
+class OpenAction : Action("file.open", translate("file.open"), ShortCut(Input.Keys.O, Modifiers(control = true))) {
     override fun perform(stage: StageWrapper) {
         val errorDialog = createErrorDialog("Failed to open", "You can only select one folder when opening or creating a project")
-        val chooser = FileChooser(translate("select.project", "Select project"), FileChooser.Mode.OPEN)
+        val chooser = FileChooser(translate("select.project"), FileChooser.Mode.OPEN)
         chooser.setWatchingFilesEnabled(true)
         chooser.selectionMode = FileChooser.SelectionMode.DIRECTORIES
         chooser.setSingleFileListener(errorDialog) { file ->

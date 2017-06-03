@@ -32,7 +32,9 @@ class MapObjectList<T: MapObject>(objects: MutableList<T>, clazz: Class<T>): Tab
         val item = getItem(position)
         val view = if (lastView == null) {
             val objectView = MapObjectView(item)
-            objectView.clickListener { _, _, _ -> Bus.post(getItem(position), BusTopic.SELECTED) }
+            objectView.clickListener { _, _, _ ->
+                Bus.post(getItem(position), BusTopic.SELECTED)
+            }
             objectView
         } else {
             lastView

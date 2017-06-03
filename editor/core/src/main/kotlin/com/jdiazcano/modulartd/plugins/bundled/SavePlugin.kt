@@ -55,7 +55,7 @@ class SaveAction(private val saveAs: Boolean) :
             chooser.setWatchingFilesEnabled(true)
             chooser.selectionMode = FileChooser.SelectionMode.DIRECTORIES
             chooser.setSingleFileListener(errorDialog) { file ->
-                // TODO this will throw an exception if the map hasn't been created so I must check if the map
+                // 2TODO this will throw an exception if the map hasn't been created so I must check if the map
                 // TODO has been created before saving the game and take action if needed.
                 saveGame(file)
                 game.gameFolder = file // The folder has changed since we now saved the map in a new folder

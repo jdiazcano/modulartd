@@ -32,11 +32,12 @@ object Configs {
 // TODO rethink if the override is needed, all strings should be there and if something fails is because it should fail
 object Translations {
     private val translationsProvider = DefaultConfigProvider(JsonConfigLoader(javaClass.getResource("/strings/strings.json")))
+    // TODO remove the localed for now, there's no need for translations right now (tis' working anyways! But since i can't edit the editor.language it makes no sense)
     private val localedTranslationsProvider = DefaultConfigProvider(
             JsonConfigLoader(javaClass.getResource("/strings/strings_${Configs.preferences.getString("editor.language", Locale.getDefault().toString()).get()}.json"))
     )
 
-    private val overriddenTranslationsProvider = OverrideConfigProvider(localedTranslationsProvider, translationsProvider)
+    private val overriddenTranslationsProvider = OverrideConfigProvider(/*localedTranslationsProvider, */translationsProvider)
 
     fun of(key: String, default: String? = null): String {
         return overriddenTranslationsProvider.getProperty(key, String::class.java, default)

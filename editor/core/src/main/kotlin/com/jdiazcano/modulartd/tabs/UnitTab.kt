@@ -30,8 +30,7 @@ class UnitTab: BaseTab<Unit>(translate("tabs.units", "Units")) {
     private val labelName = VisLabel(translate("name", "Name"))
     private val textName = VisValidatableTextField()
     private val labelImage = VisLabel(translate("image", "Image"))
-    private val actor = AnimatedActor()
-    private val buttonImage = AnimatedButton(actor)
+    private val buttonImage = AnimatedButton(AnimatedActor())
     private val labelArmor = VisLabel(translate("armor", "Armor"))
     private val textArmor = VisValidatableTextField()
     private val labelHitpoints = VisLabel(translate("hitpoints", "Hit points"))
@@ -76,7 +75,7 @@ class UnitTab: BaseTab<Unit>(translate("tabs.units", "Units")) {
      */
     private fun addUpdateListeners() {
         buttonImage.clickListener { _, _, _ ->
-            pickResource("Pick", ResourceType.IMAGE) {
+            pickResource(translate("pick"), ResourceType.IMAGE) {
                 buttonImage.resource = it
                 list.selectedItem.resource = it
                 list.notifyDataSetChanged()

@@ -4,6 +4,8 @@ import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.Array
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
+import com.kotcrab.vis.ui.util.dialog.Dialogs
+import com.kotcrab.vis.ui.util.dialog.InputDialogAdapter
 import com.kotcrab.vis.ui.widget.VisDialog
 import com.kotcrab.vis.ui.widget.file.FileChooser
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter
@@ -33,3 +35,10 @@ fun FileChooser.setSingleFileListener(dialog: VisDialog, listener: (FileHandle) 
         }
     }
 })
+
+inline fun input(title: String, fieldTitle: String, crossinline action: (String) -> Unit) {
+    val dialog = Dialogs.InputDialog(title, fieldTitle, true, null, object : InputDialogAdapter() {
+        override fun finished(input: String) = action(input)
+    })
+    Bus.post(dialog, BusTopic.NEW_DIALOG)
+}

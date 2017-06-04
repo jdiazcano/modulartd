@@ -10,16 +10,22 @@ import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab
 
+/**
+ * Base tab that all the tabs should extend. This will provide basic information like creating a new
+ * item of whatever you are configuring at the moment and how to update the ui.
+ *
+ * If scriptable, a new button "Script" will be added
+ */
 abstract class BaseTab<T>(
         val title: String,
         scriptable: Boolean = false
 ): Tab(true, false) {
     private val fullContent = VisTable()
     protected val content = VisTable()
-    protected val save = VisTextButton(translate("save"))
     protected val new = VisTextButton(translate("new"))
     protected val script = VisTextButton(translate("script"))
-    protected val validator = FormValidator(save, kodein.instance("globalMessageLabel"))
+    // Ugly hack, I don't really like that a form validator needs a button!
+    protected val validator = FormValidator(VisTextButton(""), kodein.instance("globalMessageLabel"))
 
     init {
         val buttons = VisTable()
@@ -33,6 +39,7 @@ abstract class BaseTab<T>(
         fullContent.add(buttons).expandX().right().padBottom(10F)
 
         new.clickListener { _, _, _ -> newItem() }
+        script.clickListener { _, _, _ -> TODO() }
     }
 
 

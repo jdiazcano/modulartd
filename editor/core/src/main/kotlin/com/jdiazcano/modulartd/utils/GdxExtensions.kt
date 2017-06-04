@@ -1,10 +1,15 @@
 package com.jdiazcano.modulartd.utils
 
+import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.files.FileHandle
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.jdiazcano.modulartd.beans.ResourceType
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
@@ -67,3 +72,20 @@ fun Actor.sneakyChange(listener: () -> Unit) {
         }
     })
 }
+
+/**
+ * Load internal assets. This part is used to get the internal asset icons that will be located
+ * inside the assets/icons folder. Since this is just internal use I don't really have to take
+ * into account non existant filenames or whatever! (That is cool)
+ */
+private val internalAssets = AssetManager(InternalFileHandleResolver())
+fun icon(name: String): Texture {
+    val completeFileName = "icons/ic_${name}_white_48pt_3x.png"
+    if (!internalAssets.isLoaded(completeFileName)) {
+        internalAssets.load(completeFileName, Texture::class.java)
+        internalAssets.finishLoading()
+    }
+    return internalAssets.get(completeFileName, Texture::class.java)
+}
+
+fun Texture.asDrawable() = TextureRegionDrawable(TextureRegion(this))

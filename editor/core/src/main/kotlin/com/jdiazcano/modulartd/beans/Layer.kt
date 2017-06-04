@@ -7,9 +7,14 @@ package com.jdiazcano.modulartd.beans
  *
  * Created by javierdiaz on 16/11/2016.
  */
-class Layer(
-        name: String
+data class Layer(
+        var name: String,
+        var visible: Boolean = true
+
 ) {
-    var visible: Boolean = true
     lateinit var tiles: Array<Array<Tile>>
+
+    init {
+
+    }
 }

@@ -20,7 +20,7 @@ import com.kotcrab.vis.ui.widget.spinner.Spinner
 import mu.KLogging
 import java.util.*
 
-class UnitTab: BaseTab<Unit>(translate("tabs.units")) {
+class UnitTab: BaseTab<Unit>(translate("tabs.units"), true) {
     companion object : KLogging()
 
     private lateinit var splitPane: VisSplitPane

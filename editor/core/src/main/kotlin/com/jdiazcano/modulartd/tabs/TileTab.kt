@@ -8,11 +8,11 @@ import com.jdiazcano.modulartd.beans.Map
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.injections.kodein
-import com.jdiazcano.modulartd.ui.AnimatedActor
 import com.jdiazcano.modulartd.ui.widgets.AnimatedButton
 import com.jdiazcano.modulartd.ui.widgets.lists.LayerList
 import com.jdiazcano.modulartd.ui.widgets.lists.MapObjectList
 import com.jdiazcano.modulartd.ui.widgets.pickResource
+import com.jdiazcano.modulartd.ui.widgets.rotatable
 import com.jdiazcano.modulartd.utils.clickListener
 import com.jdiazcano.modulartd.utils.input
 import com.jdiazcano.modulartd.utils.sneakyChange
@@ -33,7 +33,7 @@ class TileTab: BaseTab<Tile>(translate("tabs.tiles"), true) {
     private val labelName = VisLabel(translate("name"))
     private val textName = VisValidatableTextField()
     private val labelImage =  VisLabel(translate("image"))
-    private val buttonImage = AnimatedButton(AnimatedActor())
+    private val buttonImage = AnimatedButton()
     private val checkBuildable = VisCheckBox(translate("buildable"))
 
     init {
@@ -111,7 +111,7 @@ class TileTab: BaseTab<Tile>(translate("tabs.tiles"), true) {
         propertiesTable.add(labelName).left().padRight(10F)
         propertiesTable.add(textName).padBottom(7F).row()
         propertiesTable.add(labelImage).left().padRight(10F)
-        propertiesTable.add(buttonImage).size(50F).row()
+        propertiesTable.add(buttonImage.rotatable()).size(50F).row()
         propertiesTable.add(checkBuildable).colspan(2).left().row()
 
         //We must have this tables, else we can't place things at the top
@@ -141,7 +141,7 @@ class TileTab: BaseTab<Tile>(translate("tabs.tiles"), true) {
     override fun updateUI(item: Tile) {
         textName.text = item.name
         checkBuildable.isChecked = item.buildable
-        buttonImage.resource = item.resource
+        buttonImage.mapObject = item
     }
 
 }

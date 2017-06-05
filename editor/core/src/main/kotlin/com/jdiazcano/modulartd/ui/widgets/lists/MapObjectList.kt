@@ -26,6 +26,10 @@ class MapObjectList<T: MapObject>(objects: MutableList<T>, clazz: Class<T>): Tab
         Bus.register<Resource>(Resource::class.java, BusTopic.LOAD_FINISHED) {
             invalidateList()
         }
+
+        Bus.register<T>(clazz, BusTopic.UPDATED) {
+            invalidateList()
+        }
     }
 
     override fun getView(position: Int, lastView: MapObjectView?): MapObjectView {

@@ -34,6 +34,7 @@ class AnimatedActor(var resource: Resource = Resource(), var spriteTimer: Float 
                 sprite = resourceManager.get(resource.file.path(), Sprite::class.java)
                 isAnimation = false
             }
+            setOrigin(width/2, height/2)
         }
     }
 
@@ -73,8 +74,8 @@ class AnimatedActor(var resource: Resource = Resource(), var spriteTimer: Float 
         }
     }
 
-    fun swapResource(r: Resource) {
-        this.resource = r
+    fun swapResource(resource: Resource) {
+        this.resource = resource
         loadResource()
     }
 

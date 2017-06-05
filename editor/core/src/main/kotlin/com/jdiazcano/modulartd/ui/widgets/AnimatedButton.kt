@@ -4,16 +4,24 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.ui.Button
+import com.jdiazcano.modulartd.beans.MapObject
 import com.jdiazcano.modulartd.beans.Resource
 import com.jdiazcano.modulartd.ui.AnimatedActor
 import com.kotcrab.vis.ui.Focusable
 import com.kotcrab.vis.ui.VisUI
 import com.kotcrab.vis.ui.widget.VisImageButton
 
-class AnimatedButton(private val actor: AnimatedActor) : Button(), Focusable {
+class AnimatedButton(mapObject: MapObject = MapObject.EMPTY) : Button(), Focusable {
     private lateinit var style: VisImageButton.VisImageButtonStyle
+    var mapObject: MapObject = mapObject
+        set(value) {
+            field = value
+            actor.rotation = value.rotationAngle
+            actor.swapResource(value.resource)
+        }
 
     private var drawBorder: Boolean = false
+    val actor = AnimatedActor(mapObject.resource)
 
     init {
         setStyle(VisImageButton.VisImageButtonStyle(VisUI.getSkin().get(VisImageButton.VisImageButtonStyle::class.java)))
@@ -31,6 +39,7 @@ class AnimatedButton(private val actor: AnimatedActor) : Button(), Focusable {
 
     override fun setRotation(degrees: Float) {
         actor.rotation = degrees
+        mapObject.rotationAngle = degrees
     }
 
     override fun getRotation(): Float {
@@ -38,9 +47,10 @@ class AnimatedButton(private val actor: AnimatedActor) : Button(), Focusable {
     }
 
     var resource: Resource
-        get() = actor.resource
-        set(r) {
-            actor.swapResource(r)
+        get() = mapObject.resource
+        set(value) {
+            actor.swapResource(value)
+            mapObject.resource = value
         }
 
     var animationTimer: Float

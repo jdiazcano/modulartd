@@ -11,7 +11,7 @@ class ResourceView(resource: Resource) : VisTable() {
     init {
         add(image).size(50F).center().row()
         add(resource.file.nameWithoutExtension()).center()
-        pad(10f)
+        pad(10F)
         pack()
     }
 }

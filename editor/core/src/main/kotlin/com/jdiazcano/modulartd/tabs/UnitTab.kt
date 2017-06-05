@@ -8,10 +8,10 @@ import com.jdiazcano.modulartd.beans.Unit
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.injections.kodein
-import com.jdiazcano.modulartd.ui.AnimatedActor
 import com.jdiazcano.modulartd.ui.widgets.AnimatedButton
 import com.jdiazcano.modulartd.ui.widgets.lists.MapObjectList
 import com.jdiazcano.modulartd.ui.widgets.pickResource
+import com.jdiazcano.modulartd.ui.widgets.rotatable
 import com.jdiazcano.modulartd.utils.clickListener
 import com.jdiazcano.modulartd.utils.sneakyChange
 import com.jdiazcano.modulartd.utils.translate
@@ -30,7 +30,7 @@ class UnitTab: BaseTab<Unit>(translate("tabs.units"), true) {
     private val labelName = VisLabel(translate("name"))
     private val textName = VisValidatableTextField()
     private val labelImage = VisLabel(translate("image"))
-    private val buttonImage = AnimatedButton(AnimatedActor())
+    private val buttonImage = AnimatedButton()
     private val labelArmor = VisLabel(translate("armor"))
     private val textArmor = VisValidatableTextField()
     private val labelHitpoints = VisLabel(translate("hitpoints"))
@@ -56,6 +56,10 @@ class UnitTab: BaseTab<Unit>(translate("tabs.units"), true) {
     init {
         Bus.register<Unit>(Unit::class.java, BusTopic.SELECTED) {
             updateUI(it)
+        }
+
+        Bus.register<Unit>(Unit::class.java, BusTopic.UPDATED) {
+            list.notifyDataSetChanged()
         }
 
         buildTable()
@@ -137,8 +141,7 @@ class UnitTab: BaseTab<Unit>(translate("tabs.units"), true) {
         textArmor.text = item.armor.toString()
         textHPregen.text = item.hpRegenPerSecond.toString()
         textLivesTaken.text = item.livesTaken.toString()
-        buttonImage.resource = item.resource
-        buttonImage.rotation = item.rotationAngle
+        buttonImage.mapObject = item
         checkAntiSlow.isChecked = item.antiSlow
         checkAntiStun.isChecked = item.antiStun
         checkAir.isChecked = item.air
@@ -154,7 +157,7 @@ class UnitTab: BaseTab<Unit>(translate("tabs.units"), true) {
         propertiesTable.add(labelMovementSpeed).left().padRight(10F)
         propertiesTable.add(textMovementSpeed).row()
         propertiesTable.add(labelImage).left().padRight(10F)
-        propertiesTable.add(buttonImage).size(50F).row()
+        propertiesTable.add(buttonImage.rotatable()).size(50F).row()
         propertiesTable.add(labelAnimationTime).left().padRight(10F)
         propertiesTable.add(spinnerAnimationTime).row()
         propertiesTable.add(labelHitpoints).left().padRight(10F)

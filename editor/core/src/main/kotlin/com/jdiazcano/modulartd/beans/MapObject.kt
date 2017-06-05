@@ -9,6 +9,16 @@ package com.jdiazcano.modulartd.beans
  * - The rotation angle of the resource that will be painted
  */
 interface MapObject {
+    companion object {
+        val EMPTY = object : MapObject {
+            override var name = ""
+            override var resource = Resource()
+            override var rotationAngle = 0F
+            override var animationTimer = 0.2F
+
+        }
+    }
+
     var name: String
     var resource: Resource
     var rotationAngle: Float

@@ -8,10 +8,10 @@ import com.jdiazcano.modulartd.beans.Turret
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.injections.kodein
-import com.jdiazcano.modulartd.ui.AnimatedActor
 import com.jdiazcano.modulartd.ui.widgets.AnimatedButton
 import com.jdiazcano.modulartd.ui.widgets.lists.MapObjectList
 import com.jdiazcano.modulartd.ui.widgets.pickResource
+import com.jdiazcano.modulartd.ui.widgets.rotatable
 import com.jdiazcano.modulartd.utils.clickListener
 import com.jdiazcano.modulartd.utils.sneakyChange
 import com.jdiazcano.modulartd.utils.translate
@@ -27,9 +27,9 @@ class TurretTab: BaseTab<Turret>(translate("tabs.turrets"), true) {
     private val labelName = VisLabel(translate("label.name"))
     private val textName = VisValidatableTextField()
     private val labelImage = VisLabel(translate("label.image"))
-    private val buttonImage = AnimatedButton(AnimatedActor())
+    private val buttonImage = AnimatedButton()
     private val labelBulletImage = VisLabel(translate("label.bulletimage"))
-    private val buttonBulletImage = AnimatedButton(AnimatedActor())
+    private val buttonBulletImage = AnimatedButton()
     private val labelDamage = VisLabel(translate("label.damage"))
     private val textDamage = VisValidatableTextField()
     private val labelAttackSpeed = VisLabel(translate("label.attackspeed"))
@@ -193,8 +193,8 @@ class TurretTab: BaseTab<Turret>(translate("tabs.turrets"), true) {
     fun placeComponents() {
         //Build the table
         propertiesTable.add(labelName).left().padRight(10F); propertiesTable.add(textName).padBottom(7f).row()
-        propertiesTable.add(labelImage).left().padRight(10F); propertiesTable.add(buttonImage).size(50f).row()
-        propertiesTable.add(labelBulletImage).left().padRight(10F); propertiesTable.add(buttonBulletImage).size(50f).row()
+        propertiesTable.add(labelImage).left().padRight(10F); propertiesTable.add(buttonImage.rotatable()).size(50f).row()
+        propertiesTable.add(labelBulletImage).left().padRight(10F); propertiesTable.add(buttonBulletImage.rotatable()).size(50f).row()
         propertiesTable.add(labelDamage).left().padRight(10F); propertiesTable.add(textDamage).row()
         propertiesTable.add(labelAttackSpeed).left().padRight(10F); propertiesTable.add(textAttackSpeed).row()
         propertiesTable.add(labelRange).left().padRight(10F); propertiesTable.add(textRange).row()
@@ -242,10 +242,8 @@ class TurretTab: BaseTab<Turret>(translate("tabs.turrets"), true) {
 
     override fun updateUI(item: Turret) {
         textName.text = item.name
-        buttonImage.resource = item.resource
-        buttonImage.rotation = item.rotationAngle
-        buttonBulletImage.resource = item.bullet.resource
-        buttonBulletImage.rotation = item.bullet.rotationAngle
+        buttonImage.mapObject = item
+        buttonBulletImage.mapObject = item.bullet
         textDamage.text = item.damage.toString()
         textRange.text = item.range.toString()
         textAttackSpeed.text = item.attackSpeed.toString()

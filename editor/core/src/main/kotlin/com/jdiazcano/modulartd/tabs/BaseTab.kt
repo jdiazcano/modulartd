@@ -18,7 +18,8 @@ import com.kotcrab.vis.ui.widget.tabbedpane.Tab
  */
 abstract class BaseTab<T>(
         val title: String,
-        scriptable: Boolean = false
+        scriptable: Boolean = false,
+        instanceable: Boolean = true
 ): Tab(true, false) {
     private val fullContent = VisTable()
     protected val content = VisTable()
@@ -30,7 +31,9 @@ abstract class BaseTab<T>(
     init {
         val buttons = VisTable()
 
-        buttons.add(new).padRight(10F).expandX().right()
+        if (instanceable) {
+            buttons.add(new).padRight(10F).expandX().right()
+        }
         if (scriptable) {
             buttons.add(script).padRight(10F)
         }
@@ -39,7 +42,7 @@ abstract class BaseTab<T>(
         fullContent.add(buttons).expandX().right().padBottom(10F)
 
         new.clickListener { _, _, _ -> newItem() }
-        script.clickListener { _, _, _ -> TODO() }
+        script.clickListener { _, _, _ -> TODO() } // TODO This is in trello already
     }
 
 

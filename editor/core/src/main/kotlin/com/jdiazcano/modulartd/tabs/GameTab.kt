@@ -1,20 +1,120 @@
 package com.jdiazcano.modulartd.tabs
 
+import com.github.salomonbrys.kodein.instance
 import com.jdiazcano.modulartd.beans.Map
+import com.jdiazcano.modulartd.bus.Bus
+import com.jdiazcano.modulartd.bus.BusTopic
+import com.jdiazcano.modulartd.injections.kodein
+import com.jdiazcano.modulartd.utils.sneakyChange
 import com.jdiazcano.modulartd.utils.translate
+import com.kotcrab.vis.ui.widget.VisScrollPane
+import com.kotcrab.vis.ui.widget.VisTable
+import com.kotcrab.vis.ui.widget.VisValidatableTextField
 
-class GameTab: BaseTab<Map>(translate("tabs.game")) {
+class GameTab: BaseTab<Map>(translate("tabs.game"), true, false) {
+
+    private val superTable =  VisTable(true)
+    private val scroll = VisScrollPane(superTable)
+
+    private val textName = VisValidatableTextField()
+    private val textMaker = VisValidatableTextField()
+    private val textDescription = VisValidatableTextField()
+    private val textAuthorNotes = VisValidatableTextField()
+
+    //TODO now there's not start gold or diamonds (trello)
+    private val textStartGold = VisValidatableTextField()
+    private val textStartDiamonds = VisValidatableTextField()
+
+    private val textTotalUnitsMap = VisValidatableTextField()
+    private val textInterestRatio = VisValidatableTextField()
+    private val textTurretSellProfit = VisValidatableTextField()
 
     init {
+        Bus.register<Map>(Map::class.java, BusTopic.MAP_LOAD) {
+            updateUI(it)
+        }
 
+        setUpValidableForm()
+        placeComponents()
+        addUpdateListeners()
+
+        content.add("Game properties").expandX().center().row()
+        content.add(scroll).expand().top().left().pad(30F)
+    }
+
+    private fun addUpdateListeners() {
+        val map = kodein.instance<Map>()
+        textName.text = map.name
+        textName.sneakyChange {
+            map.name = textName.text
+        }
+
+        textMaker.text = map.author
+        textMaker.sneakyChange {
+            map.author = textMaker.text
+        }
+
+        textDescription.text = map.description
+        textDescription.sneakyChange {
+            map.description = textDescription.text
+        }
+
+        textAuthorNotes.text = map.authorNotes
+        textAuthorNotes.sneakyChange {
+            map.authorNotes = textAuthorNotes.text
+        }
+
+        textTotalUnitsMap.text = map.unitCount.toString()
+        textTotalUnitsMap.sneakyChange {
+            map.unitCount = textTotalUnitsMap.text.toInt()
+        }
+
+        textInterestRatio.text = map.interestRatio.toString()
+        textInterestRatio.sneakyChange {
+            map.interestRatio = textInterestRatio.text.toFloat()
+        }
+
+        textTurretSellProfit.text = map.turretSellProfit.toString()
+        textTurretSellProfit.sneakyChange {
+            map.turretSellProfit = textTurretSellProfit.text.toFloat()
+        }
+    }
+
+    private fun placeComponents() {
+        superTable.add(translate("name")).left();            superTable.add(textName).row()
+        superTable.add(translate("author")).left();          superTable.add(textMaker).row()
+        superTable.add(translate("description")).left();     superTable.add(textDescription).row()
+        superTable.add(translate("authorNotes")).left();     superTable.add(textAuthorNotes).row()
+        superTable.add(translate("startDiamonds")).left();   superTable.add(textStartDiamonds).row()
+        superTable.add(translate("startGold")).left();       superTable.add(textStartGold).row()
+        superTable.add(translate("unitsMap")).left();        superTable.add(textTotalUnitsMap).row()
+        superTable.add(translate("interestRatio")).left();   superTable.add(textInterestRatio).row()
+        superTable.add(translate("turretSellProfit")).left();superTable.add(textTurretSellProfit).row()
+    }
+
+    private fun setUpValidableForm() {
+        validator.notEmpty(textName, "Name can't be empty")
+        validator.notEmpty(textMaker, "Maker can't be empty")
+        validator.notEmpty(textDescription, "Description can't be empty")
+        // Notes CAN be empty!!! validator.notEmpty(textAuthorNotes, "Name can't be empty")
+        validator.valueGreaterThan(textTotalUnitsMap, "It needs to be a positive value", 0F, true)
+        validator.valueGreaterThan(textInterestRatio, "It needs to be a positive value", 0F, true)
+        validator.valueGreaterThan(textTurretSellProfit, "It needs to be a positive value", 0F, true)
     }
 
     override fun newItem() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        throw NotImplementedError("This is something that should never be called!!!!")
     }
 
     override fun updateUI(item: Map) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        textName.text = item.name
+        textDescription.text = item.description
+        textMaker.text = item.author
+        textAuthorNotes.text = item.authorNotes
+
+        textTurretSellProfit.text = item.turretSellProfit.toString()
+        textTotalUnitsMap.text = item.unitCount.toString()
+        textInterestRatio.text = item.interestRatio.toString()
     }
 
 }

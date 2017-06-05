@@ -74,6 +74,7 @@ class OpenPlugin : Plugin {
                     loadedMap.coins.forEach { Bus.post(it, BusTopic.CREATED) }
                     script = loadedMap.script
                 }
+                Bus.post(map, BusTopic.MAP_LOAD)
             }
 
             currentWatcher.stopWatching()

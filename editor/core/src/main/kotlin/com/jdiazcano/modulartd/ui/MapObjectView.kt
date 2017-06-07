@@ -6,7 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.jdiazcano.modulartd.beans.MapObject
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
+import com.jdiazcano.modulartd.utils.asDrawable
 import com.jdiazcano.modulartd.utils.clickListener
+import com.jdiazcano.modulartd.utils.icon
 import com.jdiazcano.modulartd.utils.translate
 import com.kotcrab.vis.ui.widget.MenuItem
 import com.kotcrab.vis.ui.widget.PopupMenu
@@ -18,7 +20,7 @@ class MapObjectView(item: MapObject, private val vertical: Boolean = false) : Vi
     var image = AnimatedActor(item.resource)
     var labelName = VisLabel(item.name)
     val rightClickMenu = PopupMenu()
-    val deleteItem = MenuItem(translate("delete"))
+    val deleteItem = MenuItem(translate("delete"), icon("delete").asDrawable())
 
     init {
         add(image).size(50F, 50F)

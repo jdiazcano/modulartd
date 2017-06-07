@@ -5,6 +5,7 @@ import com.jdiazcano.modulartd.beans.Map
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.injections.kodein
+import com.jdiazcano.modulartd.ui.widgets.CoinEditor
 import com.jdiazcano.modulartd.utils.sneakyChange
 import com.jdiazcano.modulartd.utils.translate
 import com.kotcrab.vis.ui.widget.VisScrollPane
@@ -21,9 +22,7 @@ class GameTab: BaseTab<Map>(translate("tabs.game"), true, false) {
     private val textDescription = VisValidatableTextField()
     private val textAuthorNotes = VisValidatableTextField()
 
-    //TODO now there's not start gold or diamonds (trello)
-    private val textStartGold = VisValidatableTextField()
-    private val textStartDiamonds = VisValidatableTextField()
+    private val coinEditor = CoinEditor(kodein.instance<Map>().coins)
 
     private val textTotalUnitsMap = VisValidatableTextField()
     private val textInterestRatio = VisValidatableTextField()
@@ -37,6 +36,8 @@ class GameTab: BaseTab<Map>(translate("tabs.game"), true, false) {
         setUpValidableForm()
         placeComponents()
         addUpdateListeners()
+
+        //scroll.setScrollingDisabled(true, false)
 
         content.add("Game properties").expandX().center().row()
         content.add(scroll).expand().top().left().pad(30F)
@@ -85,11 +86,10 @@ class GameTab: BaseTab<Map>(translate("tabs.game"), true, false) {
         superTable.add(translate("author")).left();          superTable.add(textMaker).row()
         superTable.add(translate("description")).left();     superTable.add(textDescription).row()
         superTable.add(translate("authorNotes")).left();     superTable.add(textAuthorNotes).row()
-        superTable.add(translate("startDiamonds")).left();   superTable.add(textStartDiamonds).row()
-        superTable.add(translate("startGold")).left();       superTable.add(textStartGold).row()
         superTable.add(translate("unitsMap")).left();        superTable.add(textTotalUnitsMap).row()
         superTable.add(translate("interestRatio")).left();   superTable.add(textInterestRatio).row()
         superTable.add(translate("turretSellProfit")).left();superTable.add(textTurretSellProfit).row()
+        superTable.add(coinEditor).colspan(999).expandX().fillX().height(300F)
     }
 
     private fun setUpValidableForm() {

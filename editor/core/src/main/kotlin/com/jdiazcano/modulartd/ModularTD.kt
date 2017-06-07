@@ -17,6 +17,7 @@ import com.jdiazcano.modulartd.keys.PriorityInputMultiplexer
 import com.jdiazcano.modulartd.keys.PriorityProcessor
 import com.jdiazcano.modulartd.plugins.PluginLoader
 import com.jdiazcano.modulartd.ui.MainMenu
+import com.jdiazcano.modulartd.ui.PopupMenuLocation
 import com.jdiazcano.modulartd.ui.widgets.OpenProjectDialog
 import com.jdiazcano.modulartd.utils.filewatcher.AssetDirectoryWatcher
 import com.jdiazcano.modulartd.utils.toURL
@@ -68,6 +69,11 @@ class ModularTD : ApplicationAdapter() {
         // This will handle the dialogs that will be posted in the stage
         Bus.register<Actor>(Actor::class.java, BusTopic.NEW_DIALOG) {
             stage.addActor(it)
+        }
+
+        Bus.register<PopupMenuLocation>(PopupMenuLocation::class.java, BusTopic.POPUP_MENU) { (menu, x, y) ->
+            menu.showMenu(stage, x, y)
+            menu.toFront()
         }
     }
 

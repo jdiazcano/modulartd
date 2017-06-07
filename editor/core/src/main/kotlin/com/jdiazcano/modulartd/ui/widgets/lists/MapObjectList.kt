@@ -23,6 +23,10 @@ class MapObjectList<T: MapObject>(objects: MutableList<T>, clazz: Class<T>): Tab
             logger.debug { "Cleared list of: ${clazz.simpleName}" }
         }
 
+        Bus.register<T>(clazz, BusTopic.DELETED) {
+            removeItem(it)
+        }
+
         Bus.register<Resource>(Resource::class.java, BusTopic.LOAD_FINISHED) {
             invalidateList()
         }

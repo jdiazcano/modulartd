@@ -100,4 +100,9 @@ enum class BusTopic {
      * Reset everything!
      */
     RESET,
+
+    /**
+     * Used when showing a popupmenu in stage. It needs a popupmenu, and a location to be shown!
+     */
+    POPUP_MENU,
 }

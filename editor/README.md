@@ -51,9 +51,10 @@ You will be able to modify the terrain
     * Unit types and number of units per each type per level
     * Time between units
 6. Money
-    * There will be two kind of money, GOLD and DIAMONDS
+    * Will be possible to create custom coins. A coin is something that will be used as payment to build/update the turrets or other kind of updates (this is something that I'm thinking right now so nothing is planned)
+    * A coin will be able to be created inside the Game tab and will be immediately available in all other places of the editor
 7. General game
-    * Starting money GOLD and DIAMONDS
+    * Starting money, a table with all the coins will be available and you will only have to input the starting money for each coin
     * Time between levels
     * Lose condition: There are two possibilities:
         1. Lose because N units have reached the end of the path so you have run out of lives

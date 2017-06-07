@@ -55,7 +55,6 @@ class PreferencesWindow : VisWindow("Preferences") {
         addCloseButton()
 
         val panel = VisSplitPane(tree, mainTable, false)
-        debugAll()
         tree.add(externalNode)
         tree.changeListener { _, actor ->
             externalNode.selectionChanged((actor as VisTree).selection, panel)

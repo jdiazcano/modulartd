@@ -58,10 +58,6 @@ class UnitTab: BaseTab<Unit>(translate("tabs.units"), true) {
             updateUI(it)
         }
 
-        Bus.register<Unit>(Unit::class.java, BusTopic.UPDATED) {
-            list.notifyDataSetChanged()
-        }
-
         buildTable()
     }
 

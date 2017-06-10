@@ -20,9 +20,6 @@ import com.jdiazcano.modulartd.plugins.ui.StageWrapper
 import com.jdiazcano.modulartd.utils.*
 import com.kotcrab.vis.ui.widget.file.FileChooser
 
-/**
- *
- */
 class SavePlugin(private val saveAs: Boolean) : Plugin {
     override fun getName() = "Save ${saveAs.text("As")} plugin"
 
@@ -72,10 +69,17 @@ class SaveAction(private val saveAs: Boolean) :
 
 }
 
+/**
+ * Saves the game in whatever file it is passed
+ *
+ * @param file The filehandle of the folder where the game will be saved.
+ */
 fun saveGame(file: FileHandle) {
     val itdFolder = file.child(Configs.editor.gameConfigFolder())
     val gameFile = itdFolder.child(Configs.editor.gameFileName())
     val map = kodein.instance<Map>()
     val io = kodein.instance<FileIO<Map>>()
     io.write(map, gameFile)
+    val game = kodein.instance<Game>()
+    game.dirty = false
 }

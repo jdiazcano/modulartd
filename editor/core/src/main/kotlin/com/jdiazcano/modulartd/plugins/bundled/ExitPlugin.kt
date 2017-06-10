@@ -44,6 +44,8 @@ class ExitAction : Action("file.exit", "Exit", ShortCut(Input.Keys.Q, Modifiers(
             }, {
                 System.exit(0)
             })
+        } else {
+            System.exit(0)
         }
     }
 }

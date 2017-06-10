@@ -43,6 +43,10 @@ inline fun input(title: String, fieldTitle: String, crossinline action: (String)
     Bus.post(dialog, BusTopic.NEW_DIALOG)
 }
 
+/**
+ * Shows a confirmation dialog with 3 buttons. Yes, No and Cancel. There are two parameters for the first two and cancel
+ * will do always nothing, just hide the dialog.
+ */
 inline fun confirm(title: String, question: String, crossinline actionYes: () -> Unit, crossinline actionNo: () -> Unit) {
     val dialog = Dialogs.ConfirmDialog<Int>(title, question, arrayOf("Yes", "No", "Cancel"), arrayOf(1, 2, 3)) {
         when (it) {

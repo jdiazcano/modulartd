@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.github.salomonbrys.kodein.instance
+import com.jdiazcano.modulartd.beans.Game
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.config.Configs
@@ -19,6 +20,7 @@ import com.jdiazcano.modulartd.plugins.PluginLoader
 import com.jdiazcano.modulartd.ui.MainMenu
 import com.jdiazcano.modulartd.ui.PopupMenuLocation
 import com.jdiazcano.modulartd.ui.widgets.OpenProjectDialog
+import com.jdiazcano.modulartd.ui.widgets.ToolBar
 import com.jdiazcano.modulartd.utils.filewatcher.AssetDirectoryWatcher
 import com.jdiazcano.modulartd.utils.toURL
 import com.kotcrab.vis.ui.VisUI
@@ -34,13 +36,17 @@ class ModularTD : ApplicationAdapter() {
     private val pluginLoader = PluginLoader()
     private lateinit var menu: MainMenu
     private lateinit var screen: MainScreenUI
+    private lateinit var toolbar: ToolBar
+    private val game: Game by lazy {
+        kodein.instance<Game>()
+    }
 
     override fun create() {
         PropertyConfigurator.configure(Gdx.files.internal("log4j.properties").toURL())
         FileChooser.setDefaultPrefsName(Configs.editor.preferencesKey())
         VisUI.load()
         registerBusTopics()
-        Gdx.graphics.setTitle(Configs.editor.baseTitle())
+        game.title = Configs.editor.baseTitle()
         kodein.instance<AssetDirectoryWatcher>().startWatching()
         stage = Stage(ScreenViewport())
         Gdx.input.inputProcessor = PriorityInputMultiplexer(stage)
@@ -50,6 +56,7 @@ class ModularTD : ApplicationAdapter() {
 
         menu = MainMenu()
         screen = MainScreenUI(root)
+        toolbar = ToolBar()
 
         pluginLoader.loadBundledPlugins()
         pluginLoader.loadExternalPlugins()
@@ -59,6 +66,7 @@ class ModularTD : ApplicationAdapter() {
         stage.addActor(root)
 
         root.add(menu.table).expandX().fillX().padBottom(5F).row()
+        root.add(toolbar).expandX().fillX().padBottom(5F).row()
         root.add(screen).expand().fill().row()
         root.add(kodein.instance<Label>("globalMessageLabel")).expandX().left().row()
 

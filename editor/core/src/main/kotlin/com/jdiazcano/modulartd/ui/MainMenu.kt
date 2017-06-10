@@ -1,6 +1,5 @@
 package com.jdiazcano.modulartd.ui
 
-import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.jdiazcano.modulartd.ActionManager
 import com.jdiazcano.modulartd.ParentedAction
 import com.jdiazcano.modulartd.bus.Bus
@@ -35,7 +34,7 @@ class MainMenu : MenuBar() {
         val separator = action.separator
         if (parentId in menus) {
             val menu = menus[parentId]!!
-            val item = ActionedMenuItem(Image(), action)
+            val item = ActionedMenuItem(action)
             if (separator == SeparatorPlace.ABOVE || separator == SeparatorPlace.BOTH) {
                 menu.addSeparator()
             }
@@ -52,7 +51,7 @@ class MainMenu : MenuBar() {
                     parentMenu.subMenu = PopupMenu()
                 }
 
-                val item = ActionedMenuItem(Image(), action)
+                val item = ActionedMenuItem(action)
                 parentMenu.subMenu.addItem(item)
                 if (separator == SeparatorPlace.ABOVE || separator == SeparatorPlace.BOTH) {
                     parentMenu.subMenu.addSeparator()

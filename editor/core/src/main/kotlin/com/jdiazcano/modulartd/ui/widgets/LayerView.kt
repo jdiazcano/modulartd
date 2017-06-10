@@ -22,8 +22,8 @@ class LayerView(
 
     init {
         val style = VisImageButton.VisImageButtonStyle()
-        style.checked = icon("visibility").asDrawable()
-        style.up = icon("visibility_off").asDrawable()
+        style.checked = icon("visible").asDrawable()
+        style.up = icon("visible-off").asDrawable()
         check = VisImageButton(style)
         check.changeListener { _, _ ->
             layer.visible = check.isChecked

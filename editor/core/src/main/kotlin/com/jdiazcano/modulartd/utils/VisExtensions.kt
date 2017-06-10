@@ -42,3 +42,15 @@ inline fun input(title: String, fieldTitle: String, crossinline action: (String)
     })
     Bus.post(dialog, BusTopic.NEW_DIALOG)
 }
+
+inline fun confirm(title: String, question: String, crossinline actionYes: () -> Unit, crossinline actionNo: () -> Unit) {
+    val dialog = Dialogs.ConfirmDialog<Int>(title, question, arrayOf("Yes", "No", "Cancel"), arrayOf(1, 2, 3)) {
+        when (it) {
+            1 -> actionYes()
+            2 -> actionNo()
+            3 -> {} // We just do nothing since it's cancel!
+        }
+    }
+
+    Bus.post(dialog, BusTopic.NEW_DIALOG)
+}

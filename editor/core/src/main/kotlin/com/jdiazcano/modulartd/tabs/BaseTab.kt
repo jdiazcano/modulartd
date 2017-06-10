@@ -2,12 +2,14 @@ package com.jdiazcano.modulartd.tabs
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.github.salomonbrys.kodein.instance
+import com.jdiazcano.modulartd.beans.Game
 import com.jdiazcano.modulartd.injections.kodein
 import com.jdiazcano.modulartd.utils.clickListener
 import com.jdiazcano.modulartd.utils.translate
 import com.kotcrab.vis.ui.util.form.FormValidator
 import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
+import com.kotcrab.vis.ui.widget.VisTextField
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab
 
 /**
@@ -21,6 +23,9 @@ abstract class BaseTab<T>(
         scriptable: Boolean = false,
         instanceable: Boolean = true
 ): Tab(true, false) {
+    protected val game = kodein.instance<Game>()
+    protected val textFields = arrayListOf<VisTextField>()
+
     private val fullContent = VisTable()
     protected val content = VisTable()
     protected val new = VisTextButton(translate("new"))
@@ -63,4 +68,20 @@ abstract class BaseTab<T>(
     }
 
     override fun getTabTitle() = title
+
+    override fun setDirty(dirty: Boolean) {
+        game.dirty = dirty
+    }
+
+    protected fun enableProgrammaticEvents() {
+        setProgrammaticEvents(true)
+    }
+
+    protected fun disableProgrammaticEvents() {
+        setProgrammaticEvents(false)
+    }
+
+    private fun setProgrammaticEvents(value: Boolean) {
+        textFields.forEach { it.programmaticChangeEvents = value }
+    }
 }

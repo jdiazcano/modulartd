@@ -1,5 +1,6 @@
 package com.jdiazcano.modulartd.plugins.actions
 
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.jdiazcano.modulartd.keys.ShortCut
 import com.jdiazcano.modulartd.plugins.ui.StageWrapper
 
@@ -10,7 +11,13 @@ import com.jdiazcano.modulartd.plugins.ui.StageWrapper
  * An action can have a parent action that is linked by a name (that name must be unique) so the menus will be able to
  * have submenus and sub-submenus and the whole hierarchy.
  */
-abstract class Action(val name: String, val description: String, val shortCut: ShortCut, val separator: SeparatorPlace = SeparatorPlace.NONE): Actioned {
+abstract class Action(
+        val name: String,
+        val description: String,
+        val shortCut: ShortCut,
+        val separator: SeparatorPlace = SeparatorPlace.NONE,
+        val icon: Drawable? = null
+): Actioned {
 
     override fun toString(): String {
         return """{

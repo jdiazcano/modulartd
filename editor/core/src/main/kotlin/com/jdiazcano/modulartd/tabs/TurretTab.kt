@@ -80,8 +80,29 @@ class TurretTab: BaseTab<Turret>(translate("tabs.turrets"), true) {
         placeComponents()
         setUpValidatableForm()
         addChangeListeners()
+        addTextFieldsForEvents()
 
         content.add(splitPane).expand().fill()
+    }
+
+    private fun addTextFieldsForEvents() {
+        textFields += textName
+        textFields += textDamage
+        textFields += textRange
+        textFields += textAttackSpeed
+        textFields += textTargets
+        textFields += textSplash
+        textFields += textDamage
+        textFields += textDamage
+        textFields += textDamage
+        textFields += textDamage
+        textFields += textStunDuration
+        textFields += textStunChance
+        textFields += textCriticalMultiplier
+        textFields += textCriticalChance
+        textFields += textSlowPercent
+        textFields += textSlowChance
+        textFields += textSlowDuration
     }
 
     private fun addChangeListeners() {
@@ -90,6 +111,7 @@ class TurretTab: BaseTab<Turret>(translate("tabs.turrets"), true) {
                 buttonImage.resource = it
                 list.selectedItem.resource = it
                 list.notifyDataSetChanged()
+                game.dirty = true
             }
         }
 
@@ -98,6 +120,7 @@ class TurretTab: BaseTab<Turret>(translate("tabs.turrets"), true) {
                 buttonBulletImage.resource = it
                 list.selectedItem.bullet.resource = it
                 list.notifyDataSetChanged()
+                game.dirty = true
             }
         }
 
@@ -106,6 +129,7 @@ class TurretTab: BaseTab<Turret>(translate("tabs.turrets"), true) {
             containerStun.isCollapsed = !containerStun.isCollapsed
             textStunChance.isValidationEnabled = checkStun.isChecked
             textStunDuration.isValidationEnabled = checkStun.isChecked
+            game.dirty = true
         }
 
         containerCrit.isCollapsed = true
@@ -113,6 +137,7 @@ class TurretTab: BaseTab<Turret>(translate("tabs.turrets"), true) {
             containerCrit.isCollapsed = !containerCrit.isCollapsed
             textCriticalChance.isValidationEnabled = checkCriticalStrike.isChecked
             textCriticalMultiplier.isValidationEnabled = checkCriticalStrike.isChecked
+            game.dirty = true
         }
 
         containerSlow.isCollapsed = true
@@ -121,56 +146,73 @@ class TurretTab: BaseTab<Turret>(translate("tabs.turrets"), true) {
             textSlowDuration.isValidationEnabled = checkSlow.isChecked
             textSlowChance.isValidationEnabled = checkSlow.isChecked
             textSlowPercent.isValidationEnabled = checkSlow.isChecked
+            game.dirty = true
         }
 
         textName.sneakyChange {
             list.selectedItem.name= textName.text
             list.notifyDataSetChanged()
+            game.dirty = true
         }
         textDamage.sneakyChange {
             list.selectedItem.damage = textDamage.text.toFloat()
+            game.dirty = true
         }
         textAttackSpeed.sneakyChange {
             list.selectedItem.attackSpeed = textAttackSpeed.text.toFloat()
+            game.dirty = true
         }
         textRange.sneakyChange {
             list.selectedItem.range = textRange.text.toFloat()
+            game.dirty = true
         }
         textTargets.sneakyChange {
             list.selectedItem.numberOfTargets = textTargets.text.toInt()
+            game.dirty = true
         }
         textSplash.sneakyChange {
             list.selectedItem.splashRadius = textSplash.text.toFloat()
+            game.dirty = true
         }
         textStunDuration.sneakyChange {
             list.selectedItem.stunDuration = textStunDuration.text.toFloat()
+            game.dirty = true
         }
         textStunChance.sneakyChange {
             list.selectedItem.stunChance = textStunChance.text.toFloat()
+            game.dirty = true
         }
         textSlowChance.sneakyChange {
             list.selectedItem.slowChance = textSlowChance.text.toFloat()
+            game.dirty = true
         }
         textSlowDuration.sneakyChange {
             list.selectedItem.slowDuration = textSlowDuration.text.toFloat()
+            game.dirty = true
         }
         textSlowPercent.sneakyChange {
             list.selectedItem.slowPercent = textSlowPercent.text.toFloat()
+            game.dirty = true
         }
         textCriticalChance.sneakyChange {
             list.selectedItem.critChance = textCriticalChance.text.toFloat()
+            game.dirty = true
         }
         textCriticalMultiplier.sneakyChange {
             list.selectedItem.critMultiplier = textCriticalMultiplier.text.toFloat()
+            game.dirty = true
         }
         checkStun.sneakyChange {
             list.selectedItem.canStun = checkStun.isChecked
+            game.dirty = true
         }
         checkSlow.sneakyChange {
             list.selectedItem.canSlow = checkSlow.isChecked
+            game.dirty = true
         }
         checkCriticalStrike.sneakyChange {
             list.selectedItem.canCrit = checkCriticalStrike.isChecked
+            game.dirty = true
         }
     }
 
@@ -241,6 +283,8 @@ class TurretTab: BaseTab<Turret>(translate("tabs.turrets"), true) {
     }
 
     override fun updateUI(item: Turret) {
+        disableProgrammaticEvents()
+
         textName.text = item.name
         buttonImage.mapObject = item
         buttonBulletImage.mapObject = item.bullet
@@ -272,6 +316,8 @@ class TurretTab: BaseTab<Turret>(translate("tabs.turrets"), true) {
         textSlowPercent.text = item.slowPercent.toString()
         textSlowChance.text = item.slowChance.toString()
         textSlowDuration.text = item.slowDuration.toString()
+
+        enableProgrammaticEvents()
     }
 
 }

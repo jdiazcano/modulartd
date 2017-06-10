@@ -1,6 +1,5 @@
 package com.jdiazcano.modulartd.plugins.bundled
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.files.FileHandle
 import com.github.salomonbrys.kodein.instance
@@ -34,12 +33,12 @@ class OpenPlugin : Plugin {
 
     init {
         Bus.register<LoadMapEvent>(LoadMapEvent::class.java, BusTopic.MAP_LOAD) { (file, reloadMap) ->
+            val game: Game = kodein.instance()
             val editor = Configs.editor
 
             val title = "${file.path()} - ${Configs.editor.baseTitle()}"
-            Gdx.graphics.setTitle(title)
+            game.title = title
 
-            val game: Game = kodein.instance()
             game.gameFolder = file
 
             if (reloadMap) {

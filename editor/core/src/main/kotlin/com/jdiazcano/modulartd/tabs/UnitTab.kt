@@ -65,8 +65,18 @@ class UnitTab: BaseTab<Unit>(translate("tabs.units"), true) {
         setUpValidableForm()
         placeComponents()
         addUpdateListeners()
+        addTextFieldsForEvents()
 
         content.add(splitPane).expand().fill()
+    }
+
+    private fun addTextFieldsForEvents() {
+        textFields += textName
+        textFields += textMovementSpeed
+        textFields += textHitpoints
+        textFields += textArmor
+        textFields += textHPregen
+        textFields += textLivesTaken
     }
 
     /**
@@ -79,39 +89,50 @@ class UnitTab: BaseTab<Unit>(translate("tabs.units"), true) {
                 buttonImage.resource = it
                 list.selectedItem.resource = it
                 list.notifyDataSetChanged()
+                isDirty = true
             }
         }
 
         textArmor.sneakyChange {
             list.selectedItem.armor = textArmor.text.toFloat()
+            isDirty = true
         }
         textHPregen.sneakyChange {
             list.selectedItem.hpRegenPerSecond = textHPregen.text.toFloat()
+            isDirty = true
         }
         textHitpoints.sneakyChange {
             list.selectedItem.hitPoints = textHitpoints.text.toFloat()
+            isDirty = true
         }
         textLivesTaken.sneakyChange {
             list.selectedItem.livesTaken = textLivesTaken.text.toInt()
+            isDirty = true
         }
         textMovementSpeed.sneakyChange {
             list.selectedItem.movementSpeed = textMovementSpeed.text.toFloat()
+            isDirty = true
         }
         textName.sneakyChange {
             list.selectedItem.name = textName.text
             list.invalidateSelected()
+            isDirty = true
         }
         checkAir.sneakyChange {
             list.selectedItem.air = checkAir.isChecked
+            isDirty = true
         }
         checkAntiSlow.sneakyChange {
             list.selectedItem.antiSlow = checkAntiSlow.isChecked
+            isDirty = true
         }
         checkAntiStun.sneakyChange {
             list.selectedItem.antiStun = checkAntiStun.isChecked
+            isDirty = true
         }
         checkInvisible.sneakyChange {
             list.selectedItem.invisible = checkInvisible.isChecked
+            isDirty = true
         }
 
         spinnerAnimationTime.sneakyChange {
@@ -120,6 +141,7 @@ class UnitTab: BaseTab<Unit>(translate("tabs.units"), true) {
             buttonImage.animationTimer = time
             logger.debug { "Animation timer changed to $time" }
             list.notifyDataSetChanged()
+            isDirty = true
         }
     }
 
@@ -131,6 +153,8 @@ class UnitTab: BaseTab<Unit>(translate("tabs.units"), true) {
     }
 
     override fun updateUI(item: Unit) {
+        disableProgrammaticEvents()
+
         textName.text = item.name
         textMovementSpeed.text = item.movementSpeed.toString()
         textHitpoints.text = item.hitPoints.toString()
@@ -144,7 +168,11 @@ class UnitTab: BaseTab<Unit>(translate("tabs.units"), true) {
         checkInvisible.isChecked = item.invisible
         // soundTable.useSounds(unit.getSoundMap(), UnitSound::class.java)
         // coinDropTable.setCoins(unit.getDrop())
+
+        enableProgrammaticEvents()
     }
+
+
 
     private fun placeComponents() {
         //Build the table

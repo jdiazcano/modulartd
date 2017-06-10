@@ -17,10 +17,7 @@ import com.jdiazcano.modulartd.plugins.actions.Action
 import com.jdiazcano.modulartd.plugins.actions.Menus
 import com.jdiazcano.modulartd.plugins.actions.RegisterAction
 import com.jdiazcano.modulartd.plugins.ui.StageWrapper
-import com.jdiazcano.modulartd.utils.createErrorDialog
-import com.jdiazcano.modulartd.utils.setSingleFileListener
-import com.jdiazcano.modulartd.utils.text
-import com.jdiazcano.modulartd.utils.translate
+import com.jdiazcano.modulartd.utils.*
 import com.kotcrab.vis.ui.widget.file.FileChooser
 
 /**
@@ -44,8 +41,10 @@ class SavePlugin(private val saveAs: Boolean) : Plugin {
 }
 
 class SaveAction(private val saveAs: Boolean) :
-        Action("file.save${saveAs.text("As")}", "Save${saveAs.text(" As")}",
-                ShortCut(Input.Keys.S, Modifiers(control = true, shift = saveAs))) {
+        Action("file.save${saveAs.text("As")}",
+                "Save${saveAs.text(" As")}",
+                ShortCut(Input.Keys.S, Modifiers(control = true, shift = saveAs)),
+                icon = icon("save${saveAs.text("-as")}").asDrawable()) {
 
     override fun perform(stage: StageWrapper) {
         val game = kodein.instance<Game>()
@@ -55,7 +54,7 @@ class SaveAction(private val saveAs: Boolean) :
             chooser.setWatchingFilesEnabled(true)
             chooser.selectionMode = FileChooser.SelectionMode.DIRECTORIES
             chooser.setSingleFileListener(errorDialog) { file ->
-                // 2TODO this will throw an exception if the map hasn't been created so I must check if the map
+                // TODO this will throw an exception if the map hasn't been created so I must check if the map
                 // TODO has been created before saving the game and take action if needed.
                 saveGame(file)
                 game.gameFolder = file // The folder has changed since we now saved the map in a new folder
@@ -70,12 +69,13 @@ class SaveAction(private val saveAs: Boolean) :
 
     }
 
-    private fun saveGame(file: FileHandle) {
-        val itdFolder = file.child(Configs.editor.gameConfigFolder())
-        val gameFile = itdFolder.child(Configs.editor.gameFileName())
-        val map = kodein.instance<Map>()
-        val io = kodein.instance<FileIO<Map>>()
-        io.write(map, gameFile)
-    }
 
+}
+
+fun saveGame(file: FileHandle) {
+    val itdFolder = file.child(Configs.editor.gameConfigFolder())
+    val gameFile = itdFolder.child(Configs.editor.gameFileName())
+    val map = kodein.instance<Map>()
+    val io = kodein.instance<FileIO<Map>>()
+    io.write(map, gameFile)
 }

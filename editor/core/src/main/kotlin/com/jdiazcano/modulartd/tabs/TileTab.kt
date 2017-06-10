@@ -49,8 +49,13 @@ class TileTab: BaseTab<Tile>(translate("tabs.tiles"), true) {
         buildTableLayers() // The layers table, this will be shown inside the TileTab and new layers will be created here
         placeComponents()
         addUpdateListeners()
+        addTextFieldsForEvents()
 
         content.add(layersSplitPane).expand().fill()
+    }
+
+    private fun addTextFieldsForEvents() {
+        textFields += textName
     }
 
     private fun buildTableLayers() {
@@ -95,6 +100,7 @@ class TileTab: BaseTab<Tile>(translate("tabs.tiles"), true) {
         textName.sneakyChange {
             list.selectedItem.name = textName.text
             list.invalidateSelected()
+            game.dirty = true
         }
 
         buttonImage.clickListener { _, _, _ ->
@@ -102,6 +108,7 @@ class TileTab: BaseTab<Tile>(translate("tabs.tiles"), true) {
                 buttonImage.resource = it
                 list.selectedItem.resource = it
                 list.notifyDataSetChanged()
+                game.dirty = true
             }
         }
     }
@@ -139,9 +146,13 @@ class TileTab: BaseTab<Tile>(translate("tabs.tiles"), true) {
     }
 
     override fun updateUI(item: Tile) {
+        disableProgrammaticEvents()
+
         textName.text = item.name
         checkBuildable.isChecked = item.buildable
         buttonImage.mapObject = item
+
+        enableProgrammaticEvents()
     }
 
 }

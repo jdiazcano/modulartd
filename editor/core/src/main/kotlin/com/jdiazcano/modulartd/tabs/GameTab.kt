@@ -36,6 +36,7 @@ class GameTab: BaseTab<Map>(translate("tabs.game"), true, false) {
         setUpValidableForm()
         placeComponents()
         addUpdateListeners()
+        addTextFieldsForEvents()
 
         //scroll.setScrollingDisabled(true, false)
 
@@ -43,41 +44,58 @@ class GameTab: BaseTab<Map>(translate("tabs.game"), true, false) {
         content.add(scroll).expand().top().left().pad(30F)
     }
 
+    private fun addTextFieldsForEvents() {
+        textFields += textName
+        textFields += textDescription
+        textFields += textMaker
+        textFields += textAuthorNotes
+        textFields += textTurretSellProfit
+        textFields += textTotalUnitsMap
+        textFields += textInterestRatio
+    }
+
     private fun addUpdateListeners() {
         val map = kodein.instance<Map>()
         textName.text = map.name
         textName.sneakyChange {
             map.name = textName.text
+            game.dirty = true
         }
 
         textMaker.text = map.author
         textMaker.sneakyChange {
             map.author = textMaker.text
+            game.dirty = true
         }
 
         textDescription.text = map.description
         textDescription.sneakyChange {
             map.description = textDescription.text
+            game.dirty = true
         }
 
         textAuthorNotes.text = map.authorNotes
         textAuthorNotes.sneakyChange {
             map.authorNotes = textAuthorNotes.text
+            game.dirty = true
         }
 
         textTotalUnitsMap.text = map.unitCount.toString()
         textTotalUnitsMap.sneakyChange {
             map.unitCount = textTotalUnitsMap.text.toInt()
+            game.dirty = true
         }
 
         textInterestRatio.text = map.interestRatio.toString()
         textInterestRatio.sneakyChange {
             map.interestRatio = textInterestRatio.text.toFloat()
+            game.dirty = true
         }
 
         textTurretSellProfit.text = map.turretSellProfit.toString()
         textTurretSellProfit.sneakyChange {
             map.turretSellProfit = textTurretSellProfit.text.toFloat()
+            game.dirty = true
         }
     }
 
@@ -107,6 +125,8 @@ class GameTab: BaseTab<Map>(translate("tabs.game"), true, false) {
     }
 
     override fun updateUI(item: Map) {
+        disableProgrammaticEvents()
+
         textName.text = item.name
         textDescription.text = item.description
         textMaker.text = item.author
@@ -115,6 +135,8 @@ class GameTab: BaseTab<Map>(translate("tabs.game"), true, false) {
         textTurretSellProfit.text = item.turretSellProfit.toString()
         textTotalUnitsMap.text = item.unitCount.toString()
         textInterestRatio.text = item.interestRatio.toString()
+
+        enableProgrammaticEvents()
     }
 
 }

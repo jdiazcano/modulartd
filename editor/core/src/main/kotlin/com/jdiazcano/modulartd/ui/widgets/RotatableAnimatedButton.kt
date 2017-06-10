@@ -10,8 +10,8 @@ import com.kotcrab.vis.ui.widget.VisImageButton
 import com.kotcrab.vis.ui.widget.VisTable
 
 class RotatableAnimatedButton(private var actor: AnimatedButton) : VisTable() {
-    private val rotateLeft = VisImageButton(SpriteDrawable(Sprite(icon("rotate_left"))))
-    private val rotateRight = VisImageButton(SpriteDrawable(Sprite(icon("rotate_right"))))
+    private val rotateLeft = VisImageButton(SpriteDrawable(Sprite(icon("rotate-left"))))
+    private val rotateRight = VisImageButton(SpriteDrawable(Sprite(icon("rotate-right"))))
 
     init {
 

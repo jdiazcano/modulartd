@@ -79,8 +79,8 @@ fun Actor.sneakyChange(listener: () -> Unit) {
  * into account non existant filenames or whatever! (That is cool)
  */
 private val internalAssets = AssetManager(InternalFileHandleResolver())
-fun icon(name: String): Texture {
-    val completeFileName = "icons/ic_${name}_white_48pt_3x.png"
+fun icon(name: String, size: Int = 24): Texture {
+    val completeFileName = "icons/${name}_${size}.png"
     if (!internalAssets.isLoaded(completeFileName)) {
         internalAssets.load(completeFileName, Texture::class.java)
         internalAssets.finishLoading()

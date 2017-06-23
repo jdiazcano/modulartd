@@ -37,7 +37,7 @@ class TileTab: BaseTab<Tile>(translate("tabs.tiles"), true) {
     private val checkBuildable = VisCheckBox(translate("buildable"))
 
     init {
-        Bus.register<Tile>(Tile::class.java, BusTopic.SELECTED) {
+        Bus.register<Tile>(BusTopic.SELECTED) {
             updateUI(it)
         }
 

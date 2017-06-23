@@ -1,5 +1,7 @@
 package com.jdiazcano.modulartd.beans
 
+import com.jdiazcano.modulartd.ResourceManager
+
 data class Unit(
         override var name: String,
         override var resource: Resource,
@@ -16,12 +18,39 @@ data class Unit(
         var livesTaken: Int = 1,
         var hpRegenPerSecond: Float = 0f,
         var drop: MutableMap<Coin, Int> = hashMapOf(),
-        var sounds: MutableMap<UnitSoundEvent, Resource> = hashMapOf()
-): MapObject, Scriptable
+        override var sounds: MutableMap<UnitEvent, Resource> =
+                            UnitEvent.values.associateBy({it}, {ResourceManager.NO_SOUND}).toMutableMap()
+): MapObject, Scriptable, Sounded<UnitEvent>
 
-enum class UnitSoundEvent {
+/**
+ * Events that can occur to an unit. This will go later to the scripting language because each one of these
+ * enum items will map to a method that will be executed when the action happens. But if someone doesn't want
+ * to go into that mess, (s)he can just play a sound.
+ */
+enum class UnitEvent {
+    /**
+     * Fired when the unit spawns
+     */
     ON_SPAWN,
-    ON_KILL,
+    /**
+     * Fired when the unit dies
+     */
+    ON_DEATH,
+    /**
+     * Fired when an unit enters a new region.
+     */
     ON_REGION,
-    ON_FINAL
+    /**
+     * Fired when the unit reaches the last region.
+     */
+    ON_FINAL,
+    /**
+     * Fired when this unit takes damage
+     */
+    ON_DAMAGE,
+    ;
+
+    companion object {
+        val values = values()
+    }
 }

@@ -1,11 +1,13 @@
 package com.jdiazcano.modulartd.ui
 
+import com.github.salomonbrys.kodein.instance
 import com.jdiazcano.modulartd.ActionManager
-import com.jdiazcano.modulartd.ParentedAction
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
+import com.jdiazcano.modulartd.injections.kodein
 import com.jdiazcano.modulartd.plugins.actions.Action
 import com.jdiazcano.modulartd.plugins.actions.Menus
+import com.jdiazcano.modulartd.plugins.actions.ParentedAction
 import com.jdiazcano.modulartd.plugins.actions.SeparatorPlace
 import com.jdiazcano.modulartd.utils.getOrThrow
 import com.jdiazcano.modulartd.utils.translate
@@ -14,6 +16,7 @@ import com.kotcrab.vis.ui.widget.MenuBar
 import com.kotcrab.vis.ui.widget.PopupMenu
 
 class MainMenu : MenuBar() {
+    private val actionManager = kodein.instance<ActionManager>()
     private val menuItems: MutableMap<Action, ActionedMenuItem> = mutableMapOf()
     private val menus = mapOf(
             Menus.FILE to Menu(translate("menu.file")),
@@ -22,9 +25,11 @@ class MainMenu : MenuBar() {
             Menus.GAME to Menu(translate("menu.game")),
             Menus.HELP to Menu(translate("menu.help"))
     )
+
+
     init {
         menus.forEach { addMenu(it.value) }
-        Bus.register<ParentedAction>(ParentedAction::class.java, BusTopic.ACTION_REGISTERED) {
+        Bus.register<ParentedAction>(BusTopic.ACTION_REGISTERED) {
             createMenu(it)
         }
     }
@@ -44,7 +49,7 @@ class MainMenu : MenuBar() {
             }
             menuItems[action] = item
         } else {
-            val parentAction = ActionManager.findAction(parentId)
+            val parentAction = actionManager.findAction(parentId)
             if (parentAction != null) {
                 val parentMenu = findMenuForAction(parentAction)
                 if (parentMenu.subMenu == null) {

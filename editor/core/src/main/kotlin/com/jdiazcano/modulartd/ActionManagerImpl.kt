@@ -4,7 +4,18 @@ import com.jdiazcano.modulartd.plugins.actions.Action
 import mu.KLoggable
 import mu.KLogger
 
-internal object ActionManager : KLoggable {
+interface ActionManager {
+    /**
+     * Registers an action and sends it to the Bus.
+     *
+     * @throws IllegalArgumentException If the action name is already registered
+     */
+    fun registerAction(action: Action)
+
+    fun findAction(actionName: String) : Action?
+}
+
+internal class ActionManagerImpl : KLoggable, ActionManager {
     override val logger: KLogger = logger()
 
     private val actions: MutableMap<String, Action> = mutableMapOf()
@@ -14,7 +25,7 @@ internal object ActionManager : KLoggable {
      *
      * @throws IllegalArgumentException If the action name is already registered
      */
-    fun registerAction(action: Action) {
+    override fun registerAction(action: Action) {
         if (actions[action.name] != null) {
             throw IllegalArgumentException("Action '${action.name}' already registered")
         }
@@ -23,7 +34,6 @@ internal object ActionManager : KLoggable {
         logger.debug { "Action '${action.name}' added" }
     }
 
-    fun findAction(actionName: String) : Action? = actions[actionName]
+    override fun findAction(actionName: String) : Action? = actions[actionName]
 }
 
-data class ParentedAction(val action: Action, val parentId: String)

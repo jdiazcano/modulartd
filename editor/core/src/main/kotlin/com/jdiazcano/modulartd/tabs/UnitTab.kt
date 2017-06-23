@@ -1,18 +1,19 @@
 package com.jdiazcano.modulartd.tabs
 
 import com.github.salomonbrys.kodein.instance
+import com.jdiazcano.modulartd.beans.*
 import com.jdiazcano.modulartd.beans.Map
-import com.jdiazcano.modulartd.beans.Resource
-import com.jdiazcano.modulartd.beans.ResourceType
 import com.jdiazcano.modulartd.beans.Unit
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.injections.kodein
 import com.jdiazcano.modulartd.ui.widgets.AnimatedButton
+import com.jdiazcano.modulartd.ui.widgets.SoundChooser
 import com.jdiazcano.modulartd.ui.widgets.lists.MapObjectList
 import com.jdiazcano.modulartd.ui.widgets.pickResource
 import com.jdiazcano.modulartd.ui.widgets.rotatable
 import com.jdiazcano.modulartd.utils.clickListener
+import com.jdiazcano.modulartd.utils.scrollable
 import com.jdiazcano.modulartd.utils.sneakyChange
 import com.jdiazcano.modulartd.utils.translate
 import com.kotcrab.vis.ui.widget.*
@@ -50,11 +51,11 @@ class UnitTab: BaseTab<Unit>(translate("tabs.units"), true) {
     private val checkAntiSlow = VisCheckBox(translate("antislow"))
     private val checkAntiStun = VisCheckBox(translate("antistun"))
 
-    //private var soundTable: SoundTable<UnitSound>? = null
+    private var soundTable: SoundChooser<UnitEvent> = SoundChooser()
     //private var coinDropTable: CoinQuantifierTable? = null
 
     init {
-        Bus.register<Unit>(Unit::class.java, BusTopic.SELECTED) {
+        Bus.register<Unit>(BusTopic.SELECTED) {
             updateUI(it)
         }
 
@@ -143,6 +144,8 @@ class UnitTab: BaseTab<Unit>(translate("tabs.units"), true) {
             list.notifyDataSetChanged()
             isDirty = true
         }
+
+        //TODO set dirty on the SoundChooser
     }
 
     override fun newItem() {
@@ -166,7 +169,7 @@ class UnitTab: BaseTab<Unit>(translate("tabs.units"), true) {
         checkAntiStun.isChecked = item.antiStun
         checkAir.isChecked = item.air
         checkInvisible.isChecked = item.invisible
-        // soundTable.useSounds(unit.getSoundMap(), UnitSound::class.java)
+        soundTable.update(item)
         // coinDropTable.setCoins(unit.getDrop())
 
         enableProgrammaticEvents()
@@ -198,7 +201,7 @@ class UnitTab: BaseTab<Unit>(translate("tabs.units"), true) {
         propertiesTable.add(checkInvisible).left()
         propertiesTable.add(checkAntiStun).left().row()
         propertiesTable.addSeparator().colspan(2).expandX().fillX().row()
-        //propertiesTable.add(soundTable).colspan(2).left().row()
+        propertiesTable.add(soundTable).colspan(2).left().row()
         propertiesTable.addSeparator().colspan(2).expandX().fillX().row()
         //propertiesTable.add(coinDropTable).colspan(2).left().row()
 
@@ -208,7 +211,7 @@ class UnitTab: BaseTab<Unit>(translate("tabs.units"), true) {
         val tableProp = VisTable(true)
         tableProp.add(propertiesTable).padLeft(17F).fillX().expand().top()
 
-        splitPane = VisSplitPane(tableList, tableProp, false)
+        splitPane = VisSplitPane(tableList, tableProp.scrollable(), false)
         splitPane.setSplitAmount(0.40F)
     }
 

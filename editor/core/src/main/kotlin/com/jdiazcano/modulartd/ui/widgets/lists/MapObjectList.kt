@@ -27,7 +27,7 @@ class MapObjectList<T: MapObject>(objects: MutableList<T>, clazz: Class<T>): Tab
             removeItem(it)
         }
 
-        Bus.register<Resource>(Resource::class.java, BusTopic.LOAD_FINISHED) {
+        Bus.register<Resource>(BusTopic.LOAD_FINISHED) {
             invalidateList()
         }
 

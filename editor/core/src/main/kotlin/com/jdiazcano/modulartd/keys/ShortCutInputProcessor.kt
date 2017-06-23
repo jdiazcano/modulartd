@@ -3,10 +3,10 @@ package com.jdiazcano.modulartd.keys
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputAdapter
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.jdiazcano.modulartd.ParentedAction
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.plugins.actions.Actioned
+import com.jdiazcano.modulartd.plugins.actions.ParentedAction
 import com.jdiazcano.modulartd.ui.StageWrapperImpl
 import mu.KLogging
 
@@ -25,17 +25,17 @@ class ShortCutInputProcessor(stage: Stage) : InputAdapter() {
 
     init {
 
-        Bus.register<ParentedAction>(ParentedAction::class.java, BusTopic.ACTION_REGISTERED) {
+        Bus.register<ParentedAction>(BusTopic.ACTION_REGISTERED) {
             actionMap[it.action.shortCut] = it.action
             logger.debug { "Added action ${it.action.name}" }
         }
 
-        Bus.register<ShortCutAction>(ShortCutAction::class.java, BusTopic.SHORTCUT_UPDATED) {
+        Bus.register<ShortCutAction>(BusTopic.SHORTCUT_UPDATED) {
             actionMap[it.shortCut] = it.action
             logger.debug { "Shortcut modified : ${KeyPrinters.print(it.shortCut)}" }
         }
 
-        Bus.register<ParentedAction>(ParentedAction::class.java, BusTopic.ACTION_UNREGISTERED) {
+        Bus.register<ParentedAction>(BusTopic.ACTION_UNREGISTERED) {
             actionMap.remove(it.action.shortCut)
             logger.debug { "Removed action ${it.action.name}" }
         }

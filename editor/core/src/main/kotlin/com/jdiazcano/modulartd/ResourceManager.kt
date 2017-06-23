@@ -31,25 +31,25 @@ class ResourceManager(map: Map): Disposable {
         // same sprite.
         manager.setLoader(Sprite::class.java, SpriteLoader(AbsoluteFileHandleResolver()))
 
-        Bus.register<Resource>(Resource::class.java, BusTopic.CREATED) {
+        Bus.register<Resource>(BusTopic.CREATED) {
             addResource(it)
             manager.finishLoading()
             logger.debug { "Loaded resource: $it" }
         }
 
-        Bus.register<Resource>(Resource::class.java, BusTopic.DELETED) {
+        Bus.register<Resource>(BusTopic.DELETED) {
             removeResource(it)
             logger.debug { "Deleted resource: $it" }
         }
 
-        Bus.register<Resource>(Resource::class.java, BusTopic.DELETED) {
+        Bus.register<Resource>(BusTopic.UPDATED) {
             if (it in resources) {
                 reloadResource(it)
                 logger.debug { "Reloaded resource $it" }
             }
         }
 
-        Bus.register<MutableSet<Resource>>(MutableSet::class.java, BusTopic.RESOURCES_RELOAD) { resources ->
+        Bus.register<MutableSet<Resource>>(BusTopic.RESOURCES_RELOAD) { resources ->
             manager.clear()
             this.resources = resources
             resources.forEach {

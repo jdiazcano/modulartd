@@ -3,13 +3,15 @@ package com.jdiazcano.modulartd.plugins
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.JsonReader
+import com.github.salomonbrys.kodein.instance
 import com.jdiazcano.modulartd.ActionManager
-import com.jdiazcano.modulartd.ParentedAction
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.config.Configs
 import com.jdiazcano.modulartd.config.EditorConfig
+import com.jdiazcano.modulartd.injections.kodein
 import com.jdiazcano.modulartd.plugins.actions.Action
+import com.jdiazcano.modulartd.plugins.actions.ParentedAction
 import com.jdiazcano.modulartd.plugins.actions.Preferences
 import com.jdiazcano.modulartd.plugins.actions.RegisterAction
 import com.jdiazcano.modulartd.plugins.bundled.*
@@ -26,12 +28,13 @@ import kotlin.system.measureTimeMillis
 class PluginLoader {
     companion object: KLogging()
 
+    private val actionManager = kodein.instance<ActionManager>()
     private val plugins: MutableList<Plugin> = mutableListOf()
 
     private val config : EditorConfig = Configs.editor
 
     init {
-        Bus.register<Plugin>(Plugin::class.java, BusTopic.PLUGIN_REGISTERED) { plugin ->
+        Bus.register<Plugin>(BusTopic.PLUGIN_REGISTERED) { plugin ->
             logger.debug { "Plugin loaded: ${plugin.getName()}." }
         }
     }
@@ -54,7 +57,7 @@ class PluginLoader {
                 when (annotation) {
                     is RegisterAction -> {
                         val action = method.invoke(plugin) as Action
-                        ActionManager.registerAction(action)
+                        actionManager.registerAction(action)
                         Bus.post(ParentedAction(action, annotation.id), BusTopic.ACTION_REGISTERED)
                     }
                     is Preferences -> {

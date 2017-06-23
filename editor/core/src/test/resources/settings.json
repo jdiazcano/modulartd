@@ -1,0 +1,21 @@
+{
+  "editor": {
+    "pluginsFolder": "plugins",
+    "pluginsConfigFile": "plugins.json",
+    "gridWidth": 20,
+    "gridHeight": 20,
+    "tileWidth": 10,
+    "tileHeight": 10,
+    "timeBetweenLevels": 50,
+    "interestRatio": 50,
+    "turretSellProfit": 50,
+    "maxGridWidth": 40,
+    "maxGridHeight": 40,
+    "unitCount": 50,
+    "circularRegions": false,
+    "preferencesKey": "com.jdiazcano.modulartd",
+    "baseTitle": "ModularTD",
+    "gameConfigFolder": ".itd",
+    "gameFileName": "map.dat"
+  }
+}

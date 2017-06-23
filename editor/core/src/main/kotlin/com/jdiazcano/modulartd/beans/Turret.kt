@@ -1,5 +1,7 @@
 package com.jdiazcano.modulartd.beans
 
+import com.jdiazcano.modulartd.ResourceManager
+
 /**
  * Class that describes a Turret
  */
@@ -29,13 +31,35 @@ data class Turret(
         var canStun: Boolean = false,
         var stunChance: Float = 0F,
         var stunDuration: Float = 0F,
-        var soundMap: MutableMap<TurretSound, Resource> = hashMapOf()
-) : MapObject, Scriptable
+        override var sounds: MutableMap<TurretEvent, Resource> =
+                        TurretEvent.values.associateBy({it}, { ResourceManager.NO_SOUND}).toMutableMap()
+) : MapObject, Scriptable, Sounded<TurretEvent>
 
-
-enum class TurretSound {
+/**
+ * Events that can occur to an turret. This will go later to the scripting language because each one of these
+ * enum items will map to a method that will be executed when the action happens. But if someone doesn't want
+ * to go into that mess, (s)he can just play a sound.
+ */
+enum class TurretEvent {
+    /**
+     * Fired when the turret is built
+     */
     ON_BUILT,
+    /**
+     * Fired when the turret shoots
+     */
     ON_SHOOT,
+    /**
+     * Fired when the turret is sold
+     */
     ON_SELL,
+    /**
+     * Fired when the turret kills an unit
+     */
     ON_KILL,
+    ;
+
+    companion object {
+        val values = values()
+    }
 }

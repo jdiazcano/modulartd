@@ -15,17 +15,17 @@ class LayerList(items: MutableList<Layer>) : TableList<Layer, LayerView>(items) 
     companion object: KLogging()
 
     init {
-        Bus.register<Layer>(Layer::class.java, BusTopic.CREATED) {
+        Bus.register<Layer>(BusTopic.CREATED) {
             addItem(it)
             logger.debug { "Added layer: ${it.name}" }
         }
 
-        Bus.register<kotlin.Unit>(Layer::class.java, BusTopic.RESET) {
+        Bus.register<kotlin.Unit>(BusTopic.RESET) {
             clearList()
             logger.debug { "Cleared list of: Layer" }
         }
 
-        Bus.register<Layer>(Layer::class.java, BusTopic.LOAD_FINISHED) {
+        Bus.register<Layer>(BusTopic.LOAD_FINISHED) {
             invalidateList()
         }
     }

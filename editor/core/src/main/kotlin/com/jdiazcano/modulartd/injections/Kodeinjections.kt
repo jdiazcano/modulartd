@@ -2,6 +2,8 @@ package com.jdiazcano.modulartd.injections
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.github.salomonbrys.kodein.*
+import com.jdiazcano.modulartd.ActionManager
+import com.jdiazcano.modulartd.ActionManagerImpl
 import com.jdiazcano.modulartd.ResourceManager
 import com.jdiazcano.modulartd.beans.Game
 import com.jdiazcano.modulartd.beans.Map
@@ -29,4 +31,5 @@ val kodein = Kodein {
     }
     bind<Label>("globalMessageLabel") with singleton { VisLabel() }
     bind<SpinnerModel>("float") with provider { SimpleFloatSpinnerModel(0.2F, 0.04F, 100F, 0.02F, 2) }
+    bind<ActionManager>() with singleton { ActionManagerImpl() }
 }

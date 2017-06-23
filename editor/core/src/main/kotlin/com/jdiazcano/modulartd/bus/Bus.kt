@@ -1,5 +1,6 @@
 package com.jdiazcano.modulartd.bus
 
+import rx.Subscription
 import rx.lang.kotlin.PublishSubject
 import rx.subjects.SerializedSubject
 
@@ -9,14 +10,20 @@ import rx.subjects.SerializedSubject
 @Suppress("UNCHECKED_CAST")
 object Bus {
 
-    private val buses = mutableMapOf(BusTopic.DEFAULT to SerializedSubject(PublishSubject<Any>()))
+    val buses = mutableMapOf(BusTopic.DEFAULT to SerializedSubject(PublishSubject<Any>()))
 
     /**
      * Registers a function that will be called once we receive an item of that class in that theme
      */
-    fun <K> register(type: Class<*>, topic: BusTopic, action: (K) -> Any) {
-        buses.getOrPut(topic) { SerializedSubject(PublishSubject<Any>()) }
-                .filter { type.isAssignableFrom(it.javaClass) }
+    inline fun <reified K> register(topic: BusTopic, crossinline action: (K) -> Any): Subscription {
+        return buses.getOrPut(topic) { SerializedSubject(PublishSubject<Any>()) }
+                .filter { K::class.java.isAssignableFrom(it.javaClass) }
+                .subscribe { action(it as K) }
+    }
+
+    fun <K> register(clazz: Class<*>, topic: BusTopic, action: (K) -> Any): Subscription {
+        return buses.getOrPut(topic) { SerializedSubject(PublishSubject<Any>()) }
+                .filter { clazz.isAssignableFrom(it.javaClass) }
                 .subscribe { action(it as K) }
     }
 

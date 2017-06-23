@@ -29,6 +29,8 @@ abstract class Action(
     }
 }
 
+data class ParentedAction(val action: Action, val parentId: String)
+
 enum class SeparatorPlace {
     NONE, ABOVE, BELOW, BOTH
 }

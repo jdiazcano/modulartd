@@ -29,7 +29,7 @@ class GameTab: BaseTab<Map>(translate("tabs.game"), true, false) {
     private val textTurretSellProfit = VisValidatableTextField()
 
     init {
-        Bus.register<Map>(Map::class.java, BusTopic.MAP_LOAD) {
+        Bus.register<Map>(BusTopic.MAP_LOAD) {
             updateUI(it)
         }
 

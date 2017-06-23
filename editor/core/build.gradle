@@ -14,7 +14,15 @@ dependencies {
     compile 'com.github.salomonbrys.kodein:kodein:3.4.1'
     compile 'com.github.salomonbrys.kotson:kotson:2.5.0'
 
+    testCompile 'junit:junit:4.+'
+    testCompile "org.mockito:mockito-all:1.9.+"
+
+    testCompile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+    testCompile "com.badlogicgames.gdx:gdx:$gdxVersion"
+    testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+
     testCompile "io.kotlintest:kotlintest:1.3.5"
+
 }
 
 // Needed because there's something messy with kotlin version numbers and dependencies

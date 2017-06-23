@@ -1,18 +1,18 @@
 package com.jdiazcano.modulartd.tabs
 
 import com.github.salomonbrys.kodein.instance
+import com.jdiazcano.modulartd.beans.*
 import com.jdiazcano.modulartd.beans.Map
-import com.jdiazcano.modulartd.beans.Resource
-import com.jdiazcano.modulartd.beans.ResourceType
-import com.jdiazcano.modulartd.beans.Turret
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
 import com.jdiazcano.modulartd.injections.kodein
 import com.jdiazcano.modulartd.ui.widgets.AnimatedButton
+import com.jdiazcano.modulartd.ui.widgets.SoundChooser
 import com.jdiazcano.modulartd.ui.widgets.lists.MapObjectList
 import com.jdiazcano.modulartd.ui.widgets.pickResource
 import com.jdiazcano.modulartd.ui.widgets.rotatable
 import com.jdiazcano.modulartd.utils.clickListener
+import com.jdiazcano.modulartd.utils.scrollable
 import com.jdiazcano.modulartd.utils.sneakyChange
 import com.jdiazcano.modulartd.utils.translate
 import com.kotcrab.vis.ui.widget.*
@@ -68,12 +68,12 @@ class TurretTab: BaseTab<Turret>(translate("tabs.turrets"), true) {
     private val labelCriticalMultiplier = VisLabel(translate("critical.multiplier"))
     private val textCriticalMultiplier = VisValidatableTextField()
 
-    // private val soundTable: SoundTable<TurretSound>? = null
+    private var soundTable: SoundChooser<TurretEvent> = SoundChooser()
     // private val coinCostTable: CoinQuantifierTable? = null
     // private val updaterTable: TurretUpdaterTable? = null
 
     init {
-        Bus.register<Turret>(Turret::class.java, BusTopic.SELECTED) {
+        Bus.register<Turret>(BusTopic.SELECTED) {
             updateUI(it)
         }
 
@@ -259,8 +259,8 @@ class TurretTab: BaseTab<Turret>(translate("tabs.turrets"), true) {
         tableCrit.add(labelCriticalMultiplier).left().padRight(10F); tableCrit.add(textCriticalMultiplier).left().row()
         propertiesTable.add(containerCrit).colspan(2).left().row()
         propertiesTable.addSeparator().colspan(2).expandX().fillX().row()
-        // TODO there's not soundtable or coins or update so this is still todo :(
-        // propertiesTable.add(soundTable).colspan(2).left().row()
+        // TODO there are no coins or update so this is still todo :(
+        propertiesTable.add(soundTable).colspan(2).left().row()
         // propertiesTable.addSeparator().colspan(2).expandX().fillX().row()
         // propertiesTable.add(coinCostTable).colspan(2).left().row()
         // propertiesTable.add(updaterTable).height(200f).width(Value.percentWidth(1f, propertiesTable)).colspan(2).left().row()
@@ -271,7 +271,7 @@ class TurretTab: BaseTab<Turret>(translate("tabs.turrets"), true) {
         val tableProp = VisTable(true)
         tableProp.add(propertiesTable).padLeft(17F).fillX().expand().top()
 
-        splitPane = VisSplitPane(tableList, tableProp, false)
+        splitPane = VisSplitPane(tableList, tableProp.scrollable(), false)
         splitPane.setSplitAmount(0.40F)
     }
 
@@ -316,6 +316,8 @@ class TurretTab: BaseTab<Turret>(translate("tabs.turrets"), true) {
         textSlowPercent.text = item.slowPercent.toString()
         textSlowChance.text = item.slowChance.toString()
         textSlowDuration.text = item.slowDuration.toString()
+
+        soundTable.update(item)
 
         enableProgrammaticEvents()
     }

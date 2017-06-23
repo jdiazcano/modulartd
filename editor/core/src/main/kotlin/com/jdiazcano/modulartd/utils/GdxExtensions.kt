@@ -14,6 +14,8 @@ import com.jdiazcano.modulartd.beans.ResourceType
 import com.jdiazcano.modulartd.bus.Bus
 import com.jdiazcano.modulartd.bus.BusTopic
 import com.kotcrab.vis.ui.util.dialog.Dialogs
+import com.kotcrab.vis.ui.widget.VisScrollPane
+import com.kotcrab.vis.ui.widget.VisTable
 import java.nio.file.Path
 
 /**
@@ -47,13 +49,13 @@ fun FileHandle.isAtlasFile(): Boolean {
 
 fun FileHandle.toPath(): Path = file().toPath()
 
-fun Actor.clickListener(listener: (InputEvent?, Float, Float) -> Unit) = addListener(object : ClickListener() {
+inline fun Actor.clickListener(crossinline listener: (InputEvent?, Float, Float) -> Unit) = addListener(object : ClickListener() {
     override fun clicked(event: InputEvent?, x: Float, y: Float) {
         listener(event, x, y)
     }
 })
 
-fun Actor.changeListener(listener: (ChangeListener.ChangeEvent, Actor) -> Unit) {
+inline fun Actor.changeListener(crossinline listener: (ChangeListener.ChangeEvent, Actor) -> Unit) {
     addListener(object : ChangeListener() {
         override fun changed(event: ChangeEvent, actor: Actor) {
             listener(event, actor)
@@ -61,7 +63,7 @@ fun Actor.changeListener(listener: (ChangeListener.ChangeEvent, Actor) -> Unit) 
     })
 }
 
-fun Actor.sneakyChange(listener: () -> Unit) {
+inline fun Actor.sneakyChange(crossinline listener: () -> Unit) {
     addListener(object : ChangeListener() {
         override fun changed(event: ChangeEvent, actor: Actor) {
             try {
@@ -89,3 +91,15 @@ fun icon(name: String, size: Int = 24): Texture {
 }
 
 fun Texture.asDrawable() = TextureRegionDrawable(TextureRegion(this))
+
+/**
+ * Converts a collection to a LibGDX array. This is used when handling ComboBoxes (SelectBox in libgdx)
+ * because they get a libgdx array as parameter.
+ */
+inline fun <reified E> Collection<E>.asGdxArray(): com.badlogic.gdx.utils.Array<E> {
+    val array = com.badlogic.gdx.utils.Array<E>(size)
+    forEach { array.add(it) }
+    return array
+}
+
+fun VisTable.scrollable() = VisScrollPane(this)

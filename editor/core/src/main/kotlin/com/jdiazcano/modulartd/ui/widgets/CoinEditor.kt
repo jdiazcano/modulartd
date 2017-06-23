@@ -23,12 +23,12 @@ class CoinEditor(val coins: MutableList<Coin>): VisTable(true) {
 
 
     init {
-        Bus.register<Coin>(Coin::class.java, BusTopic.DELETED) { deletedCoin ->
+        Bus.register<Coin>(BusTopic.DELETED) { deletedCoin ->
             list.removeItem(deletedCoin)
             list.notifyDataSetChanged()
         }
 
-        Bus.register<Coin>(Coin::class.java, BusTopic.CREATED) { addedCoin ->
+        Bus.register<Coin>(BusTopic.CREATED) { addedCoin ->
             list.addItem(addedCoin)
             list.notifyDataSetChanged()
         }

@@ -33,7 +33,7 @@ class ModularTD : ApplicationAdapter() {
     companion object: KLogging()
 
     private lateinit var stage: Stage
-    private val pluginLoader = PluginLoader()
+    private lateinit var pluginLoader: PluginLoader
     private lateinit var menu: MainMenu
     private lateinit var screen: MainScreenUI
     private lateinit var toolbar: ToolBar
@@ -54,6 +54,7 @@ class ModularTD : ApplicationAdapter() {
 
         val root = VisTable()
 
+        pluginLoader = PluginLoader()
         menu = MainMenu()
         screen = MainScreenUI(root)
         toolbar = ToolBar()
@@ -75,11 +76,11 @@ class ModularTD : ApplicationAdapter() {
 
     private fun registerBusTopics() {
         // This will handle the dialogs that will be posted in the stage
-        Bus.register<Actor>(Actor::class.java, BusTopic.NEW_DIALOG) {
+        Bus.register<Actor>(BusTopic.NEW_DIALOG) {
             stage.addActor(it)
         }
 
-        Bus.register<PopupMenuLocation>(PopupMenuLocation::class.java, BusTopic.POPUP_MENU) { (menu, x, y) ->
+        Bus.register<PopupMenuLocation>(BusTopic.POPUP_MENU) { (menu, x, y) ->
             menu.showMenu(stage, x, y)
             menu.toFront()
         }

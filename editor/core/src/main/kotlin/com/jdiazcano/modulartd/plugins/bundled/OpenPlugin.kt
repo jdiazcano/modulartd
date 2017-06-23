@@ -32,7 +32,7 @@ class OpenPlugin : Plugin {
     private var currentWatcher: AssetDirectoryWatcher = kodein.instance()
 
     init {
-        Bus.register<LoadMapEvent>(LoadMapEvent::class.java, BusTopic.MAP_LOAD) { (file, reloadMap) ->
+        Bus.register<LoadMapEvent>(BusTopic.MAP_LOAD) { (file, reloadMap) ->
             val game: Game = kodein.instance()
             val editor = Configs.editor
 

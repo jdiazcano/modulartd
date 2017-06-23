@@ -50,5 +50,14 @@
   "invisible": "Invisible",
   "antislow": "Anti slow",
   "antistun": "Anti stun",
-  "delete": "Delete"
+  "delete": "Delete",
+  "ON_SPAWN": "On spawn",
+  "ON_DEATH": "On death",
+  "ON_REGION": "On region",
+  "ON_FINAL": "On final",
+  "ON_DAMAGE": "On damage",
+  "ON_BUILT": "On built",
+  "ON_SHOOT": "On shoot",
+  "ON_SELL": "On sell",
+  "ON_KILL": "On kill"
 }
